@@ -5,5 +5,5 @@ public
 client/bower_components
 dist
 /server/config/local.env.js
-.sublime-project
-.sublime-workplace
+tb2015.sublimeproject.sublime-project
+tb2015.sublimeproject.sublime-workspace
