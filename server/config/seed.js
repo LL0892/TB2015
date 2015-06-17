@@ -24,7 +24,7 @@ Thing.find({}).remove(function() {
   },  {
     name : 'Optimized Build',
     info : 'Build process packs up your templates as a single JavaScript payload, minifies your scripts/css/images, and rewrites asset names for caching.'
-  },{
+  },  {
     name : 'Deployment Ready',
     info : 'Easily deploy your app to Heroku or Openshift with the heroku and openshift subgenerators'
   });
@@ -33,15 +33,27 @@ Thing.find({}).remove(function() {
 User.find({}).remove(function() {
   User.create({
     provider: 'local',
-    name: 'Test User',
+    firstName: 'Test',
+    lastName: 'User',
     email: 'test@test.com',
-    password: 'test'
+    password: 'test',
+    city: 'Neuchâtel',
+    state: 'NE',
+    street: 'Avenue du Premier Mars 1',
+    zip: '2000',
+    photoProfileURL : 'profile.jpg'
   }, {
     provider: 'local',
     role: 'admin',
-    name: 'Admin',
+    firstName: 'Admin',
+    lastName: 'User',
     email: 'admin@admin.com',
-    password: 'admin'
+    password: 'admin',
+    city: 'Neuchâtel',
+    state: 'NE',
+    street: 'Avenue du Premier Mars 1',
+    zip: '2000',
+    photoProfileURL : 'profile.jpg'
   }, function() {
       console.log('finished populating users');
     }

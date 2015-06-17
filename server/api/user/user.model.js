@@ -5,19 +5,40 @@ var Schema = mongoose.Schema;
 var crypto = require('crypto');
 var authTypes = ['github', 'twitter', 'facebook', 'google'];
 
+// User Schema
 var UserSchema = new Schema({
-  name: String,
-  email: { type: String, lowercase: true },
-  role: {
-    type: String,
-    default: 'user'
-  },
+  firstName: { type: String, required: true },
+  lastName: { type: String, required: true },
+  email: { type: String, required: true, lowercase: true },
+  dateOfBirth: { type: Date, required: false },
+  
+  role: { type: [String], default: 'user', enum: ['user', 'staff', 'founder', 'admin'] },
   hashedPassword: String,
   provider: String,
   salt: String,
   facebook: {},
   google: {},
-  github: {}
+  github: {},
+
+  createdOn: { type: Date, default: Date.now },
+  updatedOn: { type: Date, default: Date.now },
+
+  staff: { type: Schema.Types.ObjectId, ref: 'staff'},
+  phone: { type : String, default: '' },
+  mobile: { type : Number, default: '' },
+  city: { type : String, default: '' },
+  street: { type : String, default: '' },
+  canton: { type : String, default: '' },
+  zip: { type : Number, default: '' },
+  photoProfileURL: { type : String, default : 'userProfile.png' },
+  
+  stats: {
+    nbRdvDone: { type: Number, default: '0' },
+    nbRdvMissed: { type: Number, default: '0' },
+    nbRdvCancelled: { type: Number, default: '0' },
+    nbRdvMoved: { type: Number, default: '0' },
+    lastRdv: { type: Date }
+  }
 });
 
 /**
@@ -88,6 +109,22 @@ UserSchema
       respond(true);
     });
 }, 'The specified email address is already in use.');
+
+// Validate existing Staff Profile ID
+UserSchema
+  .path('staff')
+  .validate(function(value, respond) {
+    var self = this;
+    this.constructor.findOne({_id: value}, function (){
+      if (err) throw err;
+      if(err || !doc) {
+        return respond(false);
+      } else {
+        return respond(true);
+      }
+    });
+  }, 'Staff non existant.');
+
 
 var validatePresenceOf = function(value) {
   return value && value.length;
