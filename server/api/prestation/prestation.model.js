@@ -7,7 +7,7 @@ var mongoose = require('mongoose'),
 * Schema
 */
 
-var PrestationSchema = new Schema({{
+var PrestationSchema = new Schema({
 	createdOn: { type: Date, default: Date.now },
 	updatedOn: { type: Date, default: Date.now },
 
@@ -16,7 +16,7 @@ var PrestationSchema = new Schema({{
 	description: { type: String },
 	duration: { type: Number, required: true, default: '5' },
 
-	options: { type: [Schema.Types.ObjectId], ref: 'option' },
+	prestationOptions: { type: [Schema.Types.ObjectId], ref: 'option' },
 
 	price: {
 		categoryName: { type: String, required: true },

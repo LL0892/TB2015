@@ -7,7 +7,6 @@
  * PUT	   /business/:id/status   ->  changeStatus
  */
 
-
 'use strict';
 
 var Business = require('./business.model');
@@ -49,5 +48,3 @@ var Business = require('./business.model');
  exports.changeStatus = function(req, res){
 
  };
-
- 
