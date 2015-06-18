@@ -5,7 +5,7 @@
  * GET     /rendezvous/:id          ->  show
  * PUT     /rendezvous/:id          ->  update
  * PUT	   /rendezvous/:id/status   ->  changeStatus
- * DELETE  /prestation/				->	destroy
+ * DELETE  /prestation/:id			->	destroy
  */
 
 'use strict';
