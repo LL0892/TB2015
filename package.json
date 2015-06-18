@@ -1,7 +1,13 @@
 {
   "name": "tb",
   "version": "0.0.0",
+  "description": "Bachelor Degree Work",
+  "author": "Laurent Lienher laurent.lienher@gmail.com",
   "main": "server/app.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LL0892/TB2015"
+  },
   "dependencies": {
     "express": "~4.0.0",
     "morgan": "~1.0.0",
