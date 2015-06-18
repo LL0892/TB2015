@@ -18,8 +18,8 @@ var RendezvousSchema = new Schema({
 	businessID: { type: Schema.Types.ObjectId, ref: 'option', required: true },
 	clientID: { type: Schema.Types.ObjectId, ref: 'user', required: true },
 	staffID: { type: Schema.Types.ObjectId, ref: 'user', required: true },
-	prestationRdvID: { type: Schema.Types.ObjectId, ref: 'prestationRdv', required: true },
-	status: { type: String, default: 'reservé' },
+	prestationRdvID: { type: Schema.Types.ObjectId, ref: 'prestationRdv' },
+	status: { type: String, default: 'reserved' },
 
 	recurance: {
 		loopStatus: { type: Boolean, default: false },
