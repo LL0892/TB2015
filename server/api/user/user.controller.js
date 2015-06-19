@@ -50,6 +50,8 @@ exports.create = function (req, res, next) {
 */
 exports.createManager = function (req, res, next){
   var userID = '';
+  var token = '';
+
   var newUser = new User({
     firstName: req.body.firstName,
     lastName: req.body.lastName,
@@ -64,9 +66,9 @@ exports.createManager = function (req, res, next){
   newUser.roles = 'manager';
   newUser.save(function(err, user) {
     if (err) return validationError(res, err);
-    var token = jwt.sign({_id: user._id }, config.secrets.session, { expiresInMinutes: 60*5 });
+    token = jwt.sign({_id: user._id }, config.secrets.session, { expiresInMinutes: 60*5 });
     userID = user._id;
-    res.json({ token: token });
+    //res.json({ token: token });
   });
 
   var newBusiness = new Business({
@@ -77,6 +79,7 @@ exports.createManager = function (req, res, next){
     businessContact: {
       email: req.body.emailBusiness,
       phone: req.body.phoneBusiness,
+      mobile: req.body.mobileBusiness,
       siteURL: req.body.siteBusiness,
       facebookURL: req.body.facebookURL
     },
@@ -86,7 +89,7 @@ exports.createManager = function (req, res, next){
   newBusiness.isActive = false;
   newBusiness.save(function(err, businessSaved){
     if (err) return next(err);
-    return res.status(201).json({ message: 'Votre compte et votre salon ont été créés avec succès.' }).end();
+    return res.status(201).json({ message: 'Votre compte et votre salon ont été créés avec succès.', token: token }).end();
   });
 };
 

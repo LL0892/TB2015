@@ -63,7 +63,7 @@ var Notification = require('./notification.model');
  * Update the notification attributes
  */
  exports.update = function(req, res, next){
-
+ 	return res.send(501);
  };
  
  /**
@@ -73,12 +73,16 @@ var Notification = require('./notification.model');
  	var notifID = req.params.id;
 
  	Notification.findById(notifID, function (err, notificationFound){
- 		notificationFound.isViewed = true;
- 		notificationFound.updatedOn = Date.now();
- 		notificationFound.save(function (err, notificationSaved){
-	 		if (err) return next(err);
-	 		res.status(200).json(notificationSaved).end();
- 		});
+ 		if(notificationFound.isViewed === false){
+	 		notificationFound.isViewed = true;
+	 		notificationFound.updatedOn = Date.now();
+	 		notificationFound.save(function (err, notificationSaved){
+		 		if (err) return next(err);
+		 		res.status(200).json(notificationSaved).end();
+	 		});
+ 		} else {
+ 			res.send(403);
+ 		}
  	});
  };
 
@@ -118,7 +122,7 @@ var Notification = require('./notification.model');
  * Remove a notification
  */
  exports.destroy = function(req, res, next){
-
+ 	return res.send(501);
  };
 
  function convertNotification(notif){
