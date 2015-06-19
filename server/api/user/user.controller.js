@@ -48,7 +48,8 @@ exports.createManager = function (req, res, next){
     dateOfBirth: req.body.dateOfBirth,
     password: req.body.password,
     phone: req.body.phoneUser,
-    mobile: req.body.mobileUser
+    mobile: req.body.mobileUser,
+    imageProfileURL: req.body.imageProfileURL
   });
   newUser.provider = 'local';
   newUser.roles = 'manager';
@@ -56,7 +57,7 @@ exports.createManager = function (req, res, next){
     if (err) return validationError(res, err);
     var token = jwt.sign({_id: user._id }, config.secrets.session, { expiresInMinutes: 60*5 });
     userID = user._id;
-    return res.json({ token: token });
+    res.json({ token: token });
   });
 
   var newBusiness = new Business({
@@ -69,18 +70,20 @@ exports.createManager = function (req, res, next){
       phone: req.body.phoneBusiness,
       siteURL: req.body.siteBusiness,
       facebookURL: req.body.facebookURL
-    }
+    },
+    imageBusinessURL: req.body.imageBusinessURL
   });
   newBusiness.founder = userID;
   newBusiness.isActive = false;
   newBusiness.save(function(err, businessSaved){
     if (err) return next(err);
-    return res.status(201).end();
+    return res.status(201).json({ message: 'Votre compte et votre salon ont été créés avec succès.' }).end();
   });
 };
 
 /**
  * Get a single user
+ * restriction: 'staff'
  */
 exports.show = function (req, res, next) {
   var userId = req.params.id;
@@ -96,7 +99,7 @@ exports.show = function (req, res, next) {
  * Deletes a user
  * restriction: 'admin'
  */
-exports.destroy = function(req, res) {
+exports.destroy = function(req, res, next) {
   User.findByIdAndRemove(req.params.id, function(err, user) {
     if(err) return res.send(500, err);
     return res.send(204);

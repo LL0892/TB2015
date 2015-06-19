@@ -30,7 +30,7 @@ var UserSchema = new Schema({
   street: { type : String, default: '' },
   canton: { type : String, default: '' },
   zip: { type : Number, default: '' },
-  photoProfileURL: { type : String, default : 'userProfile.png' },
+  imageProfileURL: { type : String, default : 'userProfile.png' },
   
   stats: {
     nbRdvDone: { type: Number, default: '0' },
@@ -61,7 +61,7 @@ UserSchema
   .get(function() {
     return {
       'name': this.name,
-      'role': this.role
+      'roles': this.roles
     };
   });
 
@@ -71,7 +71,7 @@ UserSchema
   .get(function() {
     return {
       '_id': this._id,
-      'role': this.role
+      'roles': this.roles
     };
   });
 
