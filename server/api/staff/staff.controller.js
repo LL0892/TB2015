@@ -19,7 +19,9 @@ var User = require('../user/user.model');
 * Get a single staff profile
 */
 exports.show = function(req, res){
-	Staff.findById(req.params.id, function (err, staff){
+	var staffId = req.params.id;
+
+	Staff.findById(staffId, function (err, staff){
 		if(err) { return handleError(res, err); }
 		if(!thing) { return res.send(404); }
 		return res.json(200, staff);
@@ -35,12 +37,12 @@ exports.show = function(req, res){
 * 2. modifier user
 */
 exports.create = function (req, res, next) {
-	var staffID = '';
-	var userID = req.body.userID;
+	var staffSaved = '';
+	var userId = req.user._id;
 
 	// Step 1 + 1.1
 	User
-		.find({ _id: userID })
+		.find({ _id: userId })
 		.where({ staff: {'$eq': null} })
 		.exec(function (err, staffFound){
 			if(err) return next(err);
@@ -59,7 +61,7 @@ exports.create = function (req, res, next) {
 				});
 				newStaff.save(function(err, staffSaved){
 					if(err) return next(err);
-					staffID = staffSaved._id;
+					staffSaved = staffSaved;
 					//res.status(201).json(convertStaff(staffSaved)).end();
 				});
 			} else {
@@ -69,12 +71,16 @@ exports.create = function (req, res, next) {
 		});
 
 	// Step 2
-	User.findById({ _id: userID }), function (err, user){
+	User.findById({ _id: userId }), function (err, user){
 		if(err) return next(err);
-		user.staff = staffID;
+		user.staff = staffSaved._id;
 		user.save(function (err, userSaved){
 			if (err) return next(err);
-			return res.status(201).json().end();
+			return res.status(201).json({
+				message: 'Votre profil client a été mit à jours. Votre profil staff a été crée avec succès.',
+				user: userSaved,
+				staff: staffSaved
+			}).end();
 		});
 	};
 };
