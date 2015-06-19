@@ -1,6 +1,7 @@
 'use strict';
 
 var User = require('./user.model');
+var Business = require('../business/business.model');
 
 var passport = require('passport');
 var config = require('../../config/environment');
@@ -39,13 +40,42 @@ exports.create = function (req, res, next) {
 * Create a new user + business
 */
 exports.createManager = function (req, res, next){
-  var newUser = new User(req.body);
+  var userID = '';
+  var newUser = new User({
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    email: req.body.emailUser,
+    dateOfBirth: req.body.dateOfBirth,
+    password: req.body.password,
+    phone: req.body.phoneUser,
+    mobile: req.body.mobileUser
+  });
   newUser.provider = 'local';
   newUser.roles = 'manager';
   newUser.save(function(err, user) {
     if (err) return validationError(res, err);
     var token = jwt.sign({_id: user._id }, config.secrets.session, { expiresInMinutes: 60*5 });
-    res.json({ token: token });
+    userID = user._id;
+    return res.json({ token: token });
+  });
+
+  var newBusiness = new Business({
+    name: req.body.nameBusiness,
+    city: req.body.cityBusiness,
+    zip: req.body.zipBusiness,
+    street: req.body.streetBusiness,
+    businessContact: {
+      email: req.body.emailBusiness,
+      phone: req.body.phoneBusiness,
+      siteURL: req.body.siteBusiness,
+      facebookURL: req.body.facebookURL
+    }
+  });
+  newBusiness.founder = userID;
+  newBusiness.isActive = false;
+  newBusiness.save(function(err, businessSaved){
+    if (err) return next(err);
+    return res.status(201).end();
   });
 };
 

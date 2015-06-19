@@ -14,7 +14,7 @@ var ScheduleSchema = new Schema({
 
   // businessID is not stored inside this object, because Schedule is part of a business anyways.
   dayName: { type: String, required: true, enum: ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi','samedi', 'dimanche'] },
-  dayID: { type: Number, required: true, enum: ['0', '1', '2', '3', '4', '5', '6', '7'] },
+  dayID: { type: Number, required: true, enum: ['0', '1', '2', '3', '4', '5', '6'] },
   startHour: { type: Number, required: true },
   endHour: { type: Number, required: true },
   description: { type: String },

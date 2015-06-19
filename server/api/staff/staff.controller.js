@@ -63,7 +63,7 @@ exports.create = function (req, res, next) {
 					//res.status(201).json(convertStaff(staffSaved)).end();
 				});
 			} else {
-				res.status(422).json({ message: 'Profil de staff déjà existant.' });
+				return res.status(422).json({ message: 'Profil de staff déjà existant.' });
 			}
 
 		});
@@ -74,7 +74,7 @@ exports.create = function (req, res, next) {
 		user.staff = staffID;
 		user.save(function (err, userSaved){
 			if (err) return next(err);
-			res.status(201).json().end();
+			return res.status(201).json().end();
 		});
 	};
 };
