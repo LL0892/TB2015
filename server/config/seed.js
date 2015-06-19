@@ -38,7 +38,7 @@ User.find({}).remove(function() {
     email: 'test@test.com',
     password: 'test',
     city: 'Neuchâtel',
-    state: 'NE',
+    canton: 'NE',
     street: 'Avenue du Premier Mars 1',
     zip: '2000',
     photoProfileURL : 'profile.jpg'
@@ -50,7 +50,7 @@ User.find({}).remove(function() {
     email: 'admin@admin.com',
     password: 'admin',
     city: 'Neuchâtel',
-    state: 'NE',
+    canton: 'NE',
     street: 'Avenue du Premier Mars 1',
     zip: '2000',
     photoProfileURL : 'profile.jpg'
