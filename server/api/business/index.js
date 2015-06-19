@@ -9,8 +9,8 @@ var router = express.Router();
 
 router.get('/', controller.index);
 router.get('/:id', auth.isAuthenticated(), controller.show);
-router.post('/', /*auth.hasRole('manager')*/ auth.isAuthenticated(), controller.create);
-router.put('/:id', /*auth.hasRole('staff')*/ auth.isAuthenticated(), controller.update);
-router.put('/:id/status', /*auth.hasRole('manager')*/ auth.isAuthenticated(), controller.changeStatus);
+router.post('/', auth.hasRole('manager'), controller.create);
+router.put('/:id', auth.hasRole('staff'), controller.update);
+router.put('/:id/status', auth.hasRole('manager'), controller.changeStatus);
 
 module.exports = router;

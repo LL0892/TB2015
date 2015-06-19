@@ -44,11 +44,26 @@ function hasRole(roleRequired) {
   return compose()
     .use(isAuthenticated())
     .use(function meetsRequirements(req, res, next) {
-      if (config.userRoles.indexOf(req.user.role) >= config.userRoles.indexOf(roleRequired)) {
+
+      var i = 0;
+      var effectiveRole = 'user';
+      do{
+        if (config.userRoles.indexOf(req.user.roles[i]) === config.userRoles.indexOf(roleRequired)) {
+          effectiveRole = req.user.roles[i];
+          i++;
+        } else {
+          //effectiveRole = req.user.roles[i];
+          i++;
+        }
+      }while(i <= (req.user.roles.length-1));
+
+      //if (config.userRoles.indexOf(req.user.role) >= config.userRoles.indexOf(roleRequired)) {
+      if (config.userRoles.indexOf(effectiveRole) >= config.userRoles.indexOf(roleRequired)) {
         next();
       }
       else {
-        res.send(403);
+        //res.send(403);
+        res.status(403).json({ message: 'Vous ne disposez pas des droits de réaliser cette action.' });
       }
     });
 }
