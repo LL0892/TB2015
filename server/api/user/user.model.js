@@ -12,7 +12,7 @@ var UserSchema = new Schema({
   email: { type: String, required: true, lowercase: true },
   dateOfBirth: { type: Date, required: false },
   
-  role: { type: [String], default: 'user', enum: ['user', 'staff', 'founder', 'admin'] },
+  roles: { type: [String], default: 'user', enum: ['user', 'staff', 'founder', 'admin'] },
   hashedPassword: String,
   provider: String,
   salt: String,
@@ -25,7 +25,7 @@ var UserSchema = new Schema({
 
   staff: { type: Schema.Types.ObjectId, ref: 'staff'},
   phone: { type : String, default: '' },
-  mobile: { type : Number, default: '' },
+  mobile: { type : String, default: '' },
   city: { type : String, default: '' },
   street: { type : String, default: '' },
   canton: { type : String, default: '' },

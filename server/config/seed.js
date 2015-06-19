@@ -37,6 +37,8 @@ User.find({}).remove(function() {
     lastName: 'User',
     email: 'test@test.com',
     password: 'test',
+    phone: '+41 000 00 00',
+    mobile: '+41 000 00 00',
     city: 'Neuchâtel',
     canton: 'NE',
     street: 'Avenue du Premier Mars 1',
@@ -44,11 +46,13 @@ User.find({}).remove(function() {
     photoProfileURL : 'profile.jpg'
   }, {
     provider: 'local',
-    role: 'admin',
+    roles: 'admin',
     firstName: 'Admin',
     lastName: 'User',
     email: 'admin@admin.com',
     password: 'admin',
+    phone: '+41 000 00 00',
+    mobile: '+41 000 00 00',
     city: 'Neuchâtel',
     canton: 'NE',
     street: 'Avenue du Premier Mars 1',
