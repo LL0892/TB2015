@@ -1,19 +1,20 @@
 /**
  * Using Rails-like standard naming convention for endpoints.
- * GET     /notification              ->  index
- * POST    /notification              ->  create
- * GET     /notification/:id          ->  show
- * GET     /notification/me           ->  me  
- * PUT     /notification/:id          ->  update
- * PUT	   /notification/:id/viewed   ->  viewed
- * PUT	   /notification/:id/accepted ->  accepted
- * PUT	   /notification/:id/refused  ->  refused
- * DELETE  /notification/:id          ->  destroy
+ * GET     /notifications              ->  index
+ * POST    /notifications              ->  create
+ * GET     /notifications/:id          ->  show
+ * GET     /notifications/myNotifs     ->  myNotifs  
+ * PUT     /notifications/:id          ->  update
+ * PUT	   /notifications/:id/viewed   ->  viewed
+ * PUT	   /notifications/:id/accepted ->  accepted
+ * PUT	   /notifications/:id/refused  ->  refused
+ * DELETE  /notifications/:id          ->  destroy
  */
 
 'use strict';
 
 var Notification = require('./notification.model');
+var User = require('../user/user.model');
 
  /**
  * Get a list of notification
@@ -59,6 +60,26 @@ var Notification = require('./notification.model');
 	});
  };
  
+ /**
+ * Get the notifications this user sent and received
+ */
+exports.myNotifs = function(req, res, next){
+	var userId = req.user._id;
+
+
+	res.status(200).json({ id: userId }).end();
+	/*
+	Notification
+		.find({sentBy: userId})
+		//.or([{ sentBy: userId }, { sentTo: userId }])
+		.exec(function (err, notificationsFound){
+			if(err) return next(err);
+			if(!notificationsFound) return res.send(401);
+			return res.status(200).json(notificationsFound);
+		});
+	*/
+};
+
  /**
  * Update the notification attributes
  */

@@ -30,6 +30,7 @@ var BusinessSchema = new Schema({
   imageBusinessURL : { type: String, default: 'businessLogo.png' },
   businessContact: {
     email: { type: String, default: ''},
+    mobile: { type: String, default: '' },
     phone: { type: String, default: '' },
     siteURL: { type: String, default: '' },
     facebookURL : { type: String, default: '' }
@@ -59,17 +60,17 @@ module.exports = mongoose.model('Business', BusinessSchema);
 * Validation
 */
 
-// Validate existing business ID
+// Validate user is not already a founder
 BusinessSchema
   .path('founder')
-  .validate(function(value, respond) {
+  .validate(function(value, respond){
     var self = this;
-    this.constructor.findOne({_id: value}, function (){
-      if (err) throw err;
-      if(err || !doc) {
+    this.constructor.findOne({founder: value}, function(err, businessFound){
+      if(err) throw err;
+      if(businessFound){
+        if(self.founder === this.founder) return respond(true);
         return respond(false);
-      } else {
-        return respond(true);
       }
+      respond(true);
     });
-  }, 'Utilisateur non existant.');
+  }, 'You did already create an other business in the past.');

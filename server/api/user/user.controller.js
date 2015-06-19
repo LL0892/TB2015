@@ -29,18 +29,22 @@ exports.create = function (req, res, next) {
   var newUser = new User({
     firstName: req.body.firstName,
     lastName: req.body.lastName,
-    email: req.body.emailUser,
+    email: req.body.email,
     dateOfBirth: req.body.dateOfBirth,
     password: req.body.password,
-    phone: req.body.phoneUser,
-    mobile: req.body.mobileUser,
-    imageProfileURL: req.body.imageProfileURL
+    phone: req.body.phone,
+    mobile: req.body.mobile,
+    imageProfileURL: req.body.imageProfileURL,
+    zip: req.body.zip,
+    city: req.body.city,
+    canton: req.body.canton,
+    street: req.body.street
   });
   newUser.provider = 'local';
   newUser.roles = 'user';
   newUser.save(function(err, user) {
     if (err) return validationError(res, err);
-    var token = jwt.sign({_id: user._id }, config.secrets.session, { expiresInMinutes: 60*5 });
+    var token = jwt.sign({_id: user._id }, config.secrets.session, { expiresInMinutes: 60*15 });
     res.json({ token: token });
   });
 };
@@ -49,7 +53,7 @@ exports.create = function (req, res, next) {
 * Create a new user + business
 */
 exports.createManager = function (req, res, next){
-  var userID = '';
+  //var userID = '';
   var token = '';
 
   var newUser = new User({
@@ -66,11 +70,12 @@ exports.createManager = function (req, res, next){
   newUser.roles = 'manager';
   newUser.save(function(err, user) {
     if (err) return validationError(res, err);
-    token = jwt.sign({_id: user._id }, config.secrets.session, { expiresInMinutes: 60*5 });
-    userID = user._id;
-    //res.json({ token: token });
+    token = jwt.sign({_id: user._id }, config.secrets.session, { expiresInMinutes: 60*15 });
+    //userID = user._id;
+    res.json({ token: token });
   });
 
+/*
   var newBusiness = new Business({
     name: req.body.nameBusiness,
     city: req.body.cityBusiness,
@@ -91,6 +96,7 @@ exports.createManager = function (req, res, next){
     if (err) return next(err);
     return res.status(201).json({ message: 'Votre compte et votre salon ont été créés avec succès.', token: token }).end();
   });
+*/
 };
 
 /**

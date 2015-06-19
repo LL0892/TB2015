@@ -5,7 +5,7 @@ var mongoose = require('mongoose'),
 
 var NotificationSchema = new Schema({
 	createdOn: { type: Date, default: Date.now },
-  updatedOn: { type: Date, default: Date.now },
+  	updatedOn: { type: Date, default: Date.now },
 
 	title: { type: String, required: true },
 	text: { type: String, required: true },

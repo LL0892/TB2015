@@ -12,7 +12,7 @@ module.exports = function(app) {
   app.use('/api/things', require('./api/thing'));
   app.use('/api/users', require('./api/user'));
   app.use('/api/staffs', require('./api/staff'));
-  app.use('/api/business', require('./api/business'));
+  app.use('/api/businesses', require('./api/business'));
   app.use('/api/notifications', require('./api/notification'));
   app.use('/api/prestations', require('./api/prestation'));
   app.use('/api/rendezvous', require('./api/rendezvous'));
