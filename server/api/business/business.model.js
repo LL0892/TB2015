@@ -61,6 +61,7 @@ module.exports = mongoose.model('Business', BusinessSchema);
 */
 
 // Validate user is not already a founder
+/*
 BusinessSchema
   .path('founder')
   .validate(function(value, respond){
@@ -74,3 +75,4 @@ BusinessSchema
       respond(true);
     });
   }, 'You did already create an other business in the past.');
+  */

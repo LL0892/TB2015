@@ -3,7 +3,6 @@
  * GET     /notifications              ->  index
  * POST    /notifications              ->  create
  * GET     /notifications/:id          ->  show
- * GET     /notifications/myNotifs     ->  myNotifs  
  * PUT     /notifications/:id          ->  update
  * PUT	   /notifications/:id/viewed   ->  viewed
  * PUT	   /notifications/:id/accepted ->  accepted
@@ -14,15 +13,15 @@
 'use strict';
 
 var Notification = require('./notification.model');
-var User = require('../user/user.model');
+//var User = require('../user/user.model');
 
  /**
  * Get a list of notification
  */
  exports.index = function(req, res, next){
-  Notification.find(function (err, notifications) {
+  Notification.find(function (err, notificationsFound) {
     if(err) { return handleError(res, err); }
-    return res.json(200, notifications);
+    return res.json(200, notificationsFound);
   });
  };
 
@@ -59,26 +58,11 @@ var User = require('../user/user.model');
 		res.status(200).json(notificationFound);
 	});
  };
- 
+
  /**
- * Get the notifications this user sent and received
+ * Get the notifications recieved and sent by this user
  */
-exports.myNotifs = function(req, res, next){
-	var userId = req.user._id;
-
-
-	res.status(200).json({ id: userId }).end();
-	/*
-	Notification
-		.find({sentBy: userId})
-		//.or([{ sentBy: userId }, { sentTo: userId }])
-		.exec(function (err, notificationsFound){
-			if(err) return next(err);
-			if(!notificationsFound) return res.send(401);
-			return res.status(200).json(notificationsFound);
-		});
-	*/
-};
+ // TODO
 
  /**
  * Update the notification attributes
@@ -102,7 +86,7 @@ exports.myNotifs = function(req, res, next){
 		 		res.status(200).json(notificationSaved).end();
 	 		});
  		} else {
- 			res.send(403);
+ 			res.send(200).json(notificationFound).end();
  		}
  	});
  };

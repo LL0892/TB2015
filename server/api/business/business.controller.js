@@ -31,6 +31,7 @@ var Business = require('./business.model');
 			    city: req.body.city,
 			    zip: req.body.zip,
 			    street: req.body.street,
+			    canton: req.body.canton,
 			    businessContact: {
 			      email: req.body.email,
 			      phone: req.body.phone,
@@ -44,7 +45,10 @@ var Business = require('./business.model');
 		  	newBusiness.isActive = false;
 		  	newBusiness.save(function(err, businessSaved){
 		    	if (err) return next(err);
-		    	return res.status(201).json({ message: 'Votre salon a été créé avec succès.', business: businessSaved }).end();
+		    	return res.status(201).json({ 
+		    		message: 'Votre salon a été créé avec succès.', 
+		    		business: businessSaved 
+		    	}).end();
 		  	});
  };
 
@@ -52,21 +56,67 @@ var Business = require('./business.model');
  * Get a single business
  */
  exports.show = function(req, res, next){
+ 	var businessId = req.params.id;
 
+ 	Business.findOne(businessId, function (err, businessFound){
+ 		if(err) return res.send(500, err);
+ 		res.status(200).json(businessFound).end();
+ 	});
  };
 
  /**
  * Update a business
- * restriction: 'staff'
+ * restriction: 'staff' /!\ retirée pour le moment
  */
  exports.update = function(req, res, next){
+ 	var businessId = req.params.id;
 
+ 	Business.findOne(businessId, function (err, businessFound){
+ 		if(err) return res.send(500, err);
+
+ 		businessFound.name = req.body.name;
+ 		businessFound.city = req.body.city;
+ 		businessFound.zip = req.body.zip;
+ 		businessFound.street = req.body.street;
+ 		businessFound.canton = req.body.canton;
+ 		businessFound.businessContact.email = req.body.email;
+ 		businessFound.businessContact.phone = req.body.phone;
+ 		businessFound.businessContact.mobile = req.body.mobile;
+ 		businessFound.businessContact.siteURL = req.body.siteURL;
+ 		businessFound.businessContact.facebookURL = req.body.facebookURL;
+ 		businessFound.imageBusinessURL = req.body.imageBusinessURL;
+ 		
+ 		businessFound.save(function (err, businessUpdated){
+ 			if(err) return next(err);
+ 			res.status(200).json({ 
+ 				message: 'Votre salon a été modifié avec succès.', 
+ 				business: businessUpdated 
+ 			}).end();
+ 		})
+ 	});
  };
 
  /**
  * Change the business status
- * restriction : 'manager'
+ * restriction : 'manager' /!\ retirée pour le moment
  */
  exports.changeStatus = function(req, res, next){
+ 	var businessId = req.params.id;
 
+ 	Business.findOne(businessId, function (err, businessFound){
+ 		if(err) return res.send(500, err);
+ 		if (businessFound.status === 'inactif') {
+ 			businessFound.status = 'actif';
+ 		} else {
+ 			businessFound.status === 'inactif';
+ 		}
+
+ 		businessFound.save(function (err, businessUpdated){
+ 			if (err) return next(err);
+ 			res.status(200).json({ 
+ 				message: 'Le status de votre salon a été correctement modifié en :' + businessFound.status, 
+ 				business: businessUpdated 
+ 			}).end();
+ 		});
+ 	});
  };
