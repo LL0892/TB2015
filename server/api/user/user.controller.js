@@ -26,7 +26,16 @@ exports.index = function(req, res) {
  * Creates a new user
  */
 exports.create = function (req, res, next) {
-  var newUser = new User(req.body);
+  var newUser = new User({
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    email: req.body.emailUser,
+    dateOfBirth: req.body.dateOfBirth,
+    password: req.body.password,
+    phone: req.body.phoneUser,
+    mobile: req.body.mobileUser,
+    imageProfileURL: req.body.imageProfileURL
+  });
   newUser.provider = 'local';
   newUser.roles = 'user';
   newUser.save(function(err, user) {
