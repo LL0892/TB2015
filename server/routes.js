@@ -16,7 +16,7 @@ module.exports = function(app) {
   app.use('/api/notifications', require('./api/notification'));
   app.use('/api/prestations', require('./api/prestation'));
   app.use('/api/rendezvous', require('./api/rendezvous'));
-  //app.use('/api/prestationRdvs', require('./api/prestationRdv'));
+  app.use('/api/prestationRdvs', require('./api/prestationRdv'));
 
   app.use('/auth', require('./auth'));
   

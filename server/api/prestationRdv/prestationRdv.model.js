@@ -7,7 +7,7 @@ var mongoose = require('mongoose'),
 * Schema
 */
 
-var PrestationRdvSchema = new Schema({{
+var PrestationRdvSchema = new Schema({
 	createdOn: { type: Date, default: Date.now },
 	updatedOn: { type: Date, default: Date.now },
 
@@ -16,7 +16,7 @@ var PrestationRdvSchema = new Schema({{
 	description: { type: String },
 	duration: { type: Number, required: true, default: '5' },
 
-	options: { type: [Schema.Types.ObjectId], ref: 'optionRdv' },
+	//options: { type: [Schema.Types.ObjectId], ref: 'optionRdv' },
 	//bonID
 
 	price: {
