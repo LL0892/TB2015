@@ -37,3 +37,18 @@ ManagerSchema
       }
     });
   }, 'Business non existant.');
+
+  /*
+* Pre-save hook
+*/
+ManagerSchema
+  .pre('save', function (next){
+    this.updatedOn = Date.now();
+    next();
+  });
+
+ManagerSchema
+  .pre('update', function (next){
+    this.updatedOn = Date.now();
+    next();
+  });

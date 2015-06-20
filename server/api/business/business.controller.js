@@ -23,7 +23,7 @@ var Business = require('./business.model');
 
  /**
  * Create a new business
- * restriction: 'manager' /!\ retirée pour le moment
+ * restriction: 'manager'
  */
  exports.create = function(req, res, next){
 			var newBusiness = new Business({
@@ -66,7 +66,7 @@ var Business = require('./business.model');
 
  /**
  * Update a business
- * restriction: 'staff' /!\ retirée pour le moment
+ * restriction: 'staff'
  */
  exports.update = function(req, res, next){
  	var businessId = req.params.id;
@@ -98,23 +98,23 @@ var Business = require('./business.model');
 
  /**
  * Change the business status
- * restriction : 'manager' /!\ retirée pour le moment
+ * restriction : 'manager'
  */
  exports.changeStatus = function(req, res, next){
  	var businessId = req.params.id;
 
  	Business.findOne(businessId, function (err, businessFound){
  		if(err) return res.send(500, err);
- 		if (businessFound.status === 'inactif') {
- 			businessFound.status = 'actif';
+ 		if (businessFound.isActive === false) {
+ 			businessFound.isActive = true;
  		} else {
- 			businessFound.status === 'inactif';
+ 			businessFound.isActive === false;
  		}
 
  		businessFound.save(function (err, businessUpdated){
  			if (err) return next(err);
  			res.status(200).json({ 
- 				message: 'Le status de votre salon a été correctement modifié en :' + businessFound.status, 
+ 				message: 'Le status de votre salon a été correctement modifié, prise de rendez-vous possible :' + businessFound.isActive, 
  				business: businessUpdated 
  			}).end();
  		});

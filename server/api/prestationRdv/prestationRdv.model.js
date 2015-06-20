@@ -29,3 +29,18 @@ var PrestationRdvSchema = new Schema({
 });
 
 module.exports = mongoose.model('PrestationRdv', PrestationRdvSchema);
+
+/*
+* Pre-save hook
+*/
+PrestationRdvSchema
+  .pre('save', function (next){
+    this.updatedOn = Date.now();
+    next();
+  });
+
+PrestationRdvSchema
+  .pre('update', function (next){
+    this.updatedOn = Date.now();
+    next();
+  });

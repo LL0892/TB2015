@@ -76,3 +76,18 @@ BusinessSchema
     });
   }, 'You did already create an other business in the past.');
   */
+
+/*
+* Pre-save hook
+*/
+BusinessSchema
+  .pre('save', function (next){
+    this.updatedOn = Date.now();
+    next();
+  });
+
+BusinessSchema
+  .pre('update', function (next){
+    this.updatedOn = Date.now();
+    next();
+  });

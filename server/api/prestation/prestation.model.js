@@ -49,3 +49,18 @@ PrestationSchema
       }
     });
   }, 'Salon non existant.');
+
+/*
+* Pre-save hook
+*/
+PrestationSchema
+  .pre('save', function (next){
+    this.updatedOn = Date.now();
+    next();
+  });
+
+PrestationSchema
+  .pre('update', function (next){
+    this.updatedOn = Date.now();
+    next();
+  });

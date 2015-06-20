@@ -5,7 +5,7 @@ var mongoose = require('mongoose'),
 
 var NotificationSchema = new Schema({
 	createdOn: { type: Date, default: Date.now },
-  	updatedOn: { type: Date, default: Date.now },
+  updatedOn: { type: Date, default: Date.now },
 
 	title: { type: String, required: true },
 	text: { type: String, required: true },
@@ -19,3 +19,18 @@ var NotificationSchema = new Schema({
 });
 
 module.exports = mongoose.model('Notification', NotificationSchema);
+
+/*
+* Pre-save hook
+*/
+NotificationSchema
+  .pre('save', function (next){
+    this.updatedOn = Date.now();
+    next();
+  });
+
+NotificationSchema
+  .pre('update', function (next){
+    this.updatedOn = Date.now();
+    next();
+  });

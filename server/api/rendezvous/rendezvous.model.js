@@ -29,3 +29,18 @@ var RendezvousSchema = new Schema({
 });
 
 module.exports = mongoose.model('Rendezvous', RendezvousSchema);
+
+/*
+* Pre-save hook
+*/
+RendezvousSchema
+  .pre('save', function (next){
+    this.updatedOn = Date.now();
+    next();
+  });
+
+RendezvousSchema
+  .pre('update', function (next){
+    this.updatedOn = Date.now();
+    next();
+  });

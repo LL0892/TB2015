@@ -27,3 +27,18 @@ var OptionSchema = new Schema({{
 });
 
 module.exports = mongoose.model('Option', OptionSchema);
+
+/*
+* Pre-save hook
+*/
+OptionSchema
+  .pre('save', function (next){
+    this.updatedOn = Date.now();
+    next();
+  });
+
+OptionSchema
+  .pre('update', function (next){
+    this.updatedOn = Date.now();
+    next();
+  });

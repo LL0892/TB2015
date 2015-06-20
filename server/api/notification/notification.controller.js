@@ -80,7 +80,6 @@ var Notification = require('./notification.model');
  	Notification.findById(notifID, function (err, notificationFound){
  		if(notificationFound.isViewed === false){
 	 		notificationFound.isViewed = true;
-	 		notificationFound.updatedOn = Date.now();
 	 		notificationFound.save(function (err, notificationSaved){
 		 		if (err) return next(err);
 		 		res.status(200).json(notificationSaved).end();
@@ -99,7 +98,6 @@ var Notification = require('./notification.model');
 
  	Notification.findById(notifID, function (err, notificationFound){
  		notificationFound.status = 'accepted';
- 		notificationFound.updatedOn = Date.now();
  		notificationFound.save(function (err, notificationSaved){
 	 		if (err) return next(err);
 	 		res.status(200).json(notificationSaved).end();
@@ -115,7 +113,6 @@ var Notification = require('./notification.model');
 
  	Notification.findById(notifID, function (err, notificationFound){
  		notificationFound.status = 'refused';
- 		notificationFound.updatedOn = Date.now();
  		notificationFound.save(function (err, notificationSaved){
 	 		if (err) return next(err);
 	 		res.status(200).json(notificationSaved).end();
