@@ -110,21 +110,6 @@ UserSchema
     });
 }, 'The specified email address is already in use.');
 
-// Validate existing Staff Profile ID
-UserSchema
-  .path('staff')
-  .validate(function(value, respond) {
-    var self = this;
-    this.constructor.findOne({_id: value}, function (){
-      if (err) throw err;
-      if(err || !doc) {
-        return respond(false);
-      } else {
-        return respond(true);
-      }
-    });
-  }, 'Staff non existant.');
-
 
 var validatePresenceOf = function(value) {
   return value && value.length;

@@ -41,7 +41,9 @@ exports.show = function(req, res, next){
 */
 exports.me = function(req, res, next){
 	var staffId = req.user.staff;
-	Staff.findById(staffId, function (err, staffFound){
+	Staff.findOne({
+		_id: staffId
+	}, function (err, staffFound){
 		if(err) { return handleError(res, err); }
 		if(!thing) { return res.send(404); }
 		return res.json(200, staffFound);
@@ -54,13 +56,12 @@ exports.me = function(req, res, next){
 * steps:
 * 1. check there is no existing staff profile
 * 1.1 save staff profile
-* 2. modifier user with the refId
+* 2. modifier user with the staff refId
 */
 exports.create = function (req, res, next) {
-	var staffSaved = '';
+	var staffCreated = null;
 	var userId = req.user._id;
 
-	// Step 1 + 1.1
 	User
 		.findById(userId, function(err, userFound){
 			if(err) return next(err);
@@ -78,6 +79,7 @@ exports.create = function (req, res, next) {
 				  	businessID: req.body.businessID
 				});
 
+				// Check business is existant
 				Business.findById(req.body.businessID, function (err, businessExistant){
 					if (err) return next(err);
 					if (!businessExistant) { 
@@ -89,12 +91,20 @@ exports.create = function (req, res, next) {
 
 				newStaff.save(function(err, staffSaved){
 					if(err) return next(err);
-					staffSaved = staffSaved;
-					return res.status(201).json({
-						message: 'Profil staff crée avec succès.',
-						profile: staffSaved
-					}).end();
+
+					// Update user
+					userFound.staff = staffSaved._id;
+					userFound.save(function (err, userSaved){
+					if (err) return next(err);
+						return res.status(201).json({
+							message: 'Votre profil client a été mit à jours. Votre profil staff a été créé avec succès.',
+							user: userSaved,
+							staff: staffSaved
+						}).end();
+					});
+
 				});
+
 			} else {
 				return res.status(422).json({ 
 					message: 'Profil de staff déjà existant.',
@@ -102,26 +112,6 @@ exports.create = function (req, res, next) {
 				});
 			}
 		});
-		//.where({ staff: {'$eq': null} })
-		//.or([{staff: null}, {staff: undefined}])
-		//.exec(function (err, userFound){
-
-
-		//});
-
-	// Step 2
-/*	User.findById({ _id: userId }), function (err, user){
-		if(err) return next(err);
-		user.staff = staffSaved._id;
-		user.save(function (err, userSaved){
-			if (err) return next(err);
-			return res.status(201).json({
-				message: 'Votre profil client a été mit à jours. Votre profil staff a été crée avec succès.',
-				user: userSaved,
-				staff: staffSaved
-			}).end();
-		});
-	};*/
 };
 
 function convertStaff(staff){
