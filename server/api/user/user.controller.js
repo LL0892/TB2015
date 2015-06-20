@@ -78,7 +78,6 @@ exports.create = function (req, res, next) {
 * Create a new user with manager roles
 */
 exports.createManager = function (req, res, next){
-  //var userID = '';
   var token = '';
 
   var newUser = new User({
@@ -100,7 +99,6 @@ exports.createManager = function (req, res, next){
   newUser.save(function(err, user) {
     if (err) return validationError(res, err);
     token = jwt.sign({_id: user._id }, config.secrets.session, { expiresInMinutes: 60*15 });
-    //userID = user._id;
     res.status(201).json({ token: token });
   });
 };

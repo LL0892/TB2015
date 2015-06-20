@@ -13,7 +13,7 @@ var NotificationSchema = new Schema({
 	sentBy : { type: Schema.Types.ObjectId, ref: 'user', required: true },
 	sentTo : { type: Schema.Types.ObjectId, ref: 'user', required: true },
 
-	isViewed : { type: Boolean, default: '0' },
+	isViewed : { type: Boolean, default: false },
 	status: { type: String, default: 'not processed' },
 	relatedToBusiness: { type: Schema.Types.ObjectId, ref: 'business' } 
 });

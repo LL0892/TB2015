@@ -1,6 +1,7 @@
 /**
  * Using Rails-like standard naming convention for endpoints.
  * GET     /notifications              ->  index
+ * GET     /notifications              ->  me
  * POST    /notifications              ->  create
  * GET     /notifications/:id          ->  show
  * PUT     /notifications/:id          ->  update
@@ -19,11 +20,25 @@ var Notification = require('./notification.model');
  * Get a list of notification
  */
  exports.index = function(req, res, next){
-  Notification.find(function (err, notificationsFound) {
+  Notification.find({}, function (err, notificationsFound) {
     if(err) { return handleError(res, err); }
     return res.json(200, notificationsFound);
   });
  };
+
+ /**
+ * Get the notifications recieved and sent by this user
+ */
+exports.me = function(req, res, next){
+	userId = req.user._id;
+	Notification.find({
+		sentBy: userId
+	}).or({
+		sentTo: userId
+	}), function (err, notificationsFound){
+
+	};
+};
 
  /**
  * Create a new notification
@@ -32,17 +47,19 @@ var Notification = require('./notification.model');
  	var newNotification = new Notification({
 		title: req.body.title,
 		text: req.body.text,
-		//sentBy : req.body.sentBy,
+		sentBy : req.user._id,
 		sentTo : req.body.sentTo,
+		status : 'not processed',
+		isViewed : false,
 		relatedToBusiness: req.body.businessID
  	});
- 	newNotification.sentBy = req.user._id;
- 	newNotification.status = 'not processed';
- 	newNotification.isViewed = false;
 
  	newNotification.save(function (err, notificationSaved){
  		if (err) return next(err);
- 		res.status(201).json(notificationSaved).end();
+ 		res.status(201).json({
+ 			message: 'La notification fut envoyée avec succès.',
+ 			notification: notificationSaved
+ 		}).end();
  	});
  };
  
@@ -54,15 +71,10 @@ var Notification = require('./notification.model');
 
 	Notification.findById(notifID, function (err, notificationFound) {
 		if (err) return next(err);
-		if (!notificationFound) return res.send(401);
+		if (!notificationFound) return res.status(404).json({ message : 'Notification non existante.' });
 		res.status(200).json(notificationFound);
 	});
  };
-
- /**
- * Get the notifications recieved and sent by this user
- */
- // TODO
 
  /**
  * Update the notification attributes
@@ -78,6 +90,7 @@ var Notification = require('./notification.model');
  	var notifID = req.params.id;
 
  	Notification.findById(notifID, function (err, notificationFound){
+ 		if (!notificationFound) return res.status(404).json({ message : 'Notification non existante.' });
  		if(notificationFound.isViewed === false){
 	 		notificationFound.isViewed = true;
 	 		notificationFound.save(function (err, notificationSaved){
@@ -97,6 +110,7 @@ var Notification = require('./notification.model');
  	var notifID = req.params.id;
 
  	Notification.findById(notifID, function (err, notificationFound){
+ 		if (!notificationFound) return res.status(404).json({ message : 'Notification non existante.' });
  		notificationFound.status = 'accepted';
  		notificationFound.save(function (err, notificationSaved){
 	 		if (err) return next(err);
@@ -112,6 +126,7 @@ var Notification = require('./notification.model');
  	var notifID = req.params.id;
 
  	Notification.findById(notifID, function (err, notificationFound){
+ 		if (!notificationFound) return res.status(404).json({ message : 'Notification non existante.' });
  		notificationFound.status = 'refused';
  		notificationFound.save(function (err, notificationSaved){
 	 		if (err) return next(err);

@@ -59,6 +59,7 @@ var Business = require('./business.model');
  	var businessId = req.params.id;
 
  	Business.findOne(businessId, function (err, businessFound){
+ 		if(!businessFound) return res.status(404).json({ message : 'Ce salon n\'existe pas.' });
  		if(err) return res.send(500, err);
  		res.status(200).json(businessFound).end();
  	});
@@ -72,6 +73,7 @@ var Business = require('./business.model');
  	var businessId = req.params.id;
 
  	Business.findOne(businessId, function (err, businessFound){
+ 		if(!businessFound) return res.status(404).json({ message : 'Ce salon n\'existe pas.' });
  		if(err) return res.send(500, err);
 
  		businessFound.name = req.body.name;
@@ -104,7 +106,9 @@ var Business = require('./business.model');
  	var businessId = req.params.id;
 
  	Business.findOne(businessId, function (err, businessFound){
+ 		if(!businessFound) return res.status(404).json({ message : 'Ce salon n\'existe pas.' });
  		if(err) return res.send(500, err);
+ 		
  		if (businessFound.isActive === false) {
  			businessFound.isActive = true;
  		} else {

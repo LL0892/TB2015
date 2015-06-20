@@ -1,6 +1,6 @@
 /**
  * Using Rails-like standard naming convention for endpoints.
- * GET     /staffs          	->  index
+ * POST    /staffs          	->  index
  * GET     /staffs/:id          ->  show
  * GET     /staffs/me           ->  me
  * POST    /staffs              ->  create
@@ -14,7 +14,7 @@ var User = require('../user/user.model');
 var Business = require('../business/business.model');
 
 /*
-* Get a list of staff from that business
+* Get a list of staff from a business
 */
 exports.index = function (req, res, next){
  	Staff.find({
@@ -67,6 +67,7 @@ exports.create = function (req, res, next) {
 	User
 		.findById(userId, function(err, userFound){
 			if(err) return next(err);
+			if(!userFound) return res.status(404).json({ message : 'Cet utilisateur n\'existe pas.' });
 
 			if (userFound.staff === 0 || userFound.staff === null || userFound.staff === undefined) {
 				// Create a new staff
@@ -124,7 +125,9 @@ exports.create = function (req, res, next) {
 exports.update = function (req, res, next){
 	Staff.findOne(req.user.staff, function (err, staffFound){
 		if(err) return res.send(500, err);
-		if(!staffFound) return res.send(404, err);
+		if(!staffFound) return res.status(404).json({
+			message : 'ce staff n\'existe pas.'
+		});
 
 		staffFound.name = String(req.body.name);
 		staffFound.photoStaffURL = String(req.body.photoStaffURL);
@@ -153,6 +156,10 @@ exports.status = function (req, res, next){
 
  	Staff.findOne(staffId, function (err, staffFound){
  		if(err) return res.send(500, err);
+		if(!staffFound) return res.status(404).json({
+			message : 'ce staff n\'existe pas.'
+		});
+ 		
  		if (staffFound.isActive === false) {
  			staffFound.isActive = true;
  		} else {
