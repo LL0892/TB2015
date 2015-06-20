@@ -30,7 +30,7 @@ exports.show = function(req, res, next){
 
 	Staff.findById(staffId, function (err, staffFound){
 		if(err) { return handleError(res, err); }
-		if(!thing) { return res.send(404); }
+		if(!staffFound) { return res.send(404); }
 		return res.json(200, staffFound);
 	})
 };
@@ -45,7 +45,7 @@ exports.me = function(req, res, next){
 		_id: staffId
 	}, function (err, staffFound){
 		if(err) { return handleError(res, err); }
-		if(!thing) { return res.send(404); }
+		if(!staffFound) { return res.send(404); }
 		return res.json(200, staffFound);
 	});
 };
@@ -59,7 +59,6 @@ exports.me = function(req, res, next){
 * 2. modifier user with the staff refId
 */
 exports.create = function (req, res, next) {
-	var staffCreated = null;
 	var userId = req.user._id;
 
 	User
