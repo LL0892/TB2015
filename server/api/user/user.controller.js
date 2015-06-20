@@ -50,7 +50,7 @@ exports.create = function (req, res, next) {
 };
 
 /**
-* Create a new user + business
+* Create a new user with manager roles
 */
 exports.createManager = function (req, res, next){
   //var userID = '';
@@ -67,7 +67,7 @@ exports.createManager = function (req, res, next){
     imageProfileURL: req.body.imageProfileURL
   });
   newUser.provider = 'local';
-  newUser.roles = 'manager';
+  newUser.roles = ['user', 'manager'];
   newUser.save(function(err, user) {
     if (err) return validationError(res, err);
     token = jwt.sign({_id: user._id }, config.secrets.session, { expiresInMinutes: 60*15 });
