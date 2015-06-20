@@ -118,24 +118,21 @@ exports.create = function (req, res, next) {
 };
 
 /*
-* Update your staff profile
+* Update my staff profile
 * restriction : 'staff'
 */
 exports.update = function (req, res, next){
 	Staff.findOne(req.user.staff, function (err, staffFound){
 		if(err) return res.send(500, err);
+		if(!staffFound) return res.send(404, err);
 
-		staffFound = new Staff({
-			name: req.body.name,
-			photoStaffURL: req.body.photoStaffURL,
-			staffContact: {
-				email: req.body.email,
-				phone: req.body.phone,
-				mobile: req.body.mobile
-			},
-			businessID: staffFound.businessID,
-			isActive: staffFound.isActive
-		});
+		staffFound.name = String(req.body.name);
+		staffFound.photoStaffURL = String(req.body.photoStaffURL);
+		staffFound.staffContact.email = String(req.body.email);
+		staffFound.staffContact.phone = String(req.body.phone);
+		staffFound.staffContact.mobile = String(req.body.mobile);
+		staffFound.businessID = staffFound.businessID;
+		staffFound.isActive = staffFound.isActive;
 
 		staffFound.save(function (err, staffUpdated){
 			if (err) return next(err);
@@ -145,7 +142,7 @@ exports.update = function (req, res, next){
 			});
 		});
 	});
-}
+};
 
 /*
 * Change the status of this staff
