@@ -58,7 +58,7 @@ function hasRole(roleRequired) {
       }while(i <= (req.user.roles.length-1));
 
       //if (config.userRoles.indexOf(req.user.role) >= config.userRoles.indexOf(roleRequired)) {
-      if (config.userRoles.indexOf(effectiveRole) >= config.userRoles.indexOf(roleRequired)) {
+      if (config.userRoles.indexOf(effectiveRole) == config.userRoles.indexOf(roleRequired)) {
         next();
       }
       else {

@@ -32,8 +32,8 @@ exports.show = function(req, res, next){
 	var staffId = req.params.id;
 
 	Staff.findById(staffId, function (err, staffFound){
-		if(err) { return handleError(res, err); }
-		if(!staffFound) { return res.send(404); }
+		if(err) return handleError(res, err);
+		if(!staffFound) return res.status(404).json({ message : 'Ce staff n\'existe pas.' });
 		return res.json(200, staffFound);
 	})
 };
@@ -47,8 +47,8 @@ exports.me = function(req, res, next){
 	Staff.findOne({
 		_id: staffId
 	}, function (err, staffFound){
-		if(err) { return handleError(res, err); }
-		if(!staffFound) { return res.send(404); }
+		if(err) return handleError(res, err);
+		if(!staffFound) return res.status(404).json({ message : 'Ce staff n\'existe pas.' });
 		return res.json(200, staffFound);
 	});
 };

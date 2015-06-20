@@ -1,3 +1,14 @@
+/**
+ * Using Rails-like standard naming convention for endpoints.
+ * GET     /users              ->  index
+ * GET     /users/me           ->  me
+ * POST    /users/             ->  create
+ * POST    /users/Manager      ->  createManager
+ * GET     /users/:id          ->  show
+ * DELETE  /users/:id          ->  destroy
+ * PUT     /users/:id/password ->  changePassword
+ */
+
 'use strict';
 
 var User = require('./user.model');
@@ -23,8 +34,22 @@ exports.index = function(req, res) {
 };
 
 /**
- * Creates a new user
- */
+* Get my profile
+*/
+exports.me = function(req, res, next) {
+  var userId = req.user._id;
+  User.findOne({
+    _id: userId
+  }, '-salt -hashedPassword', function(err, user) { // don't ever give out the password or salt
+    if (err) return next(err);
+    if (!user) return res.json(401);
+    res.json(user);
+  });
+};
+
+/**
+* Creates a new user
+*/
 exports.create = function (req, res, next) {
   var newUser = new User({
     firstName: req.body.firstName,
@@ -45,7 +70,7 @@ exports.create = function (req, res, next) {
   newUser.save(function(err, user) {
     if (err) return validationError(res, err);
     var token = jwt.sign({_id: user._id }, config.secrets.session, { expiresInMinutes: 60*15 });
-    res.json({ token: token });
+    res.status(201).json({ token: token });
   });
 };
 
@@ -59,44 +84,25 @@ exports.createManager = function (req, res, next){
   var newUser = new User({
     firstName: req.body.firstName,
     lastName: req.body.lastName,
-    email: req.body.emailUser,
+    email: req.body.email,
     dateOfBirth: req.body.dateOfBirth,
     password: req.body.password,
-    phone: req.body.phoneUser,
-    mobile: req.body.mobileUser,
-    imageProfileURL: req.body.imageProfileURL
+    phone: req.body.phone,
+    mobile: req.body.mobile,
+    imageProfileURL: req.body.imageProfileURL,
+    zip: req.body.zip,
+    city: req.body.city,
+    canton: req.body.canton,
+    street: req.body.street
   });
   newUser.provider = 'local';
-  newUser.roles = ['user', 'manager'];
+  newUser.roles = ['user', 'staff', 'manager'];
   newUser.save(function(err, user) {
     if (err) return validationError(res, err);
     token = jwt.sign({_id: user._id }, config.secrets.session, { expiresInMinutes: 60*15 });
     //userID = user._id;
-    res.json({ token: token });
+    res.status(201).json({ token: token });
   });
-
-/*
-  var newBusiness = new Business({
-    name: req.body.nameBusiness,
-    city: req.body.cityBusiness,
-    zip: req.body.zipBusiness,
-    street: req.body.streetBusiness,
-    businessContact: {
-      email: req.body.emailBusiness,
-      phone: req.body.phoneBusiness,
-      mobile: req.body.mobileBusiness,
-      siteURL: req.body.siteBusiness,
-      facebookURL: req.body.facebookURL
-    },
-    imageBusinessURL: req.body.imageBusinessURL
-  });
-  newBusiness.founder = userID;
-  newBusiness.isActive = false;
-  newBusiness.save(function(err, businessSaved){
-    if (err) return next(err);
-    return res.status(201).json({ message: 'Votre compte et votre salon ont été créés avec succès.', token: token }).end();
-  });
-*/
 };
 
 /**
@@ -145,19 +151,6 @@ exports.changePassword = function(req, res, next) {
   });
 };
 
-/**
- * Get my info
- */
-exports.me = function(req, res, next) {
-  var userId = req.user._id;
-  User.findOne({
-    _id: userId
-  }, '-salt -hashedPassword', function(err, user) { // don't ever give out the password or salt
-    if (err) return next(err);
-    if (!user) return res.json(401);
-    res.json(user);
-  });
-};
 
 /**
  * Authentication callback
