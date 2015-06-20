@@ -1,7 +1,8 @@
 /**
  * Using Rails-like standard naming convention for endpoints.
  * GET     /notifications              ->  index
- * GET     /notifications              ->  me
+ * GET     /notifications/received     ->  received
+ * GET     /notifications/sent         ->  sent
  * POST    /notifications              ->  create
  * GET     /notifications/:id          ->  show
  * PUT     /notifications/:id          ->  update
@@ -27,17 +28,24 @@ var Notification = require('./notification.model');
  };
 
  /**
- * Get the notifications recieved and sent by this user
+ * Get the notifications received
  */
-exports.me = function(req, res, next){
-	userId = req.user._id;
+exports.received = function(req, res, next){
+	var userId = req.user._id;
 	Notification.find({
-		sentBy: userId
-	}).or({
 		sentTo: userId
 	}), function (err, notificationsFound){
-
+		if (err) return next(err);
+		if (!notificationsFound) return res.status(404).json({ message : 'Notifications non existantes.' });
+		return res.status(200).json(notificationsFound);
 	};
+};
+
+ /**
+ * Get the notifications sent
+ */
+exports.sent = function(req, res, next){
+
 };
 
  /**
