@@ -3,28 +3,28 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
-var ManagerSchema = new Schema({
+var StaffSchema = new Schema({
   createdOn: { type: Date, default: Date.now },
   updatedOn: { type: Date, default: Date.now },
 
   name: { type: String, required: true },
   staffContact: {
     phone: { type : String, default: '' },
-    mobile: { type : Number, default: '' },
+    mobile: { type : String, default: '' },
     email: { type: String, lowercase: true, default: '' }
   },
   photoStaffURL: { type : String, default : 'staffProfile.png' },
   businessID: { type: Schema.Types.ObjectId, ref: 'business', required: true }
 });
 
-module.exports = mongoose.model('Manager', ManagerSchema);
+module.exports = mongoose.model('Staff', StaffSchema);
 
 /*
 * Validation
 */
 
 // Validate existing busines ID
-ManagerSchema
+/*StaffSchema
   .path('businessID')
   .validate(function(value, respond) {
     var self = this;
@@ -37,17 +37,18 @@ ManagerSchema
       }
     });
   }, 'Business non existant.');
+*/
 
   /*
 * Pre-save hook
 */
-ManagerSchema
+StaffSchema
   .pre('save', function (next){
     this.updatedOn = Date.now();
     next();
   });
 
-ManagerSchema
+StaffSchema
   .pre('update', function (next){
     this.updatedOn = Date.now();
     next();

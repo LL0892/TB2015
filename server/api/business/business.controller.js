@@ -108,7 +108,7 @@ var Business = require('./business.model');
  		if (businessFound.isActive === false) {
  			businessFound.isActive = true;
  		} else {
- 			businessFound.isActive === false;
+ 			businessFound.isActive = false;
  		}
 
  		businessFound.save(function (err, businessUpdated){

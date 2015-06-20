@@ -12,7 +12,7 @@ var UserSchema = new Schema({
   email: { type: String, required: true, lowercase: true },
   dateOfBirth: { type: Date, required: false },
   
-  roles: { type: [String], default: 'user', enum: ['user', 'staff', 'founder', 'admin'] },
+  roles: { type: [String], default: 'user', enum: ['user', 'staff', 'manager', 'admin'] },
   hashedPassword: String,
   provider: String,
   salt: String,
