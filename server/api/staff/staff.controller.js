@@ -87,7 +87,7 @@ exports.create = function (req, res, next) {
 				Business.findById(req.body.businessID, function (err, businessExistant){
 					if (err) return next(err);
 					if (!businessExistant) { 
-						return res.send(404).json({
+						return res.status(404).json({
 							message: 'Le salon de coiffure demandé est introuvable.'
 						}); 
 					}
@@ -159,7 +159,7 @@ exports.status = function (req, res, next){
 		if(!staffFound) return res.status(404).json({
 			message : 'ce staff n\'existe pas.'
 		});
- 		
+
  		if (staffFound.isActive === false) {
  			staffFound.isActive = true;
  		} else {

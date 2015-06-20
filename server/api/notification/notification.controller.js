@@ -22,7 +22,7 @@ var Notification = require('./notification.model');
  exports.index = function(req, res, next){
   Notification.find({}, function (err, notificationsFound) {
     if(err) { return handleError(res, err); }
-    return res.json(200, notificationsFound);
+    return res.status(200).json(notificationsFound);
   });
  };
 
@@ -95,10 +95,16 @@ exports.me = function(req, res, next){
 	 		notificationFound.isViewed = true;
 	 		notificationFound.save(function (err, notificationSaved){
 		 		if (err) return next(err);
-		 		res.status(200).json(notificationSaved).end();
+		 		res.status(200).json({
+		 			message : 'La notification suivante désormais notifié comme lue.',
+		 			notification : notificationSaved
+		 		}).end();
 	 		});
  		} else {
- 			res.send(200).json(notificationFound).end();
+ 			res.status(200).json({
+ 				message : 'La notification suivante fut déjà lue precédement.',
+ 				notification : notificationFound
+ 			}).end();
  		}
  	});
  };
@@ -114,7 +120,10 @@ exports.me = function(req, res, next){
  		notificationFound.status = 'accepted';
  		notificationFound.save(function (err, notificationSaved){
 	 		if (err) return next(err);
-	 		res.status(200).json(notificationSaved).end();
+	 		res.status(200).json({
+	 			message : 'Le status de la notification est changé avec succès: ' + notificationSaved.status,
+	 			notification: notificationSaved 
+	 		}).end();
  		});
  	});
  };
@@ -130,7 +139,10 @@ exports.me = function(req, res, next){
  		notificationFound.status = 'refused';
  		notificationFound.save(function (err, notificationSaved){
 	 		if (err) return next(err);
-	 		res.status(200).json(notificationSaved).end();
+	 		res.status(200).json({
+	 			message : 'Le status de la notification est changé avec succès: ' + notificationSaved.status,
+	 			notification: notificationSaved 
+	 		}).end();
  		});
  	});
  };
