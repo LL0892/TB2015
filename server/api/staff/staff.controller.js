@@ -16,7 +16,9 @@ var Business = require('../business/business.model');
 * Get a list of staff from that business
 */
 exports.index = function (req, res, next){
- 	Staff.find({}, function (err, staffsFound){
+ 	Staff.find({
+ 		businessID: req.body.businessID
+ 	}, '-createdOn -updatedOn', function (err, staffsFound){
  		if(err) return res.send(500, err);
  		res.status(200).json(staffsFound).end();
  	});
