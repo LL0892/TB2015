@@ -9,12 +9,13 @@ var StaffSchema = new Schema({
 
   name: { type: String, required: true },
   staffContact: {
-    phone: { type : String, default: '' },
-    mobile: { type : String, default: '' },
+    phone: { type: String, default: '' },
+    mobile: { type: String, default: '' },
     email: { type: String, lowercase: true, default: '' }
   },
-  photoStaffURL: { type : String, default : 'staffProfile.png' },
-  businessID: { type: Schema.Types.ObjectId, ref: 'business', required: true }
+  photoStaffURL: { type: String, default: 'staffProfile.png' },
+  businessID: { type: Schema.Types.ObjectId, ref: 'business', required: true },
+  isActive: { type: Boolean, default: false }
 });
 
 module.exports = mongoose.model('Staff', StaffSchema);

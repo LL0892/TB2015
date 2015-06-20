@@ -4,13 +4,14 @@
  * GET     /staffs/:id          ->  show
  * GET     /staffs/me           ->  me
  * POST    /staffs              ->  create
+ * PUT	   /staffs/me 			->	update
+ * PUT     /staffs/:id/status   ->  status
  */
 'use strict';
 
 var Staff = require('./staff.model');
 var User = require('../user/user.model');
 var Business = require('../business/business.model');
-//var Business = require('../business/business.model');
 
 /*
 * Get a list of staff from that business
@@ -77,7 +78,8 @@ exports.create = function (req, res, next) {
 				  		email: req.body.email
 				  	},
 				  	photoStaffURL: req.body.photoStaffURL,
-				  	businessID: req.body.businessID
+				  	businessID: req.body.businessID,
+				  	isActive: false
 				});
 
 				// Check business is existant
@@ -113,6 +115,61 @@ exports.create = function (req, res, next) {
 				});
 			}
 		});
+};
+
+/*
+* Update your staff profile
+* restriction : 'staff'
+*/
+exports.update = function (req, res, next){
+	Staff.findOne(req.user.staff, function (err, staffFound){
+		if(err) return res.send(500, err);
+
+		staffFound = new Staff({
+			name: req.body.name,
+			photoStaffURL: req.body.photoStaffURL,
+			staffContact: {
+				email: req.body.email,
+				phone: req.body.phone,
+				mobile: req.body.mobile
+			},
+			businessID: staffFound.businessID,
+			isActive: staffFound.isActive
+		});
+
+		staffFound.save(function (err, staffUpdated){
+			if (err) return next(err);
+			return res.status(200).json({
+				message : 'Votre profil staff a été correctement modifié.',
+				staff: staffUpdated
+			});
+		});
+	});
+}
+
+/*
+* Change the status of this staff
+* restriction : 'staff'
+*/
+exports.status = function (req, res, next){
+ 	var staffId = req.params.id;
+
+ 	Staff.findOne(staffId, function (err, staffFound){
+ 		if(err) return res.send(500, err);
+ 		if (staffFound.isActive === false) {
+ 			staffFound.isActive = true;
+ 		} else {
+ 			staffFound.isActive = false;
+ 		}
+
+ 		staffFound.save(function (err, staffUpdated){
+ 			if (err) return next(err);
+ 			res.status(200).json({ 
+ 				message: 'Le status de '+ staffUpdated.name +' a été correctement modifié. Prise de rendez-vous possible :' + staffUpdated.isActive, 
+ 				staff: staffUpdated 
+ 			}).end();
+ 		});
+ 	});
 };
 
 function convertStaff(staff){
