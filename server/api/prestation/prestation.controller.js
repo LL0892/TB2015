@@ -6,7 +6,7 @@
  * POST    /prestation              	->  create
  * GET     /prestation/:id          	->  show
  * PUT     /prestation/:id          	->  update
- * PUT	   /prestation/:id/status   	->  changeStatus
+ * PUT	   /prestation/:id/status   	->  status
  * DELETE  /prestation/					->	destroy
 
  --- Prices routes ---
@@ -101,10 +101,29 @@ var Prestation = require('./prestation.model');
 
 /**
  * Change the prestation status
- * restriction: 'manager'
+ * restriction: 'staff'
  */
- exports.changeStatus = function(req, res, next){
+ exports.status = function(req, res, next){
+ 	var prestationId = req.params.id;
 
+ 	Prestation.findById(prestationId, function (err, prestationFound){
+ 		if (err) return next(err);
+		if (!prestationFound) return res.status(404).json({ message : 'Prestation non existante.' });
+ 		
+ 		if (prestationFound.isActive === false) {
+ 			prestationFound.isActive = true;
+ 		} else {
+ 			prestationFound.isActive = false;
+ 		}
+ 		
+		prestationFound.save(function(err, prestationUpdated){
+	 		if (err) return next(err);
+	 		res.status(200).json({
+	 			message : 'Le status de la prestation a été modifiée avec succès. Visibilité par la clientèle : ' + prestationUpdated.isActive,
+	 			prestation : prestationUpdated
+	 		});
+		});
+ 	});
  };
 
 /**

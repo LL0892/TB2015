@@ -12,7 +12,7 @@ router.get('/', auth.isAuthenticated(), controller.index);
 router.post('/', auth.hasRole('staff'), controller.create);
 router.get('/:id', auth.isAuthenticated(), controller.show);
 router.put('/:id', auth.hasRole('staff'), controller.update);
-router.put('/:id/status', auth.hasRole('manager'), controller.changeStatus);
+router.put('/:id/status', auth.hasRole('staff'), controller.status);
 router.delete('/:id', auth.hasRole('manager'), controller.destroy);
 
 // --- Prices routes ---
