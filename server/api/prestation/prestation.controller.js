@@ -211,5 +211,22 @@ var Prestation = require('./prestation.model');
  * restriction: 'staff'
  */
  exports.deletePrice = function(req, res, next){
+ 	var prestationId = req.params.id,
+ 		priceId = req.params.priceId;
 
+	Prestation.findById(prestationId, function (err, prestationFound){
+		if (err) return next(err);
+		if (!prestationFound) return res.status(404).json({ message : 'Prestation non existante.' });
+		if (!prestationFound.prices.id(priceId)) return res.status(404).json({ message : 'Prix demandé non existant.' });
+
+		prestationFound.prices.id(priceId).remove();
+
+		prestationFound.save(function (err, prestationUpdated){
+	 		if (err) return next(err);
+	 		res.status(200).json({
+	 			message : 'Le prix a été correctement supprimé de la prestation souhaitée.',
+	 			prestation : prestationUpdated
+	 		});
+		});
+	});
  };
