@@ -115,7 +115,7 @@ var Prestation = require('./prestation.model');
  		} else {
  			prestationFound.isActive = false;
  		}
- 		
+
 		prestationFound.save(function(err, prestationUpdated){
 	 		if (err) return next(err);
 	 		res.status(200).json({
@@ -140,7 +140,41 @@ var Prestation = require('./prestation.model');
  * restriction: 'staff'
  */
  exports.addPrice = function(req, res, next){
+ 	var prestationId = req.params.id;
 
+	Prestation.findById(prestationId, function (err, prestationFound){
+		if (err) return next(err);
+		if (!prestationFound) return res.status(404).json({ message : 'Prestation non existante.' });
+
+		prestationFound.prices.push({
+		  	categoryName: req.body.name,
+		  	ageLowLimit: req.body.lowLimit,
+		  	ageHighLimit: req.body.highLimit,
+		  	price: req.body.price,
+			gender: req.body.gender
+		});
+
+		prestationFound.save(function (err, prestationUpdated){
+	 		if (err) return next(err);
+	 		res.status(200).json({
+	 			message : 'Le prix a été correctement ajouté à votre prestation.',
+	 			prestation : prestationUpdated
+	 		});
+		});
+	});
+
+/* Prestation.findByIdAndUpdate(
+     prestationId,
+     { $push: {"prices": priceToAdd} },
+     //{  safe: true, upsert: true}, 
+     function (err, prestationUpdated) {
+     	if (!prestationUpdated) return res.status(404).json({ message : 'Prestation non existante.' });
+ 		if (err) return next(err);
+ 		res.status(200).json({
+ 			message : 'Le prix a été correctement ajouté à votre prestation.',
+ 			prestation : prestationUpdated
+ 		});
+    });*/
  };
 
  /**
