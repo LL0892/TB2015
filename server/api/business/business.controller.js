@@ -224,6 +224,28 @@ exports.getSchedules = function(req, res, next){
 */
 exports.addSchedule = function(req, res, next){
 	var businessId = req.params.id;
+
+	Business.findById(businessId, function (err, businessFound){
+		if (err) return next (err);
+		if (!businessFound) return res.status(404).json({ message : 'Ce salon n\'existe pas.' });
+
+		businessFound.schedules.push({
+			dayName: req.body.dayName,
+			dayID: req.body.dayID,
+			startHour: req.body.startHour,
+			endHour: req.body.endHour,
+			description: req.body.description,
+			workingDay: req.body.workingDay
+		});
+
+		businessFound.save(function(err, businessUpdated){
+			if (err) return next(err);
+			res.status(200).json({
+				message : 'L\'horaire a été ajouté avec succès.',
+				horaire : businessFound.schedules
+			}).end();
+		});
+	})
 };
 
 /**
@@ -241,7 +263,7 @@ exports.getSchedule = function(req, res, next){
 
 		res.status(200).json({
 			horaire : businessFound.schedules.id(scheduleId)
-		});
+		}).end();
 	});
 };
 
@@ -279,7 +301,7 @@ exports.updateSchedule = function(req, res, next){
 			res.status(200).json({
 				message : 'L\'horaire a été modifié avec succès.',
 				horaire : businessUpdated.schedules.id(scheduleId)
-			});
+			}).end();
 		})
 	});
 };
