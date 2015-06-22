@@ -156,7 +156,7 @@ var Prestation = require('./prestation.model');
 
 		prestationFound.save(function (err, prestationUpdated){
 	 		if (err) return next(err);
-	 		res.status(200).json({
+	 		res.status(201).json({
 	 			message : 'Le prix a été correctement ajouté à votre prestation.',
 	 			prestation : prestationUpdated
 	 		});
@@ -182,7 +182,28 @@ var Prestation = require('./prestation.model');
  * restriction: 'staff'
  */
  exports.updatePrice = function(req, res, next){
+ 	var prestationId = req.params.id,
+ 		priceId = req.params.priceId;
 
+	Prestation.findById(prestationId, function (err, prestationFound){
+		if (err) return next(err);
+		if (!prestationFound) return res.status(404).json({ message : 'Prestation non existante.' });
+		if (!prestationFound.prices.id(priceId)) return res.status(404).json({ message : 'Prix demandé non existant.' });
+
+		prestationFound.prices.id(priceId).categoryName = req.body.name;
+		prestationFound.prices.id(priceId).ageLowLimit = req.body.lowLimit;
+		prestationFound.prices.id(priceId).ageHighLimit = req.body.highLimit;
+		prestationFound.prices.id(priceId).price = req.body.price;
+		prestationFound.prices.id(priceId).gender = req.body.gender;
+
+		prestationFound.save(function (err, prestationUpdated){
+	 		if (err) return next(err);
+	 		res.status(200).json({
+	 			message : 'Le prix a été correctement modifié pour la prestation souhaitée.',
+	 			prestation : prestationUpdated
+	 		});
+		});
+	});
  };
 
  /**
