@@ -12,12 +12,12 @@ var ScheduleSchema = new Schema({
   createdOn: { type: Date, default: Date.now },
   updatedOn: { type: Date, default: Date.now },
 
-  // businessID is not stored inside this object, because Schedule is part of a business anyways.
   dayName: { type: String, required: true, enum: ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi','samedi', 'dimanche'] },
   dayID: { type: Number, required: true, enum: ['0', '1', '2', '3', '4', '5', '6'] },
-  startHour: { type: Number, required: true },
-  endHour: { type: Number, required: true },
+  startHour: { type: String },
+  endHour: { type: String },
   description: { type: String },
+  workingDay: { type: Boolean },
   affiliatedStaff: { type: [Schema.Types.ObjectId], ref: 'staff' }
 });
 

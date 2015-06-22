@@ -6,7 +6,7 @@
  * POST    /businesses              	->  create
  * GET     /businesses/:id          	->  show
  * PUT     /businesses/:id          	->  update
- * PUT	   /businesses/:id/status   	->  changeStatus
+ * PUT	   /businesses/:id/status   	->  status
 
  --- Schedule routes ---
  * GET  	/businesses/:id/schedules 				->  getSchedules
@@ -59,6 +59,63 @@ var Business = require('./business.model');
 		 	});
 		 	newBusiness.founder = req.user._id;
 		  	newBusiness.isActive = false;
+
+		  	// Horaires par défaut
+		  	newBusiness.schedules.push(
+		  		{
+					dayName: 'lundi',
+					dayID: '0',
+					startHour: '08:00',
+					endHour: '17:00',
+					description: 'Horaire du lundi',
+					workingDay: true
+		  		},
+		  		{
+					dayName: 'mardi',
+					dayID: '1',
+					startHour: '08:00',
+					endHour: '17:00',
+					description: 'Horaire du mardi',
+					workingDay: true
+		  		},
+		  		{
+					dayName: 'mercredi',
+					dayID: '2',
+					startHour: '08:00',
+					endHour: '17:00',
+					description: 'Horaire du mercredi',
+					workingDay: true
+		  		},
+		  		{
+					dayName: 'jeudi',
+					dayID: '3',
+					startHour: '08:00',
+					endHour: '17:00',
+					description: 'Horaire du jeudi',
+					workingDay: true
+		  		},
+		  		{
+					dayName: 'vendredi',
+					dayID: '4',
+					startHour: '08:00',
+					endHour: '17:00',
+					description: 'Horaire du vendredi',
+					workingDay: true
+		  		},
+		  		{
+					dayName: 'samedi',
+					dayID: '5',
+					description: 'Fermé le samedi',
+					workingDay: false
+		  		},
+		  		{
+					dayName: 'dimanche',
+					dayID: '6',
+					description: 'Fermé le dimache',
+					workingDay: false
+		  		}
+		  	);
+
 		  	newBusiness.save(function(err, businessSaved){
 		    	if (err) return next(err);
 		    	return res.status(201).json({ 
@@ -118,7 +175,7 @@ var Business = require('./business.model');
  * Change the business status
  * restriction : 'staff'
  */
- exports.changeStatus = function(req, res, next){
+ exports.status = function(req, res, next){
  	var businessId = req.params.id;
 
  	Business.findOne(businessId, function (err, businessFound){

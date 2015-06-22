@@ -12,7 +12,7 @@ router.get('/', controller.index);
 router.get('/:id', auth.isAuthenticated(), controller.show);
 router.post('/', auth.hasRole('manager'), controller.create);
 router.put('/:id', auth.hasRole('staff'), controller.update);
-router.put('/:id/status', auth.hasRole('staff'), controller.changeStatus);
+router.put('/:id/status', auth.hasRole('staff'), controller.status);
 
 // --- Schedules routes ---
 router.get('/:id/schedules', auth.hasRole('staff'), controller.getSchedules);
