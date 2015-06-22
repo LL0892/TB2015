@@ -213,7 +213,7 @@ exports.getSchedules = function(req, res, next){
 		if(!businessFound.schedules) return res.status(404).json({ message : 'Aucun horaire à afficher.' });
 
 		res.status(200).json({
-			schedules : businessFound.schedules
+			horaires : businessFound.schedules
 		}).end();
 	});
 };
@@ -223,7 +223,7 @@ exports.getSchedules = function(req, res, next){
 * restriction : 'staff'
 */
 exports.addSchedule = function(req, res, next){
-	
+	var businessId = req.params.id;
 };
 
 /**
@@ -231,7 +231,18 @@ exports.addSchedule = function(req, res, next){
 * restriction : 'staff'
 */
 exports.getSchedule = function(req, res, next){
-	
+	var businessId = req.params.id,
+		scheduleId = req.params.scheduleId;
+
+	Business.findById(businessId, function (err, businessFound){
+		if(err) return res.send(500, err);
+		if(!businessFound) return res.status(404).json({ message : 'Ce salon n\'existe pas.' });
+		if(!businessFound.schedules.id(scheduleId)) return res.status(404).json({ message : 'Cette horaire n\'existe pas.' });
+
+		res.status(200).json({
+			horaire : businessFound.schedules.id(scheduleId)
+		});
+	});
 };
 
 /**
@@ -239,13 +250,13 @@ exports.getSchedule = function(req, res, next){
 * restriction : 'staff'
 */
 exports.updateSchedule = function(req, res, next){
-	var businessId = req.params.id;
-	var scheduleId = req.params.scheduleId;
+	var businessId = req.params.id,
+		scheduleId = req.params.scheduleId;
 
 	Business.findById(businessId, function (err, businessFound){
 		if(err) return res.send(500, err);
 		if(!businessFound) return res.status(404).json({ message : 'Ce salon n\'existe pas.' });
-		if(!businessFound.schedules) return res.status(404).json({ message : 'Cette horaire n\'existe pas.' });
+		if(!businessFound.schedules.id(scheduleId)) return res.status(404).json({ message : 'Cette horaire n\'existe pas.' });
 
 		var schedule = businessFound.schedules.id(scheduleId);
 		schedule.dayName = req.body.dayName;
@@ -260,13 +271,14 @@ exports.updateSchedule = function(req, res, next){
 			schedule.startHour = undefined;
 			schedule.endHour = undefined;
 		}
-		// TODO détérminer dayId sur dayName automatiquement
+		// TODO determiner dayId sur dayName automatiquement
+		// TODO check sur le format des dates d'horaires (00:00) et length (5 charactères)
 
 		businessFound.save(function (err, businessUpdated){
 			if (err) return next(err);
 			res.status(200).json({
 				message : 'L\'horaire a été modifié avec succès.',
-				business : businessUpdated
+				horaire : businessUpdated.schedules.id(scheduleId)
 			});
 		})
 	});
@@ -277,7 +289,8 @@ exports.updateSchedule = function(req, res, next){
 * restriction : 'staff'
 */
 exports.deleteSchedule = function(req, res, next){
-	
+	var businessId = req.params.id,
+		scheduleId = req.params.scheduleId;
 };
 
 // --- Staff affiliation routes ---
