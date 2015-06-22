@@ -77,7 +77,26 @@ var Prestation = require('./prestation.model');
  * restriction: 'staff'
  */
  exports.update = function(req, res, next){
+ 	var prestationId = req.params.id;
 
+ 	Prestation.findById(prestationId, function (err, prestationFound){
+ 		if (err) return next(err);
+		if (!prestationFound) return res.status(404).json({ message : 'Prestation non existante.' });
+ 		
+		prestationFound.name = req.body.name,
+		prestationFound.shortDescription = req.body.shortDescription,
+		prestationFound.description = req.body.description,
+		prestationFound.duration = req.body.duration,
+		prestationFound.businessID = req.body.businessID
+
+		prestationFound.save(function(err, prestationUpdated){
+	 		if (err) return next(err);
+	 		res.status(200).json({
+	 			message : 'La prestation a été modifiée avec succès. <br/> Les prix sont modifiable via le menu de gestion des prestations.',
+	 			prestation : prestationUpdated
+	 		});
+		});
+ 	});
  };
 
 /**
