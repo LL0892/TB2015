@@ -22,12 +22,14 @@ var Prestation = require('./prestation.model');
 
 // --- Prestation controller ---
 /**
- * Get a list of prestation for this business
+ * Get a list of prestation
  */
  exports.index = function(req, res, next){
   Prestation.find({}, function (err, prestationsFound) {
     if(err) { return handleError(res, err); }
-    return res.status(200).json(prestationsFound);
+    return res.status(200).json({
+    	prestations: prestationsFound
+    });
   });
  };
 
@@ -59,7 +61,15 @@ var Prestation = require('./prestation.model');
  * Get a single prestation
  */
  exports.show = function(req, res, next){
+ 	var prestationId = req.params.id;
 
+	Prestation.findById(prestationId, function (err, prestationFound) {
+		if (err) return next(err);
+		if (!prestationFound) return res.status(404).json({ message : 'Prestation non existante.' });
+		res.status(200).json({
+			prestation : prestationFound
+		});
+	});
  };
 
 /**
