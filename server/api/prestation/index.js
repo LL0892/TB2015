@@ -17,6 +17,7 @@ router.delete('/:id', auth.hasRole('manager'), controller.destroy);
 
 // --- Prices routes ---
 router.post('/:id/prices', auth.hasRole('staff'), controller.addPrice);
+router.get('/:id/prices/:priceId', auth.hasRole('staff'), controller.getPrice);
 router.put('/:id/prices/:priceId', auth.hasRole('staff'), controller.updatePrice);
 router.delete('/:id/prices/:priceId', auth.hasRole('staff'), controller.deletePrice);
 

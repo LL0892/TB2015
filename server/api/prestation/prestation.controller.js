@@ -11,6 +11,7 @@
 
  --- Prices routes ---
  * POST    /prestation/:id/prices     	->  addPrice
+ * GET     /prestation/:id/prices/:id 	->  getPrice
  * PUT     /prestation/:id/prices/:id 	->  updatePrice
  * DELETE  /prestation/:id/prices/:id 	->  deletePrice
  */
@@ -175,6 +176,25 @@ var Prestation = require('./prestation.model');
  			prestation : prestationUpdated
  		});
     });*/
+ };
+
+ /**
+ * Get a price category
+ * restriction: 'staff'
+ */
+ exports.getPrice = function(req, res, next){
+ 	var prestationId = req.params.id,
+ 		priceId = req.params.priceId;
+
+	Prestation.findById(prestationId, function (err, prestationFound){
+		if (err) return next(err);
+		if (!prestationFound) return res.status(404).json({ message : 'Prestation non existante.' });
+		if (!prestationFound.prices.id(priceId)) return res.status(404).json({ message : 'Prix demandé non existant.' });
+
+		res.status(200).json({
+			price : prestationFound.prices.id(priceId)
+		});
+	});
  };
 
  /**
