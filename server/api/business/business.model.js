@@ -18,7 +18,7 @@ var ScheduleSchema = new Schema({
   startHour: { type: Number, required: true },
   endHour: { type: Number, required: true },
   description: { type: String },
-  affiliatedStaff: { type: [Schema.Types.ObjectId], ref: 'user' }
+  affiliatedStaff: { type: [Schema.Types.ObjectId], ref: 'staff' }
 });
 
 // Business Schema
@@ -28,6 +28,7 @@ var BusinessSchema = new Schema({
 
   name: { type: String, required: true },
   imageBusinessURL : { type: String, default: 'businessLogo.png' },
+
   businessContact: {
     email: { type: String, default: ''},
     mobile: { type: String, default: '' },
@@ -35,6 +36,7 @@ var BusinessSchema = new Schema({
     siteURL: { type: String, default: '' },
     facebookURL : { type: String, default: '' }
   },
+
   city: { type: String, required: true },
   street: { type: String, default: '' },
   canton: { type: String, default: '' },
@@ -53,7 +55,7 @@ var BusinessSchema = new Schema({
   } 
 });
 
-module.exports = mongoose.model('Schedule', ScheduleSchema);
+//module.exports = mongoose.model('Schedule', ScheduleSchema);
 module.exports = mongoose.model('Business', BusinessSchema);
 
 /*

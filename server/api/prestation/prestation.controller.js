@@ -10,10 +10,10 @@
  * DELETE  /prestation/					->	destroy
 
  --- Prices routes ---
- * POST    /prestation/:id/prices     	->  addPrice
- * GET     /prestation/:id/prices/:id 	->  getPrice
- * PUT     /prestation/:id/prices/:id 	->  updatePrice
- * DELETE  /prestation/:id/prices/:id 	->  deletePrice
+ * POST    /prestation/:id/prices     		->  addPrice
+ * GET     /prestation/:id/prices/:idPrice 	->  getPrice
+ * PUT     /prestation/:id/prices/:idPrice 	->  updatePrice
+ * DELETE  /prestation/:id/prices/:idPrice 	->  deletePrice
  */
 
 'use strict';
@@ -30,7 +30,7 @@ var Prestation = require('./prestation.model');
     if(err) { return handleError(res, err); }
     return res.status(200).json({
     	prestations: prestationsFound
-    });
+    }).end();
   });
  };
 
@@ -54,7 +54,7 @@ var Prestation = require('./prestation.model');
  		res.status(201).json({
  			message : 'La prestation a été ajoutée avec succès. <br/> Les prix sont modifiable via le menu de gestion des prestations.',
  			prestation : prestationSaved
- 		});
+ 		}).end();
  	});
  };
 
@@ -69,7 +69,7 @@ var Prestation = require('./prestation.model');
 		if (!prestationFound) return res.status(404).json({ message : 'Prestation non existante.' });
 		res.status(200).json({
 			prestation : prestationFound
-		});
+		}).end();
 	});
  };
 
@@ -95,7 +95,7 @@ var Prestation = require('./prestation.model');
 	 		res.status(200).json({
 	 			message : 'La prestation a été modifiée avec succès. <br/> Les prix sont modifiable via le menu de gestion des prestations.',
 	 			prestation : prestationUpdated
-	 		});
+	 		}).end();
 		});
  	});
  };
@@ -122,7 +122,7 @@ var Prestation = require('./prestation.model');
 	 		res.status(200).json({
 	 			message : 'Le status de la prestation a été modifiée avec succès. Visibilité par la clientèle : ' + prestationUpdated.isActive,
 	 			prestation : prestationUpdated
-	 		});
+	 		}).end();
 		});
  	});
  };
@@ -160,7 +160,7 @@ var Prestation = require('./prestation.model');
 	 		res.status(201).json({
 	 			message : 'Le prix a été correctement ajouté à votre prestation.',
 	 			prestation : prestationUpdated
-	 		});
+	 		}).end();
 		});
 	});
 
@@ -193,7 +193,7 @@ var Prestation = require('./prestation.model');
 
 		res.status(200).json({
 			price : prestationFound.prices.id(priceId)
-		});
+		}).end();
 	});
  };
 
@@ -221,7 +221,7 @@ var Prestation = require('./prestation.model');
 	 		res.status(200).json({
 	 			message : 'Le prix a été correctement modifié pour la prestation souhaitée.',
 	 			prestation : prestationUpdated
-	 		});
+	 		}).end();
 		});
 	});
  };
@@ -246,7 +246,7 @@ var Prestation = require('./prestation.model');
 	 		res.status(200).json({
 	 			message : 'Le prix a été correctement supprimé de la prestation souhaitée.',
 	 			prestation : prestationUpdated
-	 		});
+	 		}).end();
 		});
 	});
  };
