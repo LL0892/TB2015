@@ -313,6 +313,22 @@ exports.updateSchedule = function(req, res, next){
 exports.deleteSchedule = function(req, res, next){
 	var businessId = req.params.id,
 		scheduleId = req.params.scheduleId;
+
+	Business.findById(businessId, function (err, businessFound){
+		if(err) return res.send(500, err);
+		if(!businessFound) return res.status(404).json({ message : 'Ce salon n\'existe pas.' });
+		if(!businessFound.schedules.id(scheduleId)) return res.status(404).json({ message : 'Cette horaire n\'existe pas.' });
+
+		businessFound.schedules.id(scheduleId).remove();
+
+		businessFound.save(function (err, businessUpdated){
+	 		if (err) return next(err);
+	 		res.status(200).json({
+	 			message : 'L\'hoaire a été correctement supprimé du salon.',
+	 			prestation : businessUpdated
+	 		}).end();
+		});
+	});
 };
 
 // --- Staff affiliation routes ---
