@@ -336,7 +336,7 @@ exports.deleteSchedule = function(req, res, next){
 
 // --- Business Applicative Service ---
 /**
-* Change the business status
+* Get a set of data for this business
 */
 exports.overview = function(req, res, next){
 	// GET Business (+ Schedules) datas

@@ -7,6 +7,7 @@ var jwt = require('jsonwebtoken');
 var expressJwt = require('express-jwt');
 var compose = require('composable-middleware');
 var User = require('../api/user/user.model');
+var Staff = require('../api/staff/staff.model');
 var validateJwt = expressJwt({ secret: config.secrets.session });
 
 /**
@@ -15,22 +16,38 @@ var validateJwt = expressJwt({ secret: config.secrets.session });
  */
 function isAuthenticated() {
   return compose()
+    
     // Validate jwt
-    .use(function(req, res, next) {
+    .use(function (req, res, next) {
       // allow access_token to be passed through query parameter as well
       if(req.query && req.query.hasOwnProperty('access_token')) {
         req.headers.authorization = 'Bearer ' + req.query.access_token;
       }
       validateJwt(req, res, next);
     })
+
     // Attach user to request
-    .use(function(req, res, next) {
+    .use(function (req, res, next) {
       User.findById(req.user._id, function (err, user) {
         if (err) return next(err);
-        if (!user) return res.send(401);
-
+        if (!user) return res.status(401).json({ message : 'Vous devez vous identifier pour accéder à cette ressource.' });
         req.user = user;
-        next();
+        var businessAllowed = null;
+
+        // Attach the business Id the staff is working in if it's exist   
+        if(req.user.staffId){
+          Staff.findById(req.user.staffId, function (err, staffFound){
+            if (err) return next(err);
+            if(!staffFound) return res.status(500).json({ message : 'Une erreur s\'est produite.' });
+            req.staff = staffFound;
+            console.log('in da loop');
+            console.log(req.staff);
+            next();
+          });
+        } else {
+          console.log('not in da loop');
+          next();
+        }
       });
     });
 }

@@ -23,7 +23,7 @@ var UserSchema = new Schema({
   createdOn: { type: Date, default: Date.now },
   updatedOn: { type: Date, default: Date.now },
 
-  staff: { type: Schema.Types.ObjectId, ref: 'staff'},
+  staffId: { type: Schema.Types.ObjectId, ref: 'staff'},
   phone: { type : String, default: '' },
   mobile: { type : String, default: '' },
   city: { type : String, default: '' },

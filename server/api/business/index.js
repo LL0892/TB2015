@@ -25,6 +25,6 @@ router.delete('/:id/schedules/:scheduleId', auth.hasRole('staff'), controller.de
 // Todo
 
 // --- Business Applicative Services ---
-router.post('/:id/overview', auth.isAuthenticated(), controller.overview);
+router.post('/overview', auth.isAuthenticated(), controller.overview);
 
 module.exports = router;

@@ -97,7 +97,7 @@ exports.create = function (req, res, next) {
 					if(err) return next(err);
 
 					// Update user
-					userFound.staff = staffSaved._id;
+					userFound.staffId = staffSaved._id;
 					userFound.save(function (err, userSaved){
 					if (err) return next(err);
 						return res.status(201).json({
@@ -123,7 +123,7 @@ exports.create = function (req, res, next) {
 * restriction : 'staff'
 */
 exports.update = function (req, res, next){
-	Staff.findOne(req.user.staff, function (err, staffFound){
+	Staff.findOne(req.user.staffId, function (err, staffFound){
 		if(err) return res.send(500, err);
 		if(!staffFound) return res.status(404).json({
 			message : 'ce staff n\'existe pas.'
