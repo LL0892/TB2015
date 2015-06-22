@@ -4,9 +4,10 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 /*
-* Schema
+* Schemas
 */
 
+// Schema Prestation
 var PrestationSchema = new Schema({
 	createdOn: { type: Date, default: Date.now },
 	updatedOn: { type: Date, default: Date.now },
@@ -16,17 +17,21 @@ var PrestationSchema = new Schema({
 	description: { type: String },
 	duration: { type: Number, required: true, default: '5' },
 
-	prestationOptions: { type: [Schema.Types.ObjectId], ref: 'option' },
+	//prestationOptions: { type: [Schema.Types.ObjectId], ref: 'option' },
 
-	price: {
-		categoryName: { type: String, required: true },
-		ageLowLimit: { type: Number, required: true, default: '1' },
-		ageHighLimit: { type: Number, required: true, default: '99' },
-		price: { type: Number, required: true, default: '1' },
-		gender: { type: String, required: true, enum: ['Homme', 'Femme']}
-	},
+	price: { type: [ PriceSchema ] },
+
 	businessID: { type: Schema.Types.ObjectId, ref: 'option', required: true },
 	isActive: { type: Boolean, default: true }
+});
+
+// Schema Price (embedded in Prestation)
+var PriceSchema = new Schema({
+  categoryName: { type: String, default: 'Default price category' },
+  ageLowLimit: { type: Number, default: '1' },
+  ageHighLimit: { type: Number, default: '99' },
+  price: { type: Number, default: '1' },
+  gender: { type: String, enum: ['Homme', 'Femme', 'Mixte'], default: 'Mixte' }
 });
 
 module.exports = mongoose.model('Prestation', PrestationSchema);
@@ -36,7 +41,7 @@ module.exports = mongoose.model('Prestation', PrestationSchema);
 */
 
 // Validate existing businessID
-PrestationSchema
+/*PrestationSchema
   .path('businessID')
   .validate(function(value, respond) {
     var self = this;
@@ -48,7 +53,7 @@ PrestationSchema
         return respond(true);
       }
     });
-  }, 'Salon non existant.');
+  }, 'Salon non existant.');*/
 
 /*
 * Pre-save hook
