@@ -111,7 +111,7 @@ var Business = require('./business.model');
 		  		{
 					dayName: 'dimanche',
 					dayID: '6',
-					description: 'Fermé le dimache',
+					description: 'Fermé le dimanche',
 					workingDay: false
 		  		}
 		  	);
@@ -131,7 +131,7 @@ var Business = require('./business.model');
  exports.show = function(req, res, next){
  	var businessId = req.params.id;
 
- 	Business.findOne(businessId, function (err, businessFound){
+ 	Business.findById(businessId, function (err, businessFound){
  		if(!businessFound) return res.status(404).json({ message : 'Ce salon n\'existe pas.' });
  		if(err) return res.send(500, err);
  		res.status(200).json({ salon : businessFound }).end();
@@ -145,7 +145,7 @@ var Business = require('./business.model');
  exports.update = function(req, res, next){
  	var businessId = req.params.id;
 
- 	Business.findOne(businessId, function (err, businessFound){
+ 	Business.findById(businessId, function (err, businessFound){
  		if(!businessFound) return res.status(404).json({ message : 'Ce salon n\'existe pas.' });
  		if(err) return res.send(500, err);
 
@@ -178,7 +178,7 @@ var Business = require('./business.model');
  exports.status = function(req, res, next){
  	var businessId = req.params.id;
 
- 	Business.findOne(businessId, function (err, businessFound){
+ 	Business.findById(businessId, function (err, businessFound){
  		if(!businessFound) return res.status(404).json({ message : 'Ce salon n\'existe pas.' });
  		if(err) return res.send(500, err);
  		
@@ -205,7 +205,17 @@ var Business = require('./business.model');
 * restriction : 'staff'
 */
 exports.getSchedules = function(req, res, next){
+	var businessId = req.params.id;
 
+	Business.findById(businessId, function (err, businessFound){
+		if(err) return res.send(500, err);
+		if(!businessFound) return res.status(404).json({ message : 'Ce salon n\'existe pas.' });
+		if(!businessFound.schedules) return res.status(404).json({ message : 'Aucun horaire à afficher.' });
+
+		res.status(200).json({
+			schedules : businessFound.schedules
+		});
+	});
 };
 
 /**

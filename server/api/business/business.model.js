@@ -17,7 +17,7 @@ var ScheduleSchema = new Schema({
   startHour: { type: String },
   endHour: { type: String },
   description: { type: String },
-  workingDay: { type: Boolean },
+  workingDay: { type: Boolean, default: true },
   affiliatedStaff: { type: [Schema.Types.ObjectId], ref: 'staff' }
 });
 
