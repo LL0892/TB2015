@@ -11,9 +11,9 @@
  --- Schedule routes ---
  * GET  	/businesses/:id/schedules 				->  getSchedules
  * POST     /businesses/:id/Schedules  				->  addSchedule
- * GET      /businesses/:id/schedules/:idSchedule  	->  getSchedule
- * PUT      /businesses/:id/schedules/:idSchedule  	->  updateSchedule
- * DELETE   /businesses/:id/schedules/:idSchedule  	->  deleteSchedule
+ * GET      /businesses/:id/schedules/:scheduleId  	->  getSchedule
+ * PUT      /businesses/:id/schedules/:scheduleId  	->  updateSchedule
+ * DELETE   /businesses/:id/schedules/:scheduleId  	->  deleteSchedule
 
  --- Staff affiliation routes ---
  Todo
@@ -33,7 +33,7 @@ var Business = require('./business.model');
  exports.index = function(req, res, next){
  	Business.find({}, function (err, businessesFound){
  		if(err) return res.send(500, err);
- 		res.status(200).json({ salons: businessesFound }).end();
+ 		res.status(200).json({ businesses: businessesFound }).end();
  	});
  };
 
@@ -214,7 +214,7 @@ exports.getSchedules = function(req, res, next){
 
 		res.status(200).json({
 			schedules : businessFound.schedules
-		});
+		}).end();
 	});
 };
 
@@ -239,7 +239,37 @@ exports.getSchedule = function(req, res, next){
 * restriction : 'staff'
 */
 exports.updateSchedule = function(req, res, next){
-	
+	var businessId = req.params.id;
+	var scheduleId = req.params.scheduleId;
+
+	Business.findById(businessId, function (err, businessFound){
+		if(err) return res.send(500, err);
+		if(!businessFound) return res.status(404).json({ message : 'Ce salon n\'existe pas.' });
+		if(!businessFound.schedules) return res.status(404).json({ message : 'Cette horaire n\'existe pas.' });
+
+		var schedule = businessFound.schedules.id(scheduleId);
+		schedule.dayName = req.body.dayName;
+		schedule.dayID = req.body.dayID;
+		schedule.startHour = req.body.startHour;
+		schedule.endHour = req.body.endHour;
+		schedule.description = req.body.description;
+		schedule.workingDay = req.body.workingDay;
+
+		// Remove hours if this isn't a working day
+		if(schedule.workingDay === false){
+			schedule.startHour = undefined;
+			schedule.endHour = undefined;
+		}
+		// TODO détérminer dayId sur dayName automatiquement
+
+		businessFound.save(function (err, businessUpdated){
+			if (err) return next(err);
+			res.status(200).json({
+				message : 'L\'horaire a été modifié avec succès.',
+				business : businessUpdated
+			});
+		})
+	});
 };
 
 /**
@@ -250,6 +280,8 @@ exports.deleteSchedule = function(req, res, next){
 	
 };
 
+// --- Staff affiliation routes ---
+// TODO
 
 // --- Business Applicative Service ---
 /**

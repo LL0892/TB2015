@@ -149,8 +149,8 @@ var Prestation = require('./prestation.model');
 
 		prestationFound.prices.push({
 		  	categoryName: req.body.name,
-		  	ageLowLimit: req.body.lowLimit,
-		  	ageHighLimit: req.body.highLimit,
+		  	ageLowLimit: req.body.ageLowLimit,
+		  	ageHighLimit: req.body.ageHighLimit,
 		  	price: req.body.price,
 			gender: req.body.gender
 		});
@@ -211,8 +211,8 @@ var Prestation = require('./prestation.model');
 		if (!prestationFound.prices.id(priceId)) return res.status(404).json({ message : 'Prix demandé non existant.' });
 
 		prestationFound.prices.id(priceId).categoryName = req.body.name;
-		prestationFound.prices.id(priceId).ageLowLimit = req.body.lowLimit;
-		prestationFound.prices.id(priceId).ageHighLimit = req.body.highLimit;
+		prestationFound.prices.id(priceId).ageLowLimit = req.body.ageLowLimit;
+		prestationFound.prices.id(priceId).ageHighLimit = req.body.ageHighLimit;
 		prestationFound.prices.id(priceId).price = req.body.price;
 		prestationFound.prices.id(priceId).gender = req.body.gender;
 

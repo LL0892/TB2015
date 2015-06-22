@@ -17,9 +17,9 @@ router.put('/:id/status', auth.hasRole('staff'), controller.status);
 // --- Schedules routes ---
 router.get('/:id/schedules', auth.hasRole('staff'), controller.getSchedules);
 router.post('/:id/schedules', auth.hasRole('staff'), controller.addSchedule);
-router.get('/:id/schedules/:idSchedule', auth.hasRole('staff'), controller.getSchedule);
-router.put('/:id/schedules/:idSchedule', auth.hasRole('staff'), controller.updateSchedule);
-router.delete('/:id/schedules/:idSchedule', auth.hasRole('staff'), controller.deleteSchedule);
+router.get('/:id/schedules/:scheduleId', auth.hasRole('staff'), controller.getSchedule);
+router.put('/:id/schedules/:scheduleId', auth.hasRole('staff'), controller.updateSchedule);
+router.delete('/:id/schedules/:scheduleId', auth.hasRole('staff'), controller.deleteSchedule);
 
 // --- Staff affiliation routes ---
 // Todo
