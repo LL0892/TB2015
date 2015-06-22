@@ -1,19 +1,25 @@
 /**
  * Using Rails-like standard naming convention for endpoints.
- * GET     /businesses              ->  index
- * POST    /businesses              ->  create
- * GET     /businesses/:id          ->  show
- * PUT     /businesses/:id          ->  update
- * PUT	   /businesses/:id/status   ->  changeStatus
+
+ --- Business only ---
+ * GET     /businesses              	->  index
+ * POST    /businesses              	->  create
+ * GET     /businesses/:id          	->  show
+ * PUT     /businesses/:id          	->  update
+ * PUT	   /businesses/:id/status   	->  changeStatus
+
+ --- Business Applicative Services ---
+ * POST		/businesses/:id/overview	->  overview
  */
 
 'use strict';
 
 var Business = require('./business.model');
 
+// --- Business only ---
 /**
- * Get a list of business
- */
+* Get a list of business
+*/
  exports.index = function(req, res, next){
  	Business.find({}, function (err, businessFound){
  		if(err) return res.send(500, err);
@@ -123,4 +129,16 @@ var Business = require('./business.model');
  			}).end();
  		});
  	});
+ };
+
+ // --- Business Applicative Service ---
+ /**
+ * Change the business status
+ * restriction : 'manager'
+ */
+ exports.overview = function(req, res, next){
+ 	// GET Business (+ Schedules) datas
+ 	// GET Staffs
+ 	// GET Prestations (+ Prices)
+ 	// GET Rendezvous futurs sur période T
  };
