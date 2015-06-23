@@ -34,14 +34,14 @@ function isAuthenticated() {
         req.user = user;
         var businessAllowed = null;
 
-        // Attach the business Id the staff is working in if it's exist   
+        // Attach the staff profile if existant  
         if(req.user.staffId){
           Staff.findById(req.user.staffId, function (err, staffFound){
             if (err) return next(err);
             if(!staffFound) return res.status(500).json({ message : 'Une erreur s\'est produite.' });
             req.staff = staffFound;
             console.log('in da loop');
-            console.log(req.staff);
+            //console.log(req.staff);
             next();
           });
         } else {

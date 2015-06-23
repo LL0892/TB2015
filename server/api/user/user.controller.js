@@ -34,7 +34,7 @@ exports.index = function(req, res) {
 };
 
 /**
-* Get my profile
+* Get my profile (and staff profile when existant)
 */
 exports.me = function(req, res, next) {
   var userId = req.user._id;
