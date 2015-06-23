@@ -43,26 +43,21 @@ exports.show = function(req, res, next){
 * restriction: 'staff'
 */
 exports.me = function(req, res, next){
-	var staffId = req.user.staff;
-	Staff.findOne({
-		_id: staffId
-	}, function (err, staffFound){
+	var staffId = req.user.staffId;
+	Staff.findById(staffId, function (err, staffFound){
 		if(err) return handleError(res, err);
-		if(!staffFound) return res.status(404).json({ message : 'Ce staff n\'existe pas.' });
-		return res.json(200, staffFound);
+		if(!staffFound) return res.status(404).json({ message : 'Vous n\'avez pas de profil staff existant.' });
+		return res.status(200).json({
+			staff : staffFound
+		}).end();
 	});
 };
 
 /*
 * Create a new Staff
 * restriction: 'staff'
-* steps:
-* 1. check there is no existing staff profile
-* 1.1 save staff profile
-* 2. modifier user with the staff refId
 */
 exports.create = function (req, res, next) {
-
 	var userId = req.user._id;
 	//console.log(userId);
 
@@ -70,6 +65,7 @@ exports.create = function (req, res, next) {
 		if(err) return next(err);
 		if(!userFound) return res.status(404).json({ message : 'Cet utilisateur n\'existe pas.' });
 
+		// If no staff profile already created
 		if(userFound.staffId === undefined){
 			
 			var newStaff = new Staff({
@@ -104,7 +100,7 @@ exports.create = function (req, res, next) {
 					if (err) return next(err);
 
 					return res.status(201).json({
-						message : 'Votre compte staff a été crée avec succès.',
+						message : 'Votre profil staff a été crée avec succès.',
 						user: userUpdated,
 						staff: staffSaved
 					}).end();
