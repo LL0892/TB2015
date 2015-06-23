@@ -4,7 +4,7 @@
  */
 
 'use strict';
-
+/*
 var Thing = require('../api/thing/thing.model');
 var User = require('../api/user/user.model');
 
@@ -63,3 +63,4 @@ User.find({}).remove(function() {
     }
   );
 });
+*/

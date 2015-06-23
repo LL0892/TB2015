@@ -40,12 +40,11 @@ function isAuthenticated() {
             if (err) return next(err);
             if(!staffFound) return res.status(500).json({ message : 'Une erreur s\'est produite.' });
             req.staff = staffFound;
-            console.log('in da loop');
-            //console.log(req.staff);
+            console.log('staff attached');
             next();
           });
         } else {
-          console.log('not in da loop');
+          console.log('no staff attached');
           next();
         }
       });

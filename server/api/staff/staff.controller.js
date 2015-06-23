@@ -62,60 +62,63 @@ exports.me = function(req, res, next){
 * 2. modifier user with the staff refId
 */
 exports.create = function (req, res, next) {
+
 	var userId = req.user._id;
+	//console.log(userId);
 
-	User
-		.findById(userId, function(err, userFound){
-			if(err) return next(err);
-			if(!userFound) return res.status(404).json({ message : 'Cet utilisateur n\'existe pas.' });
+	User.findById(userId, function(err, userFound){
+		if(err) return next(err);
+		if(!userFound) return res.status(404).json({ message : 'Cet utilisateur n\'existe pas.' });
 
-			if (userFound.staff === 0 || userFound.staff === null || userFound.staff === undefined) {
-				// Create a new staff
-				var newStaff = new Staff({
-				  	name: req.body.name,
-				  	staffContact: {
-				  		phone: req.body.phone,
-				  		mobile: req.body.mobile,
-				  		email: req.body.email
-				  	},
-				  	photoStaffURL: req.body.photoStaffURL,
-				  	businessID: req.body.businessID,
-				  	isActive: false
-				});
+		if(userFound.staffId === undefined){
+			
+			var newStaff = new Staff({
+				name: req.body.name,
+				staffContact: {
+					phone: req.body.phone,
+					mobile: req.body.mobile,
+					email: req.body.email
+				},
+				photoStaffURL: req.body.photoStaffURL,
+				businessID: req.body.businessID,
+				isActive: true
+			});
 
-				// Check business is existant
-				Business.findById(req.body.businessID, function (err, businessExistant){
+			// Check business is existant
+			Business.findById(req.body.businessID, function (err, businessExistant){
+				if (err) return next(err);
+				if (!businessExistant) { 
+					return res.status(404).json({
+						message: 'Le salon de coiffure demandé est introuvable.'
+					}).end(); 
+				}
+			});
+
+			// Create the staff
+			newStaff.save(function (err, staffSaved){
+				if (err) return next(err);
+				
+				// Update User
+				userFound.staffId = staffSaved._id;
+				userFound.save(function (err, userUpdated){
 					if (err) return next(err);
-					if (!businessExistant) { 
-						return res.status(404).json({
-							message: 'Le salon de coiffure demandé est introuvable.'
-						}); 
-					}
+
+					return res.status(201).json({
+						message : 'Votre compte staff a été crée avec succès.',
+						user: userUpdated,
+						staff: staffSaved
+					}).end();
 				});
 
-				newStaff.save(function(err, staffSaved){
-					if(err) return next(err);
+				
+			});
 
-					// Update user
-					userFound.staffId = staffSaved._id;
-					userFound.save(function (err, userSaved){
-					if (err) return next(err);
-						return res.status(201).json({
-							message: 'Votre profil client a été mit à jours. Votre profil staff a été créé avec succès.',
-							user: userSaved,
-							staff: staffSaved
-						}).end();
-					});
-
-				});
-
-			} else {
-				return res.status(422).json({ 
-					message: 'Profil de staff déjà existant.',
-					profile: userFound.staff
-				});
-			}
-		});
+		} else {
+			return res.status(403).json({
+				message : 'Vous avez déjà crée un profil staff.'
+			}).end();
+		}
+	});
 };
 
 /*

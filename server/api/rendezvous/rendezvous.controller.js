@@ -19,6 +19,7 @@
 'use strict';
 
 var rendezvous = require('./rendezvous.model');
+var prestationRdv = require('../prestationRdv/prestationRdv.model');
 
 // --- User routes ---
 
