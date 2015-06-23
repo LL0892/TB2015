@@ -14,7 +14,7 @@ var StaffSchema = new Schema({
     email: { type: String, lowercase: true, default: '' }
   },
   photoStaffURL: { type: String, default: 'staffProfile.png' },
-  businessID: { type: Schema.Types.ObjectId, ref: 'business', required: true },
+  businessId: { type: Schema.Types.ObjectId, ref: 'business', required: true },
   isActive: { type: Boolean, default: false }
 });
 
