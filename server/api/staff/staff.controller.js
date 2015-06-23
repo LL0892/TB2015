@@ -1,12 +1,12 @@
 /**
  * Using Rails-like standard naming convention for endpoints.
- * POST    /staffs          	->  index
- * GET     /staffs/:id          ->  show
- * GET     /staffs/me           ->  me
  * POST    /staffs              ->  create
+ * GET     /staffs/me           ->  me
  * PUT	   /staffs/me 			->	update
+ * GET     /staffs/:id          ->  show
  * PUT     /staffs/:id/status   ->  status
  */
+
 'use strict';
 
 var Staff = require('./staff.model');
@@ -15,13 +15,16 @@ var Business = require('../business/business.model');
 
 /*
 * Get a list of staff from a business
+* UNUSED NOW
 */
 exports.index = function (req, res, next){
  	Staff.find({
  		businessID: req.body.businessID
  	}, '-createdOn -updatedOn', function (err, staffsFound){
  		if(err) return res.send(500, err);
- 		res.status(200).json(staffsFound).end();
+		return res.status(200).json({
+			staffs : staffsFound
+		}).end();
  	});
 };
 
@@ -34,7 +37,9 @@ exports.show = function(req, res, next){
 	Staff.findById(staffId, function (err, staffFound){
 		if(err) return handleError(res, err);
 		if(!staffFound) return res.status(404).json({ message : 'Ce staff n\'existe pas.' });
-		return res.json(200, staffFound);
+		return res.status(200).json({
+			staff : staffFound
+		}).end();
 	})
 };
 
@@ -81,12 +86,23 @@ exports.create = function (req, res, next) {
 			});
 
 			// Check business is existant
-			Business.findById(req.body.businessID, function (err, businessExistant){
+			Business.findById(req.body.businessID, function (err, businessFound){
 				if (err) return next(err);
-				if (!businessExistant) { 
+				if (!businessFound) { 
 					return res.status(404).json({
 						message: 'Le salon de coiffure demandé est introuvable.'
 					}).end(); 
+				} else {
+					businessFound.staffs.push({
+						staffName : newStaff.name,
+						staffId : newStaff._id,
+						staffVisiblity : newStaff.isActive
+					});
+
+					businessFound.save(function (err, businessUpdated){
+						if (err) return next(err);
+						console.log(businessUpdated);
+					});
 				}
 			});
 
@@ -105,8 +121,6 @@ exports.create = function (req, res, next) {
 						staff: staffSaved
 					}).end();
 				});
-
-				
 			});
 
 		} else {
@@ -122,7 +136,9 @@ exports.create = function (req, res, next) {
 * restriction : 'staff'
 */
 exports.update = function (req, res, next){
-	Staff.findOne(req.user.staffId, function (err, staffFound){
+	var staffId = req.user.staffId;
+
+	Staff.findOne(staffId, function (err, staffFound){
 		if(err) return res.send(500, err);
 		if(!staffFound) return res.status(404).json({
 			message : 'ce staff n\'existe pas.'
@@ -174,20 +190,6 @@ exports.status = function (req, res, next){
  		});
  	});
 };
-
-function convertStaff(staff){
-	return {
-		id: staff.id,
-		name: staff.name,
-	  	staffContact: {
-	  		phone: staff.phone,
-	  		mobile: staff.mobile,
-	  		email: staff.email
-	  	},
-		photoStaffURL: staff.photoStaffURL,
-		businessID: staff.businessID
-	}
-}
 
 function handleError(res, err) {
   return res.send(500, err);

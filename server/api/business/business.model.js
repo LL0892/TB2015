@@ -44,7 +44,13 @@ var BusinessSchema = new Schema({
   isActive: { type: Boolean, default: false },
 
   founder: { type: Schema.Types.ObjectId, ref: 'user', required: true },
-  staffs: { type: [Schema.Types.ObjectId], ref: 'user' },
+  staffs: [
+    {
+      staffName : { type: String },
+      staffId : { type: Schema.Types.ObjectId, ref: 'user' },
+      staffVisibility : { type: Boolean, default: true }
+    }
+   ],
   schedules: [ ScheduleSchema ],
   //prestations: { type: Schema.Types.ObjectId, ref: 'prestation' },
 

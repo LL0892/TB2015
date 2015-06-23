@@ -42,6 +42,15 @@ var Business = require('./business.model');
  * restriction: 'manager'
  */
  exports.create = function(req, res, next){
+ 	var userID = req.user._id;
+
+ 	Business.find({
+ 		founder: userID
+ 	}, function (err, businessFound){
+ 		if(err) return res.send(500, err);
+
+ 		if (businessFound[businessFound.length-1] === undefined) {
+ 			// Business datas
 			var newBusiness = new Business({
 			 	name: req.body.name,
 			    city: req.body.city,
@@ -60,7 +69,7 @@ var Business = require('./business.model');
 		 	newBusiness.founder = req.user._id;
 		  	newBusiness.isActive = false;
 
-		  	// Horaires par défaut
+		  	// Default Schedules
 		  	newBusiness.schedules.push(
 		  		{
 					dayName: 'lundi',
@@ -115,7 +124,8 @@ var Business = require('./business.model');
 					workingDay: false
 		  		}
 		  	);
-
+			
+			// Save the business
 		  	newBusiness.save(function(err, businessSaved){
 		    	if (err) return next(err);
 		    	return res.status(201).json({ 
@@ -123,6 +133,98 @@ var Business = require('./business.model');
 		    		business: businessSaved 
 		    	}).end();
 		  	});
+
+ 		} else {
+			return res.status(403).json({
+				message : 'Vous avez déjà crée un salon.'
+			}).end();
+ 		}
+ 	});
+
+
+ /*
+	var newBusiness = new Business({
+	 	name: req.body.name,
+	    city: req.body.city,
+	    zip: req.body.zip,
+	    street: req.body.street,
+	    canton: req.body.canton,
+	    businessContact: {
+	      email: req.body.email,
+	      phone: req.body.phone,
+	      mobile: req.body.mobile,
+	      siteURL: req.body.site,
+	      facebookURL: req.body.facebookURL
+	    },
+	    imageBusinessURL: req.body.imageBusinessURL
+ 	});
+ 	newBusiness.founder = req.user._id;
+  	newBusiness.isActive = false;
+
+  	// Horaires par défaut
+  	newBusiness.schedules.push(
+  		{
+			dayName: 'lundi',
+			dayID: '0',
+			startHour: '08:00',
+			endHour: '17:00',
+			description: 'Horaire du lundi',
+			workingDay: true
+  		},
+  		{
+			dayName: 'mardi',
+			dayID: '1',
+			startHour: '08:00',
+			endHour: '17:00',
+			description: 'Horaire du mardi',
+			workingDay: true
+  		},
+  		{
+			dayName: 'mercredi',
+			dayID: '2',
+			startHour: '08:00',
+			endHour: '17:00',
+			description: 'Horaire du mercredi',
+			workingDay: true
+  		},
+  		{
+			dayName: 'jeudi',
+			dayID: '3',
+			startHour: '08:00',
+			endHour: '17:00',
+			description: 'Horaire du jeudi',
+			workingDay: true
+  		},
+  		{
+			dayName: 'vendredi',
+			dayID: '4',
+			startHour: '08:00',
+			endHour: '17:00',
+			description: 'Horaire du vendredi',
+			workingDay: true
+  		},
+  		{
+			dayName: 'samedi',
+			dayID: '5',
+			description: 'Fermé le samedi',
+			workingDay: false
+  		},
+  		{
+			dayName: 'dimanche',
+			dayID: '6',
+			description: 'Fermé le dimanche',
+			workingDay: false
+  		}
+  	);
+
+  	newBusiness.save(function(err, businessSaved){
+    	if (err) return next(err);
+    	return res.status(201).json({ 
+    		message: 'Votre salon a été créé avec succès.', 
+    		business: businessSaved 
+    	}).end();
+  	});
+*/
  };
 
  /**
