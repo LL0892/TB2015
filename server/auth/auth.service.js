@@ -32,7 +32,6 @@ function isAuthenticated() {
         if (err) return next(err);
         if (!user) return res.status(401).json({ message : 'Vous devez vous identifier pour accéder à cette ressource.' });
         req.user = user;
-        var businessAllowed = null;
 
         // Attach the staff profile if existant  
         if(req.user.staffId){
