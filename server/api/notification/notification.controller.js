@@ -14,21 +14,25 @@
 
 'use strict';
 
-var Notification = require('./notification.model');
-//var User = require('../user/user.model');
+var Notification = require('./notification.model'),
+	Business = require('../business/business.model');
 
  /**
- * Get a list of notification
+ * Get a list of notifications
+ * UNUSED NOW
  */
  exports.index = function(req, res, next){
   Notification.find({}, function (err, notificationsFound) {
     if(err) { return handleError(res, err); }
-    return res.status(200).json(notificationsFound);
+    return res.status(200).json({
+    	notifications :	notificationsFound
+    }).end();
   });
  };
 
  /**
  * Get the notifications received
+ * UNUSED NOW
  */
 exports.received = function(req, res, next){
 	var userId = req.user._id;
@@ -37,12 +41,15 @@ exports.received = function(req, res, next){
 	}), function (err, notificationsFound){
 		if (err) return next(err);
 		if (!notificationsFound) return res.status(404).json({ message : 'Notifications non existantes.' });
-		return res.status(200).json(notificationsFound);
+		return res.status(200).json({
+			notification : notificationsFound
+		}).end();
 	};
 };
 
  /**
  * Get the notifications sent
+ * UNUSED NOW
  */
 exports.sent = function(req, res, next){
 
@@ -50,24 +57,38 @@ exports.sent = function(req, res, next){
 
  /**
  * Create a new notification
+ * restriction : 'staff'
  */
  exports.create = function(req, res, next){
- 	var newNotification = new Notification({
-		title: req.body.title,
-		text: req.body.text,
-		sentBy : req.user._id,
-		sentTo : req.body.sentTo,
-		status : 'not processed',
-		isViewed : false,
-		relatedToBusiness: req.body.businessID
- 	});
+ 	var userId = req.user._id,
+ 		businessId = req.staff.businessId;
 
- 	newNotification.save(function (err, notificationSaved){
- 		if (err) return next(err);
- 		res.status(201).json({
- 			message: 'La notification fut envoyée avec succès.',
- 			notification: notificationSaved
+ 	Business.findById(businessId, function (err, businessFound){
+ 		if(err) return next(err);
+ 		if(!businessFound) return res.status(403).json({
+ 			message : 'Vous n\'avez pas les droits d\'ajouter une personne au staff sans avoir un profil staff.'
  		}).end();
+
+	 	var newNotification = new Notification({
+			title: req.body.title,
+			text: req.body.text,
+			sentBy : userId,
+			sentTo : req.body.sentTo,
+			status : 'not processed',
+			isViewed : false,
+			business : {
+				businessId: businessFound._id,
+				businessName: businessFound.name
+			}
+	 	});
+
+	 	newNotification.save(function (err, notificationSaved){
+	 		if (err) return next(err);
+	 		res.status(201).json({
+	 			message: 'La notification fut envoyée avec succès pour le salon : '+ notificationSaved.business.businessName + '.',
+	 			notification: notificationSaved
+	 		}).end();
+	 	});
  	});
  };
  
@@ -80,7 +101,9 @@ exports.sent = function(req, res, next){
 	Notification.findById(notifID, function (err, notificationFound) {
 		if (err) return next(err);
 		if (!notificationFound) return res.status(404).json({ message : 'Notification non existante.' });
-		res.status(200).json(notificationFound);
+		res.status(200).json({
+			notification : notificationFound
+		}).end();
 	});
  };
 
@@ -169,7 +192,7 @@ exports.sent = function(req, res, next){
 	 	text: notif.text,
 	 	sentBy: notif.sentBy,
 	 	sentTo: notif.sentTo,
-	 	relatedToBusiness: notif.relatedToBusiness,
+	 	businessId: notif.businessId,
 	 	status: notif.status,
 	 	isViewed: notif.isViewed
 	 }

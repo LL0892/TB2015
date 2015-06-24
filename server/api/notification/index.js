@@ -7,11 +7,11 @@ var auth = require('../../auth/auth.service');
 
 var router = express.Router();
 
-router.get('/', auth.isAuthenticated(), controller.index);
-router.get('/received', auth.isAuthenticated(), controller.received);
-router.get('/sent', auth.isAuthenticated(), controller.sent);
+//router.get('/', auth.isAuthenticated(), controller.index);
+//router.get('/received', auth.isAuthenticated(), controller.received);
+//router.get('/sent', auth.isAuthenticated(), controller.sent);
 router.get('/:id', auth.isAuthenticated(), controller.show);
-router.post('/', auth.isAuthenticated(), controller.create);
+router.post('/', auth.hasRole('staff'), controller.create);
 router.put('/:id', auth.isAuthenticated, controller.update);
 router.put('/:id/viewed', auth.isAuthenticated(), controller.viewed);
 router.put('/:id/accepted', auth.isAuthenticated(), controller.accepted);

@@ -15,7 +15,11 @@ var NotificationSchema = new Schema({
 
 	isViewed : { type: Boolean, default: false },
 	status: { type: String, default: 'not processed' },
-	relatedToBusiness: { type: Schema.Types.ObjectId, ref: 'business' } 
+  
+  business : {
+    businessId: { type: Schema.Types.ObjectId, ref: 'business' },
+    businessName: { type: String, required: true }
+  }
 });
 
 module.exports = mongoose.model('Notification', NotificationSchema);
