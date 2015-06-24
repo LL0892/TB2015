@@ -19,11 +19,15 @@ var Notification = require('./notification.model'),
  exports.index = function(req, res, next){
  	var userId = req.user._id;
 
-	Notification.find({
+	var query = Notification.find({
 		'sentTo': {
 	  		$in: [userId]
 	  	}
-	}, function (err, notificationsFound) {
+	}).select(
+		'-createdOn -updatedOn -__v'
+	);
+
+	query.exec(function (err, notificationsFound) {
 	    if (err) return next(err);
 	    if (notificationsFound.length < 1) return res.status(404).json({
 	    	message : 'Il n\'y a pas de notification à afficher.'
