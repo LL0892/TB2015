@@ -161,7 +161,12 @@ var Notification = require('./notification.model'),
  exports.destroy = function(req, res, next){
  	var notifId = req.params.id;
 
- 	Notification.remove(notifId, function (err){
+ 	Notification.remove(notifId, function (err, notificationRemoved){
+ 		if(!notificationRemoved){
+ 			return res.status(404).json({
+ 				message : 'Cette notification n\'existe pas.'
+ 			}).end();
+ 		}
  		if (!err) {
  			return res.status(200).json({
  				message: 'La notification a été supprimée avec succès.'
