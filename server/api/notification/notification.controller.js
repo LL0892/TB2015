@@ -189,7 +189,7 @@ var Notification = require('./notification.model'),
  			}).end();
  		}
  		if (!err) {
- 			return res.status(200).json({
+ 			return res.status(204).json({
  				message: 'La notification a été supprimée avec succès.'
  			}).end();
  		}else{

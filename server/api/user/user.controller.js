@@ -2,6 +2,7 @@
  * Using Rails-like standard naming convention for endpoints.
  * GET     /users              ->  index
  * GET     /users/me           ->  me
+ * PUT     /users/me           ->  update
  * POST    /users/             ->  create
  * POST    /users/Manager      ->  createManager
  * GET     /users/:id          ->  show
@@ -40,13 +41,48 @@ exports.me = function(req, res, next) {
   var userId = req.user._id;
   User.findOne({
     _id: userId
-  }, '-salt -hashedPassword', function(err, user) { // don't ever give out the password or salt
+  }, '-salt -hashedPassword', function (err, user) { // don't ever give out the password or salt
     if (err) return next(err);
-    if (!user) return res.json(401);
-    res.json({
+    if(!userFound) return res.status(401).json({ message : 'Vous n\'êtes pas connecté.' }).end();
+
+    return res.status(200).json({
       myProfile : user,
       staffProfile: req.staff
+    }).end();
+  });
+};
+
+/**
+ * Update my user profile
+ */
+exports.update = function(req, res, next) {
+  var userId = req.user._id;
+
+  User.findById(userId, '-salt -hashedPassword', function (err, userFound){
+    if (err) return next(err);
+    if(!userFound) return res.status(401).json({ message : 'Vous n\'êtes pas connecté.' }).end();
+
+    // Update datas
+    userFound.firstName = req.body.firstName;
+    userFound.lastName = req.body.lastName;
+    userFound.dateOfBirth = req.body.dateOfBirth;
+    userFound.phone = req.body.phone
+    userFound.mobile = req.body.mobile
+    userFound.city = req.body.city
+    userFound.street = req.body.street
+    userFound.canton = req.body.canton
+    userFound.zip = req.body.zip
+    userFound.imageProfileURL = req.body.imageProfileURL
+
+    userFound.save(function (err, userSaved){
+      if (err) return next(err);
+
+      return res.status(200).json({
+        message: 'Profil utilisateur modifié avec succès.',
+        profil : userSaved
+      }).end();
     });
+  
   });
 };
 
@@ -73,7 +109,7 @@ exports.create = function (req, res, next) {
   newUser.save(function(err, user) {
     if (err) return validationError(res, err);
     var token = jwt.sign({_id: user._id }, config.secrets.session, { expiresInMinutes: 60*15 });
-    res.status(201).json({ token: token });
+    return res.status(201).json({ token: token }).end();
   });
 };
 
@@ -102,7 +138,7 @@ exports.createManager = function (req, res, next){
   newUser.save(function(err, user) {
     if (err) return validationError(res, err);
     token = jwt.sign({_id: user._id }, config.secrets.session, { expiresInMinutes: 60*15 });
-    res.status(201).json({ token: token });
+    return res.status(201).json({ token: token }).end();
   });
 };
 
