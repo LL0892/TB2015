@@ -3,9 +3,9 @@
  * GET     /notifications              ->  index
  * GET     /notifications/received     ->  received
  * GET     /notifications/sent         ->  sent
+ -------------------------------------------------
  * POST    /notifications              ->  create
- * GET     /notifications/:id          ->  show
- * PUT	   /notifications/:id/viewed   ->  viewed
+ * GET	   /notifications/:id   	   ->  show
  * PUT	   /notifications/:id/accepted ->  accepted
  * PUT	   /notifications/:id/refused  ->  refused
  * DELETE  /notifications/:id          ->  destroy
@@ -54,14 +54,16 @@ exports.sent = function(req, res, next){
 
 };
 
+// -----------------------------------------
+
  /**
  * Create a new notification
  * restriction : 'staff'
  */
  exports.create = function(req, res, next){
- 	var userId = req.user._id,
+ 	var staffId = req.staff._id,
  		businessId = req.staff.businessId,
-		userName = String(req.user.firstName + ' ' + req.user.lastName);
+		staffName = String(req.staff.name);
 
  	Business.findById(businessId, function (err, businessFound){
  		if(err) return next(err);
@@ -73,8 +75,8 @@ exports.sent = function(req, res, next){
 			title: req.body.title,
 			text: req.body.text,
 			sentBy : {
-				emitterId : userId,
-				emitterName: userName
+				emitterId : staffId,
+				emitterName: staffName
 			},
 			sentTo : req.body.sentTo,
 			status : 'not processed',
@@ -94,27 +96,11 @@ exports.sent = function(req, res, next){
 	 	});
  	});
  };
- 
+
  /**
- * Get a single notification
+ * Get a notification, change viewed boolean if false, or just show the notif.
  */
  exports.show = function(req, res, next){
- 	var notifID = req.params.id;
-
-	Notification.findById(notifID, function (err, notificationFound) {
-		if (err) return next(err);
-		if (!notificationFound) return res.status(404).json({ message : 'Notification non existante.' });
-		res.status(200).json({
-			notification : notificationFound
-		}).end();
-	});
- };
-
-
- /**
- * Change the viewed boolean of a notification
- */
- exports.viewed = function(req, res, next){
  	var notifID = req.params.id;
 
  	Notification.findById(notifID, function (err, notificationFound){
@@ -124,13 +110,13 @@ exports.sent = function(req, res, next){
 	 		notificationFound.save(function (err, notificationSaved){
 		 		if (err) return next(err);
 		 		res.status(200).json({
-		 			message : 'La notification suivante désormais notifié comme lue.',
+		 			//message : 'La notification suivante désormais notifié comme lue.',
 		 			notification : notificationSaved
 		 		}).end();
 	 		});
  		} else {
  			res.status(200).json({
- 				message : 'La notification suivante fut déjà lue precédement.',
+ 				//message : 'La notification suivante fut déjà lue precédement.',
  				notification : notificationFound
  			}).end();
  		}
@@ -183,7 +169,7 @@ exports.sent = function(req, res, next){
 
  };
 
- function convertNotification(notif){
+function convertNotification(notif){
 	return { 	
 		id: notif.id,
 	 	name: notif.name,
@@ -193,5 +179,5 @@ exports.sent = function(req, res, next){
 	 	businessId: notif.businessId,
 	 	status: notif.status,
 	 	isViewed: notif.isViewed
-	 }
- }
+	}
+};
