@@ -11,7 +11,8 @@
 'use strict';
 
 var Notification = require('./notification.model'),
-	Business = require('../business/business.model');
+	Business = require('../business/business.model'),
+	User = require('../user/user.model');
 
  /**
  * Get a list of my notifications received
@@ -112,7 +113,8 @@ var Notification = require('./notification.model'),
  * Change the status to accepted
  */
  exports.accepted = function(req, res, next){
- 	var notifId = req.params.id;
+ 	var notifId = req.params.id,
+ 		userId = req.user._id;
 
  	Notification.findById(notifId, function (err, notificationFound){
  		if (err) return next(err);
@@ -123,10 +125,19 @@ var Notification = require('./notification.model'),
 	 		notificationFound.save(function (err, notificationSaved){
 		 		if (err) return next(err);
 
-		 		// TODO : add staff role for this user
+		 		// Add staff role for this user
+		 		User.findById(userId, function (err, userFound){
+		 			if (err) return next(err);
+		 			if (!userFound) return res.status(404).json({ message : 'Vous n\'êtes pas connecté.' }).end();
+
+		 			userFound.roles.push('staff');
+		 			userFound.save(function (err, userSaved){
+		 				if (err) return next(err);
+		 			});
+		 		});
 
 		 		return res.status(200).json({
-		 			message : 'Le status de la notification est changé avec succès: ' + notificationSaved.status,
+		 			message : 'Le status de la notification a été mit à jours avec succès: ' + notificationSaved.status,
 		 			notification: notificationSaved 
 		 		}).end();
 	 		});
@@ -152,7 +163,7 @@ var Notification = require('./notification.model'),
 	 		notificationFound.save(function (err, notificationSaved){
 		 		if (err) return next(err);
 		 		return res.status(200).json({
-		 			message : 'Le status de la notification est changé avec succès: ' + notificationSaved.status,
+		 			message : 'Le status de la notification a été mit à jours avec succès: ' + notificationSaved.status,
 		 			notification: notificationSaved 
 		 		}).end();
 	 		});
