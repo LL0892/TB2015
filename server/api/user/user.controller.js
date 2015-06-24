@@ -8,6 +8,7 @@
  * GET     /users/:id          ->  show
  * DELETE  /users/:id          ->  destroy
  * PUT     /users/:id/password ->  changePassword
+ * PUT     /users/:id/email    ->  changeEmail
  */
 
 'use strict';
@@ -74,12 +75,12 @@ exports.update = function(req, res, next) {
     userFound.zip = req.body.zip
     userFound.imageProfileURL = req.body.imageProfileURL
 
-    userFound.save(function (err, userSaved){
+    userFound.save(function (err, userUpdated){
       if (err) return next(err);
 
       return res.status(200).json({
         message: 'Profil utilisateur modifié avec succès.',
-        profil : userSaved
+        profil : userUpdated
       }).end();
     });
   
@@ -180,7 +181,9 @@ exports.changePassword = function(req, res, next) {
       user.password = newPass;
       user.save(function(err) {
         if (err) return validationError(res, err);
-        res.send(200);
+        return res.status(200).json({
+          message : 'Votre mot de passe a été changé avec succès.'
+        }).end();
       });
     } else {
       res.send(403);
@@ -188,6 +191,25 @@ exports.changePassword = function(req, res, next) {
   });
 };
 
+/**
+ * Change a user email
+ */
+exports.changeEmail = function(req, res, next) {
+  var userId = req.user._id;
+  var newEmail = req.body.email;
+
+  User.findById(userId, function (err, userFound) {
+    if(err) next(err);
+
+    userFound.email = newEmail;
+    userFound.save(function (err){
+      if (err) return validationError(res, err);
+      return res.status(200).json({
+        message : 'Votre email a été changé avec succès.'
+      }).end();
+    })
+  });
+};
 
 /**
  * Authentication callback

@@ -15,5 +15,6 @@ router.post('/manager', controller.createManager);
 router.get('/:id', auth.hasRole('staff'), controller.show);
 router.delete('/:id', auth.hasRole('admin'), controller.destroy);
 router.put('/:id/password', auth.isAuthenticated(), controller.changePassword);
+router.put('/:id/email', auth.isAuthenticated(), controller.changeEmail);
 
 module.exports = router;
