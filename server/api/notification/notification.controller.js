@@ -14,19 +14,25 @@ var Notification = require('./notification.model'),
 	Business = require('../business/business.model');
 
  /**
- * Get a list of my notifications
+ * Get a list of my notifications received
  */
  exports.index = function(req, res, next){
-  Notification.find({}, function (err, notificationsFound) {
-    if (err) return next(err);
-    if (!notificationsFound) res.status(404).json({
-    	message : 'Il n\'y a pas de notification à afficher.'
-    }).end();
-    
-    return res.status(200).json({
-    	notifications :	notificationsFound
-    }).end();
-  });
+ 	var userId = req.user._id;
+
+	Notification.find({
+		'sentTo': {
+	  		$in: [userId]
+	  	}
+	}, function (err, notificationsFound) {
+	    if (err) return next(err);
+	    if (notificationsFound.length < 1) return res.status(404).json({
+	    	message : 'Il n\'y a pas de notification à afficher.'
+	    }).end();
+	    
+	    return res.status(200).json({
+	    	notifications :	notificationsFound
+	    }).end();
+	});
  };
 
  /**
