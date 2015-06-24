@@ -5,7 +5,6 @@
  * GET     /notifications/sent         ->  sent
  * POST    /notifications              ->  create
  * GET     /notifications/:id          ->  show
- * PUT     /notifications/:id          ->  update
  * PUT	   /notifications/:id/viewed   ->  viewed
  * PUT	   /notifications/:id/accepted ->  accepted
  * PUT	   /notifications/:id/refused  ->  refused
@@ -61,7 +60,8 @@ exports.sent = function(req, res, next){
  */
  exports.create = function(req, res, next){
  	var userId = req.user._id,
- 		businessId = req.staff.businessId;
+ 		businessId = req.staff.businessId,
+		userName = String(req.user.firstName + ' ' + req.user.lastName);
 
  	Business.findById(businessId, function (err, businessFound){
  		if(err) return next(err);
@@ -72,7 +72,10 @@ exports.sent = function(req, res, next){
 	 	var newNotification = new Notification({
 			title: req.body.title,
 			text: req.body.text,
-			sentBy : userId,
+			sentBy : {
+				emitterId : userId,
+				emitterName: userName
+			},
 			sentTo : req.body.sentTo,
 			status : 'not processed',
 			isViewed : false,
@@ -107,13 +110,7 @@ exports.sent = function(req, res, next){
 	});
  };
 
- /**
- * Update the notification attributes
- */
- exports.update = function(req, res, next){
- 	return res.send(501);
- };
- 
+
  /**
  * Change the viewed boolean of a notification
  */
@@ -182,7 +179,8 @@ exports.sent = function(req, res, next){
  * Remove a notification
  */
  exports.destroy = function(req, res, next){
- 	return res.send(501);
+ 	
+
  };
 
  function convertNotification(notif){
