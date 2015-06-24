@@ -16,5 +16,7 @@ router.get('/:id', auth.hasRole('staff'), controller.show);
 router.delete('/:id', auth.hasRole('admin'), controller.destroy);
 router.put('/:id/password', auth.isAuthenticated(), controller.changePassword);
 router.put('/:id/email', auth.isAuthenticated(), controller.changeEmail);
+router.put('/:id/prefDisplay', auth.isAuthenticated(), controller.preferenceDisplay);
+router.put('/:id/prefFavorite', auth.isAuthenticated(), controller.preferenceFavorite);
 
 module.exports = router;

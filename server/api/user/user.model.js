@@ -38,6 +38,11 @@ var UserSchema = new Schema({
     nbRdvCancelled: { type: Number, default: '0' },
     nbRdvMoved: { type: Number, default: '0' },
     lastRdv: { type: Date }
+  },
+
+  preferences: {
+    homeDisplay: { type: String, enum: ['list', 'fav', 'dual'], default: 'list' },
+    favorite : { type: Schema.Types.ObjectId, ref: 'business' }
   }
 });
 

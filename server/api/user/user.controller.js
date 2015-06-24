@@ -1,14 +1,16 @@
 /**
  * Using Rails-like standard naming convention for endpoints.
- * GET     /users              ->  index
- * GET     /users/me           ->  me
- * PUT     /users/me           ->  update
- * POST    /users/             ->  create
- * POST    /users/Manager      ->  createManager
- * GET     /users/:id          ->  show
- * DELETE  /users/:id          ->  destroy
- * PUT     /users/:id/password ->  changePassword
- * PUT     /users/:id/email    ->  changeEmail
+ * GET     /users                   ->  index
+ * GET     /users/me                ->  me
+ * PUT     /users/me                ->  update
+ * POST    /users/                  ->  create
+ * POST    /users/Manager           ->  createManager
+ * GET     /users/:id               ->  show
+ * DELETE  /users/:id               ->  destroy
+ * PUT     /users/:id/password      ->  changePassword
+ * PUT     /users/:id/email         ->  changeEmail
+ * PUT     /users/:id/prefDisplay   ->  preferenceDisplay
+ * PUT     /users/:id/prefFavorite  ->  preferenceFavorite
  */
 
 'use strict';
@@ -103,10 +105,15 @@ exports.create = function (req, res, next) {
     zip: req.body.zip,
     city: req.body.city,
     canton: req.body.canton,
-    street: req.body.street
+    street: req.body.street,
+    preferences: {
+      homeDisplay: 'list'
+    },
+    provider: 'local',
+    roles : 'user'
   });
-  newUser.provider = 'local';
-  newUser.roles = 'user';
+  //newUser.provider = 'local';
+  //newUser.roles = 'user';
   newUser.save(function(err, user) {
     if (err) return validationError(res, err);
     var token = jwt.sign({_id: user._id }, config.secrets.session, { expiresInMinutes: 60*15 });
@@ -132,10 +139,15 @@ exports.createManager = function (req, res, next){
     zip: req.body.zip,
     city: req.body.city,
     canton: req.body.canton,
-    street: req.body.street
+    street: req.body.street,
+    preferences: {
+      homeDisplay: 'list'
+    },
+    provider: 'local',
+    roles: ['user', 'staff', 'manager']
   });
-  newUser.provider = 'local';
-  newUser.roles = ['user', 'staff', 'manager'];
+  //newUser.provider = 'local';
+  //newUser.roles = ['user', 'staff', 'manager'];
   newUser.save(function(err, user) {
     if (err) return validationError(res, err);
     token = jwt.sign({_id: user._id }, config.secrets.session, { expiresInMinutes: 60*15 });
@@ -210,6 +222,44 @@ exports.changeEmail = function(req, res, next) {
     })
   });
 };
+
+/**
+* Update my home display preferences
+*/
+exports.preferenceDisplay = function(req, res, next) {
+  var userId = req.user._id;
+
+  User.findById(userId, function (err, userFound){
+    if(err) next(err);
+
+    userFound.preferences.homeDisplay = req.body.homeDisplay;
+    userFound.save(function (err, userUpdated){
+      if (err) next(err);
+      return res.status(200).json({
+        message: 'Vos préférences d\'affichage de l\'accueil ont été mises à jours avec succès.'
+      }).end();
+    });
+  });
+};
+
+/**
+* Update my home display preferences
+*/
+exports.preferenceFavorite = function(req, res, next){
+  var userId = req.user._id;
+
+  User.findById(userId, function (err, userFound){
+    if(err) next(err);
+
+    userFound.preferences.favorite = req.body.businessId;
+    userFound.save(function (err, userUpdated){
+      if (err) next(err);
+      return res.status(200).json({
+        message: 'Votre salon favoris ont été mit à jours avec succès.'
+      }).end();
+    });
+  });
+}
 
 /**
  * Authentication callback
