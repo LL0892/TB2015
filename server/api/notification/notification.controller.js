@@ -1,9 +1,6 @@
 /**
  * Using Rails-like standard naming convention for endpoints.
  * GET     /notifications              ->  index
- * GET     /notifications/received     ->  received
- * GET     /notifications/sent         ->  sent
- -------------------------------------------------
  * POST    /notifications              ->  create
  * GET	   /notifications/:id   	   ->  show
  * PUT	   /notifications/:id/accepted ->  accepted
@@ -17,44 +14,20 @@ var Notification = require('./notification.model'),
 	Business = require('../business/business.model');
 
  /**
- * Get a list of notifications
- * UNUSED NOW
+ * Get a list of my notifications
  */
  exports.index = function(req, res, next){
   Notification.find({}, function (err, notificationsFound) {
-    if(err) { return handleError(res, err); }
+    if (err) return next(err);
+    if (!notificationsFound) res.status(404).json({
+    	message : 'Il n\'y a pas de notification à afficher.'
+    }).end();
+    
     return res.status(200).json({
     	notifications :	notificationsFound
     }).end();
   });
  };
-
- /**
- * Get the notifications received
- * UNUSED NOW
- */
-exports.received = function(req, res, next){
-	var userId = req.user._id;
-	Notification.find({
-		sentTo: userId
-	}), function (err, notificationsFound){
-		if (err) return next(err);
-		if (!notificationsFound) return res.status(404).json({ message : 'Notifications non existantes.' });
-		return res.status(200).json({
-			notification : notificationsFound
-		}).end();
-	};
-};
-
- /**
- * Get the notifications sent
- * UNUSED NOW
- */
-exports.sent = function(req, res, next){
-
-};
-
-// -----------------------------------------
 
  /**
  * Create a new notification
@@ -89,7 +62,7 @@ exports.sent = function(req, res, next){
 
 	 	newNotification.save(function (err, notificationSaved){
 	 		if (err) return next(err);
-	 		res.status(201).json({
+	 		return res.status(201).json({
 	 			message: 'La notification fut envoyée avec succès pour le salon : '+ notificationSaved.business.businessName + '.',
 	 			notification: notificationSaved
 	 		}).end();
@@ -101,21 +74,23 @@ exports.sent = function(req, res, next){
  * Get a notification, change viewed boolean if false, or just show the notif.
  */
  exports.show = function(req, res, next){
- 	var notifID = req.params.id;
+ 	var notifId = req.params.id;
 
- 	Notification.findById(notifID, function (err, notificationFound){
- 		if (!notificationFound) return res.status(404).json({ message : 'Notification non existante.' });
+ 	Notification.findById(notifId, function (err, notificationFound){
+ 		if (err) return next(err);
+ 		if (!notificationFound) return res.status(404).json({ message : 'Notification non existante.' }).end();
+ 		
  		if(notificationFound.isViewed === false){
 	 		notificationFound.isViewed = true;
 	 		notificationFound.save(function (err, notificationSaved){
 		 		if (err) return next(err);
-		 		res.status(200).json({
+		 		return res.status(200).json({
 		 			//message : 'La notification suivante désormais notifié comme lue.',
 		 			notification : notificationSaved
 		 		}).end();
 	 		});
  		} else {
- 			res.status(200).json({
+ 			return res.status(200).json({
  				//message : 'La notification suivante fut déjà lue precédement.',
  				notification : notificationFound
  			}).end();
@@ -127,18 +102,29 @@ exports.sent = function(req, res, next){
  * Change the status to accepted
  */
  exports.accepted = function(req, res, next){
- 	var notifID = req.params.id;
+ 	var notifId = req.params.id;
 
- 	Notification.findById(notifID, function (err, notificationFound){
- 		if (!notificationFound) return res.status(404).json({ message : 'Notification non existante.' });
- 		notificationFound.status = 'accepted';
- 		notificationFound.save(function (err, notificationSaved){
-	 		if (err) return next(err);
-	 		res.status(200).json({
-	 			message : 'Le status de la notification est changé avec succès: ' + notificationSaved.status,
-	 			notification: notificationSaved 
-	 		}).end();
- 		});
+ 	Notification.findById(notifId, function (err, notificationFound){
+ 		if (err) return next(err);
+ 		if (!notificationFound) return res.status(404).json({ message : 'Notification non existante.' }).end();
+ 		
+ 		if(notificationFound.status === 'not processed'){
+	 		notificationFound.status = 'accepted';
+	 		notificationFound.save(function (err, notificationSaved){
+		 		if (err) return next(err);
+
+		 		// TODO : add staff role for this user
+
+		 		return res.status(200).json({
+		 			message : 'Le status de la notification est changé avec succès: ' + notificationSaved.status,
+		 			notification: notificationSaved 
+		 		}).end();
+	 		});
+ 		} else {
+ 			return res.status(403).json({
+ 				message : 'Vous avez déjà traité cette demande.'
+ 			});
+ 		}
  	});
  };
 
@@ -146,27 +132,46 @@ exports.sent = function(req, res, next){
  * Change the status to refused
  */
  exports.refused = function(req, res, next){
- 	var notifID = req.params.id;
+ 	var notifId = req.params.id;
 
- 	Notification.findById(notifID, function (err, notificationFound){
- 		if (!notificationFound) return res.status(404).json({ message : 'Notification non existante.' });
- 		notificationFound.status = 'refused';
- 		notificationFound.save(function (err, notificationSaved){
-	 		if (err) return next(err);
-	 		res.status(200).json({
-	 			message : 'Le status de la notification est changé avec succès: ' + notificationSaved.status,
-	 			notification: notificationSaved 
-	 		}).end();
- 		});
+ 	Notification.findById(notifId, function (err, notificationFound){
+ 		if (err) return next(err);
+ 		if (!notificationFound) return res.status(404).json({ message : 'Notification non existante.' }).end();
+ 		if(notificationFound.status === 'not processed'){
+	 		notificationFound.status = 'refused';
+	 		notificationFound.save(function (err, notificationSaved){
+		 		if (err) return next(err);
+		 		return res.status(200).json({
+		 			message : 'Le status de la notification est changé avec succès: ' + notificationSaved.status,
+		 			notification: notificationSaved 
+		 		}).end();
+	 		});
+ 		} else {
+ 			return res.status(403).json({
+ 				message : 'Vous avez déjà traité cette demande.'
+ 			});
+ 		}
  	});
  };
 
  /**
  * Remove a notification
+ * restriction : 'staff'
  */
  exports.destroy = function(req, res, next){
- 	
+ 	var notifId = req.params.id;
 
+ 	Notification.remove(notifId, function (err){
+ 		if (!err) {
+ 			return res.status(200).json({
+ 				message: 'La notification a été supprimée avec succès.'
+ 			}).end();
+ 		}else{
+ 			return res.status(500).json({
+ 				message: 'Une erreur à la suppression de la notification s\'est produite.'
+ 			}).end();
+ 		}
+ 	});
  };
 
 function convertNotification(notif){
