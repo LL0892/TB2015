@@ -2,28 +2,28 @@
  * Using Rails-like standard naming convention for endpoints.
  
  --- Prestations routes ---
- * GET     /prestation              	->  index
- * POST    /prestation              	->  create
- * GET     /prestation/:id          	->  show
- * PUT     /prestation/:id          	->  update
- * PUT	   /prestation/:id/status   	->  status
- * DELETE  /prestation/					->	destroy
+ * GET     /prestations              	->  index
+ * POST    /prestations              	->  create
+ * GET     /prestations/:id          	->  show
+ * PUT     /prestations/:id          	->  update
+ * PUT	   /prestations/:id/status   	->  status
+ * DELETE  /prestations/				->	destroy
 
  --- Prices routes ---
- * POST    /prestation/:id/prices     		->  addPrice
- * GET     /prestation/:id/prices/:idPrice 	->  getPrice
- * PUT     /prestation/:id/prices/:idPrice 	->  updatePrice
- * DELETE  /prestation/:id/prices/:idPrice 	->  deletePrice
+ * POST    /prestations/:id/prices     		    ->  addPrice
+ * GET     /prestations/:id/prices/:idPrice 	->  getPrice
+ * PUT     /prestations/:id/prices/:idPrice 	->  updatePrice
+ * DELETE  /prestations/:id/prices/:idPrice 	->  deletePrice
  */
 
 'use strict';
 
 var Prestation = require('./prestation.model');
-//var Price = require('./prestation.model').Price;
 
 // --- Prestation controller ---
+
 /**
- * Get a list of prestation
+ * Get a list of prestations
  */
  exports.index = function(req, res, next){
   Prestation.find({}, function (err, prestationsFound) {
@@ -44,7 +44,7 @@ var Prestation = require('./prestation.model');
 		shortDescription : req.body.shortDescription,
 		description: req.body.description,
 		duration: req.body.duration,
-		businessID: req.body.businessID,
+		businessID: req.staff.businessID,
 		//price: new Price(),
 		isActive: true
  	});
@@ -88,7 +88,7 @@ var Prestation = require('./prestation.model');
 		prestationFound.shortDescription = req.body.shortDescription,
 		prestationFound.description = req.body.description,
 		prestationFound.duration = req.body.duration,
-		prestationFound.businessID = req.body.businessID
+		prestationFound.businessID = req.staff.businessID
 
 		prestationFound.save(function(err, prestationUpdated){
 	 		if (err) return next(err);

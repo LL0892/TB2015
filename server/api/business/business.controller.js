@@ -2,20 +2,38 @@
  * Using Rails-like standard naming convention for endpoints.
 
  --- Business routes ---
- * GET     /businesses              	->  index
- * POST    /businesses              	->  create
- * GET     /businesses/:id          	->  show
- * PUT     /businesses/:id          	->  update
- * PUT	   /businesses/:id/status   	->  status
+ * GET     /businesses              	->  getBusinesses
+ * POST    /businesses              	->  createBusiness
+ * GET     /businesses/:id          	->  showBusiness
+ * PUT     /businesses/:id          	->  updateBusiness
+ * PUT	   /businesses/:id/status   	->  statusBusiness
 
  --- Schedule routes ---
  * GET  	/businesses/:id/schedules 				->  getSchedules
  * POST     /businesses/:id/Schedules  				->  addSchedule
- * GET      /businesses/:id/schedules/:scheduleId  	->  getSchedule
+ * GET      /businesses/:id/schedules/:scheduleId  	->  showSchedule
  * PUT      /businesses/:id/schedules/:scheduleId  	->  updateSchedule
  * DELETE   /businesses/:id/schedules/:scheduleId  	->  deleteSchedule
 
- --- Staff affiliation routes ---
+ --- Staff routes ---
+ * GET		/businesses/:id/staffs
+ * PUT		/businesses/:id/staffs/:staffId/status
+
+ --- Prestations routes ---
+ * GET 		/businesses/:id/prestations
+ * POST 	/businesses/:id/prestations
+ * GET 		/businesses/:id/prestations/:prestationId
+ * PUT 		/businesses/:id/prestations/:prestationId
+ * PUT 		/businesses/:id/prestations/:prestationId/status
+ * DELETE 	/businesses/:id/prestations
+ --- Price subdocument ---
+ * POST 	/businesses/:id/prestations/:prestationId/prices
+ * GET 		/businesses/:id/prestations/:prestationId/prices/:priceId
+ * PUT 		/businesses/:id/prestations/:prestationId/prices/:priceId
+ * DELETE 	/businesses/:id/prestations/:prestationId/prices/:priceId
+
+
+ --- Rendezvous (Staff) routes ---
  Todo
 
  --- Test auth.hasAccess ---
@@ -29,11 +47,14 @@
 
 var Business = require('./business.model');
 
+
+
 // --- Business Controller ---
+
 /**
 * Get a list of business
 */
- exports.index = function(req, res, next){
+ exports.getBusinesses = function(req, res, next){
  	Business.find({}, function (err, businessesFound){
  		if(err) return res.send(500, err);
  		res.status(200).json({ businesses: businessesFound }).end();
@@ -44,7 +65,7 @@ var Business = require('./business.model');
  * Create a new business
  * restriction: 'manager'
  */
- exports.create = function(req, res, next){
+ exports.createBusiness = function(req, res, next){
  	var userID = req.user._id;
 
  	Business.find({
@@ -148,7 +169,7 @@ var Business = require('./business.model');
  /**
  * Get a single business
  */
- exports.show = function(req, res, next){
+ exports.showBusiness = function(req, res, next){
  	var businessId = req.params.id;
 
  	Business.findById(businessId, function (err, businessFound){
@@ -162,7 +183,7 @@ var Business = require('./business.model');
  * Update a business
  * restriction: 'staff'
  */
- exports.update = function(req, res, next){
+ exports.updateBusiness = function(req, res, next){
  	var businessId = req.params.id;
 
  	Business.findById(businessId, function (err, businessFound){
@@ -195,7 +216,7 @@ var Business = require('./business.model');
  * Change the business status
  * restriction : 'staff'
  */
- exports.status = function(req, res, next){
+ exports.statusBusiness = function(req, res, next){
  	var businessId = req.params.id;
 
  	Business.findById(businessId, function (err, businessFound){
@@ -220,6 +241,7 @@ var Business = require('./business.model');
 
 
 // --- Schedule Controller ---
+
 /**
 * Get a list of schedules for this business
 * restriction : 'staff'
@@ -272,7 +294,7 @@ exports.addSchedule = function(req, res, next){
 * Get a single schedule for this business
 * restriction : 'staff'
 */
-exports.getSchedule = function(req, res, next){
+exports.showSchedule = function(req, res, next){
 	var businessId = req.params.id,
 		scheduleId = req.params.scheduleId;
 
@@ -351,10 +373,10 @@ exports.deleteSchedule = function(req, res, next){
 	});
 };
 
-// --- Staff affiliation routes ---
-// TODO
+
 
 // --- Test auth.hasAccess ---
+
 exports.test = function(req, res, next){
 	return res.status(200).json({
 		message : 'test done.'
@@ -362,7 +384,24 @@ exports.test = function(req, res, next){
 }
 
 
+
+// --- Staff routes ---
+// Todo
+
+
+
+// --- Prestations routes ---
+// Todo
+
+
+
+// --- Rendezvous (Staff) routes ---
+// Todo
+
+
+
 // --- Business Applicative Service ---
+
 /**
 * Get a set of data for this business
 */

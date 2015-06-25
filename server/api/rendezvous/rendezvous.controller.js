@@ -13,7 +13,7 @@
  * POST    /rendezvous/book         ->  book
  * PUT     /rendezvous/:id/move     ->  move
  * PUT	   /rendezvous/:id/status   ->  status
- * DELETE  /prestation/:id			->	destroy
+ * DELETE  /rendezvous/:id			->	destroy
  */
 
 'use strict';

@@ -8,20 +8,26 @@ var auth = require('../../auth/auth.service');
 var router = express.Router();
 
 // --- Business routes ---
-router.get('/', controller.index);
-router.post('/', auth.hasRole('manager'), controller.create);
-router.get('/:id', auth.isAuthenticated(), controller.show);
-router.put('/:id', auth.hasRole('staff'), controller.update);
-router.put('/:id/status', auth.hasRole('staff'), controller.status);
+router.get('/', controller.getBusinesses);
+router.post('/', auth.hasRole('manager'), controller.createBusiness);
+router.get('/:id', auth.isAuthenticated(), controller.showBusiness);
+router.put('/:id', auth.hasRole('staff'), controller.updateBusiness);
+router.put('/:id/status', auth.hasRole('staff'), controller.statusBusiness);
 
 // --- Schedules routes ---
 router.get('/:id/schedules', auth.hasRole('staff'), controller.getSchedules);
 router.post('/:id/schedules', auth.hasRole('staff'), controller.addSchedule);
-router.get('/:id/schedules/:scheduleId', auth.hasRole('staff'), controller.getSchedule);
+router.get('/:id/schedules/:scheduleId', auth.hasRole('staff'), controller.showSchedule);
 router.put('/:id/schedules/:scheduleId', auth.hasRole('staff'), controller.updateSchedule);
 router.delete('/:id/schedules/:scheduleId', auth.hasRole('staff'), controller.deleteSchedule);
 
-// --- Staff affiliation routes ---
+// --- Staff routes ---
+// Todo
+
+// --- Prestations routes ---
+// Todo
+
+// --- Rendezvous (Staff) routes ---
 // Todo
 
 // --- Test auth.hasAccess ---
