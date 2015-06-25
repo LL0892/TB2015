@@ -192,6 +192,8 @@ exports.status = function (req, res, next){
 
 			var i = 0;
 			var	isAllowed = false;
+
+			// Find the correct staff inside business staff array
 			do{
 				if(String(businessFound.staffs[i].staffId) === String(staffFound._id)){
 					businessFound.staffs[i].staffVisibility = staffFound.isActive;
