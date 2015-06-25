@@ -18,6 +18,9 @@
  --- Staff affiliation routes ---
  Todo
 
+ --- Test auth.hasAccess ---
+ * GET  	/businesses/:id/test 		->  test
+
  --- Business Applicative Services ---
  * POST		/businesses/:id/overview	->  overview
  */
@@ -350,6 +353,14 @@ exports.deleteSchedule = function(req, res, next){
 
 // --- Staff affiliation routes ---
 // TODO
+
+// --- Test auth.hasAccess ---
+exports.test = function(req, res, next){
+	return res.status(200).json({
+		message : 'test done.'
+	});
+}
+
 
 // --- Business Applicative Service ---
 /**

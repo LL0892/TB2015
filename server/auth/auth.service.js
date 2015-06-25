@@ -39,11 +39,11 @@ function isAuthenticated() {
             if (err) return next(err);
             if(!staffFound) return res.status(500).json({ message : 'Une erreur s\'est produite.' });
             req.staff = staffFound;
-            console.log('staff attached');
+            //console.log('staff attached');
             next();
           });
         } else {
-          console.log('no staff attached');
+          //console.log('no staff attached');
           next();
         }
       });
@@ -78,10 +78,32 @@ function hasRole(roleRequired) {
       }
       else {
         //res.send(403);
-        res.status(403).json({ message: 'Vous ne disposez pas des droits de réaliser cette action.' });
+        res.status(403).json({ message: 'Vous n\'avez pas l\'autorisation d\'exécuter cette action.' });
       }
     });
 }
+
+/**
+* Checks if the staff can access this business ressource
+*/
+function hasAccess(roleRequired){
+    if (!roleRequired) throw new Error('Required role needs to be set');
+
+    return compose()
+      .use(hasRole(roleRequired))
+      .use(function hasAccess(req,res,next){
+        //console.log(req.params.id);
+        //console.log(req.staff.businessId);
+        //console.log(String(req.params.id) === String(req.staff.businessId));
+
+        if (String(req.params.id) === String(req.staff.businessId)) {
+          next();
+        } else {
+          res.status(403).json({ message: 'Vous n\'avez pas l\'autorisation d\'exécuter cette action.' });
+        }
+      });
+}
+
 
 /**
  * Returns a jwt token signed by the app secret
@@ -102,5 +124,6 @@ function setTokenCookie(req, res) {
 
 exports.isAuthenticated = isAuthenticated;
 exports.hasRole = hasRole;
+exports.hasAccess = hasAccess;
 exports.signToken = signToken;
 exports.setTokenCookie = setTokenCookie;

@@ -9,8 +9,8 @@ var router = express.Router();
 
 // --- Business routes ---
 router.get('/', controller.index);
-router.get('/:id', auth.isAuthenticated(), controller.show);
 router.post('/', auth.hasRole('manager'), controller.create);
+router.get('/:id', auth.isAuthenticated(), controller.show);
 router.put('/:id', auth.hasRole('staff'), controller.update);
 router.put('/:id/status', auth.hasRole('staff'), controller.status);
 
@@ -23,6 +23,9 @@ router.delete('/:id/schedules/:scheduleId', auth.hasRole('staff'), controller.de
 
 // --- Staff affiliation routes ---
 // Todo
+
+// --- Test auth.hasAccess ---
+router.get('/:id/test', auth.hasAccess('staff'), controller.test);
 
 // --- Business Applicative Services ---
 router.post('/overview', auth.isAuthenticated(), controller.overview);
