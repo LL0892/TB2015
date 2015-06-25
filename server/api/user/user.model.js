@@ -82,6 +82,13 @@ UserSchema
     };
   });
 
+// User fullname
+UserSchema
+  .virtual('fullname')
+  .get(function(){
+    return this.firstName + ' ' + this.lastName;
+  });
+
 // Non-sensitive info we'll be putting in the token
 UserSchema
   .virtual('token')

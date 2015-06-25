@@ -33,7 +33,9 @@ var validationError = function(res, err) {
 exports.index = function(req, res) {
   User.find({}, '-salt -hashedPassword', function (err, users) {
     if(err) return res.send(500, err);
-    res.json(200, users);
+    return res.status(200).json({
+      utilisateurs : users.profile
+    }).end();
   });
 };
 
@@ -83,7 +85,7 @@ exports.update = function(req, res, next) {
 
       return res.status(200).json({
         message: 'Profil utilisateur modifié avec succès.',
-        profil : userUpdated
+        profil : userUpdated.profile
       }).end();
     });
   
@@ -168,7 +170,9 @@ exports.show = function (req, res, next) {
   User.findById(userId, function (err, user) {
     if (err) return next(err);
     if (!user) return res.send(401);
-    res.json(user.profile);
+    return res.status(200).json({
+      utilisateur : user.profile
+    }).end();
   });
 };
 
