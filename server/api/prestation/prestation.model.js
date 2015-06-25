@@ -13,7 +13,7 @@ var PriceSchema = new Schema({
   ageLowLimit: { type: Number, default: '1' },
   ageHighLimit: { type: Number, default: '99' },
   price: { type: Number, default: '1' },
-  gender: { type: String, enum: ['Homme', 'Femme', 'Mixte'], default: 'Mixte' }
+  gender: { type: String, enum: ['homme', 'femme', 'mixte'], default: 'mixte' }
 });
 
 // Schema Prestation

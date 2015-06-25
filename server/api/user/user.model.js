@@ -11,6 +11,7 @@ var UserSchema = new Schema({
   lastName: { type: String, required: true },
   email: { type: String, required: true, lowercase: true },
   dateOfBirth: { type: Date, required: true },
+  gender: { type: String, enum: ['homme', 'femme'], required: true },
   
   roles: { type: [String], default: 'user', enum: ['user', 'staff', 'manager', 'admin'] },
   hashedPassword: String,
@@ -65,8 +66,19 @@ UserSchema
   .virtual('profile')
   .get(function() {
     return {
-      'name': this.name,
-      'roles': this.roles
+      '_id': this._id,
+      'firstName': this.firstName,
+      'lastName': this.lastName,
+      'email': this.email,
+      'dateOfBirth': this.dateOfBirth,
+      'gender': this.gender,
+      'phone': this.phone,
+      'mobile': this.mobile,
+      'city': this.city,
+      'street': this.street,
+      'canton': this.canton,
+      'zip': this.zip,
+      'imageProfileURL': this.imageProfileURL
     };
   });
 

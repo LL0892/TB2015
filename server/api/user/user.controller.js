@@ -69,13 +69,14 @@ exports.update = function(req, res, next) {
     userFound.firstName = req.body.firstName;
     userFound.lastName = req.body.lastName;
     userFound.dateOfBirth = req.body.dateOfBirth;
-    userFound.phone = req.body.phone
-    userFound.mobile = req.body.mobile
-    userFound.city = req.body.city
-    userFound.street = req.body.street
-    userFound.canton = req.body.canton
-    userFound.zip = req.body.zip
-    userFound.imageProfileURL = req.body.imageProfileURL
+    userFound.gender = req.body.gender;
+    userFound.phone = req.body.phone;
+    userFound.mobile = req.body.mobile;
+    userFound.city = req.body.city;
+    userFound.street = req.body.street;
+    userFound.canton = req.body.canton;
+    userFound.zip = req.body.zip;
+    userFound.imageProfileURL = req.body.imageProfileURL;
 
     userFound.save(function (err, userUpdated){
       if (err) return next(err);
@@ -98,6 +99,7 @@ exports.create = function (req, res, next) {
     lastName: req.body.lastName,
     email: req.body.email,
     dateOfBirth: req.body.dateOfBirth,
+    gender: req.body.gender,
     password: req.body.password,
     phone: req.body.phone,
     mobile: req.body.mobile,
@@ -132,6 +134,7 @@ exports.createManager = function (req, res, next){
     lastName: req.body.lastName,
     email: req.body.email,
     dateOfBirth: req.body.dateOfBirth,
+    gender: req.body.gender,
     password: req.body.password,
     phone: req.body.phone,
     mobile: req.body.mobile,
