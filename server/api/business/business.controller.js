@@ -34,6 +34,13 @@
 
 
  --- Rendezvous (Staff) routes ---
+ * GET 		/businesses/:id/rendezvous
+ * POST 	/businesses/:id/rendezvous
+ * GET 		/businesses/:id/rendezvous/:rdvId
+ * PUT 		/businesses/:id/rendezvous/:rdvId/missed
+ * PUT 		/businesses/:id/rendezvous/:rdvId/finished
+ * PUT 		/businesses/:id/rendezvous/:rdvId/cancelled
+ * PUT 		/businesses/:id/rendezvous/:rdvId/move
  Todo
 
  --- Test auth.hasAccess ---
