@@ -84,7 +84,7 @@ function hasRole(roleRequired) {
 }
 
 /**
-* Checks if the staff can access this business ressource
+* Checks if the staff can access this business ressource and there is a staff profile created
 */
 function hasAccess(roleRequired){
     if (!roleRequired) throw new Error('Required role needs to be set');
@@ -92,15 +92,21 @@ function hasAccess(roleRequired){
     return compose()
       .use(hasRole(roleRequired))
       .use(function hasAccess(req,res,next){
-        //console.log(req.params.id);
-        //console.log(req.staff.businessId);
-        //console.log(String(req.params.id) === String(req.staff.businessId));
 
-        if (String(req.params.id) === String(req.staff.businessId)) {
-          next();
-        } else {
-          res.status(403).json({ message: 'Vous n\'avez pas l\'autorisation d\'exécuter cette action.' });
+        // if staff profile doesn't exist
+        if(!req.staff){
+          res.status(403).json({ message: 'Vous devez créer votre profil staff pour exécuter cette action.' }); 
+        } 
+        else {
+          // Check if business id in params match business id in staff profile
+          if (String(req.params.id) === String(req.staff.businessId)) {
+            next();
+          } 
+          else {
+            res.status(403).json({ message: 'Vous n\'avez pas l\'autorisation d\'exécuter cette action.' });
+          }
         }
+
       });
 }
 
