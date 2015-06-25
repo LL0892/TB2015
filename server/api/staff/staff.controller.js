@@ -171,6 +171,7 @@ exports.update = function (req, res, next){
 exports.status = function (req, res, next){
  	var staffId = req.params.id;
  	var businessId = req.staff.businessId;
+ 	// businessId = req.params.businessId;
 
  	Staff.findOne(staffId, function (err, staffFound){
  		if(err) return res.send(500, err);
@@ -193,7 +194,7 @@ exports.status = function (req, res, next){
 			var i = 0;
 			var	isAllowed = false;
 
-			// Find the correct staff inside business staff array
+			// Find the correct staff inside business staff array and change the visibility value
 			do{
 				if(String(businessFound.staffs[i].staffId) === String(staffFound._id)){
 					businessFound.staffs[i].staffVisibility = staffFound.isActive;
