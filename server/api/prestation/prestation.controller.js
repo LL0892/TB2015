@@ -44,7 +44,7 @@ var Prestation = require('./prestation.model');
 		shortDescription : req.body.shortDescription,
 		description: req.body.description,
 		duration: req.body.duration,
-		businessID: req.staff.businessID,
+		businessId: req.staff.businessId,
 		//price: new Price(),
 		isActive: true
  	});
@@ -88,7 +88,7 @@ var Prestation = require('./prestation.model');
 		prestationFound.shortDescription = req.body.shortDescription,
 		prestationFound.description = req.body.description,
 		prestationFound.duration = req.body.duration,
-		prestationFound.businessID = req.staff.businessID
+		prestationFound.businessId = req.staff.businessId
 
 		prestationFound.save(function(err, prestationUpdated){
 	 		if (err) return next(err);
