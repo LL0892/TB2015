@@ -28,6 +28,7 @@ var Prestation = require('./prestation.model');
  exports.index = function(req, res, next){
   Prestation.find({}, function (err, prestationsFound) {
     if(err) { return handleError(res, err); }
+    if (prestationsFound.length <= 0) return res.status(404).json({ message : 'Il n\'y a pas de prestations à afficher.' });
     return res.status(200).json({
     	prestations: prestationsFound
     }).end();
@@ -38,7 +39,7 @@ var Prestation = require('./prestation.model');
  * Create a new prestation
  * restriction: 'staff'
  */
- exports.create = function(req, res, next){
+/* exports.create = function(req, res, next){
  	var newPrestation = new Prestation({
 		name: req.body.name,
 		shortDescription : req.body.shortDescription,
@@ -46,7 +47,7 @@ var Prestation = require('./prestation.model');
 		duration: req.body.duration,
 		businessId: req.staff.businessId,
 		//price: new Price(),
-		isActive: true
+		isActive: false
  	});
 
  	newPrestation.save(function (err, prestationSaved){
@@ -56,7 +57,7 @@ var Prestation = require('./prestation.model');
  			prestation : prestationSaved
  		}).end();
  	});
- };
+ };*/
 
 /**
  * Get a single prestation
@@ -67,7 +68,7 @@ var Prestation = require('./prestation.model');
 	Prestation.findById(prestationId, function (err, prestationFound) {
 		if (err) return next(err);
 		if (!prestationFound) return res.status(404).json({ message : 'Prestation non existante.' });
-		res.status(200).json({
+		return res.status(200).json({
 			prestation : prestationFound
 		}).end();
 	});
@@ -77,7 +78,7 @@ var Prestation = require('./prestation.model');
  * Update a prestation
  * restriction: 'staff'
  */
- exports.update = function(req, res, next){
+/* exports.update = function(req, res, next){
  	var prestationId = req.params.id;
 
  	Prestation.findById(prestationId, function (err, prestationFound){
@@ -98,13 +99,13 @@ var Prestation = require('./prestation.model');
 	 		}).end();
 		});
  	});
- };
+ };*/
 
 /**
  * Change the prestation status
  * restriction: 'staff'
  */
- exports.status = function(req, res, next){
+/* exports.status = function(req, res, next){
  	var prestationId = req.params.id;
 
  	Prestation.findById(prestationId, function (err, prestationFound){
@@ -125,15 +126,15 @@ var Prestation = require('./prestation.model');
 	 		}).end();
 		});
  	});
- };
+ };*/
 
 /**
  * Remove a prestation
  * restriction: 'manager'
  */
- exports.destroy = function(req, res, next){
+/* exports.destroy = function(req, res, next){
 
- };
+ };*/
 
 // --- Price controller ---
  /**

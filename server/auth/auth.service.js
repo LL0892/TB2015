@@ -100,6 +100,7 @@ function hasAccess(roleRequired){
         else {
           // Check if business id in params match business id in staff profile
           if (String(req.params.id) === String(req.staff.businessId)) {
+            console.log('auth ok');
             next();
           } 
           else {

@@ -21,8 +21,8 @@
  * DELETE	/businesses/:id/staffs/:staffId		 		->  deleteStaff
 
  --- Prestations routes ---
- * GET 		/businesses/:id/Prestations 						->  getPrestations
- * POST 	/businesses/:id/Prestations 						->  createPrestation
+ * GET 		/businesses/:id/prestations 						->  getPrestations
+ * POST 	/businesses/:id/prestations 						->  createPrestation
  * GET 		/businesses/:id/prestations/:prestationId			->  showPrestation
  * PUT 		/businesses/:id/prestations/:prestationId			->  updatePrestation
  * PUT 		/businesses/:id/prestations/:prestationId/status 	->  statusPrestation
@@ -57,7 +57,8 @@
 'use strict';
 
 var Business = require('./business.model');
-
+var Staff = require('../staff/staff.model');
+var Prestation = require('../prestation/prestation.model');
 
 
 // --- Business routes ------------
@@ -69,6 +70,7 @@ var Business = require('./business.model');
  exports.getBusinesses = function(req, res, next){
  	Business.find({}, function (err, businessesFound){
  		if(err) return res.send(500, err);
+ 		if(businessesFound.length <= 0) return res.status(404).json({ message : 'Il n\'y a pas de salons à afficher.' });
  		res.status(200).json({ businesses: businessesFound }).end();
  	});
  };
@@ -269,7 +271,7 @@ exports.getSchedules = function(req, res, next){
 	Business.findById(businessId, function (err, businessFound){
 		if(err) return res.send(500, err);
 		if(!businessFound) return res.status(404).json({ message : 'Ce salon n\'existe pas.' });
-		if(!businessFound.schedules) return res.status(404).json({ message : 'Aucun horaire à afficher.' });
+		if(businessFound.schedules.length <= 0) return res.status(404).json({ message : 'Aucun horaire à afficher.' });
 
 		res.status(200).json({
 			horaires : businessFound.schedules
@@ -404,7 +406,15 @@ exports.deleteSchedule = function(req, res, next){
 * restriction : 'staff'
 */
 exports.getStaffs = function(req, res, next){
+	var businessId = req.params.id;
 
+	Staff.find({businessId : businessId}, function (err, staffsFound){
+		if (err) next(err);
+		if (staffsFound.length <= 0) return res.status(404).json({ message : 'Il n\'y a pas de staffs à afficher.' });
+		return res.status(200).json({ 
+			staffs: staffsFound
+		}).end();
+	});
 };
 
 /**
@@ -413,7 +423,15 @@ exports.getStaffs = function(req, res, next){
 * restriction : 'staff'
 */
 exports.showStaff = function(req, res, next){
+	var staffId = req.params.staffId;
 
+	Staff.findById(staffId, function (err, staffFound){
+		if (err) next(err);
+		if (!staffFound) return res.status(404).json({ message : 'Il n\'y a pas de staffs à afficher.' });
+		return res.status(200).json({ 
+			staff: staffFound
+		}).end();
+	});
 };
 
 /**
@@ -422,7 +440,61 @@ exports.showStaff = function(req, res, next){
 * restriction : 'staff'
 */
 exports.statusStaff = function(req, res, next){
+ 	var businessId = req.params.id,
+ 		staffId = req.params.staffId;
 
+ 	Staff.findOne(staffId, function (err, staffFound){
+ 		if(err) return res.send(500, err);
+		if(!staffFound) return res.status(404).json({
+			message : 'ce staff n\'existe pas.'
+		});
+
+ 		if (staffFound.isActive === false) {
+ 			staffFound.isActive = true;
+ 		} else {
+ 			staffFound.isActive = false;
+ 		}
+
+ 		Business.findById(businessId, function(err, businessFound){
+ 			if(err) return res.send(500, err);
+			if(!businessFound) return res.status(404).json({
+				message : 'Le salon ou doit travailler ce staff n\'existe pas.'
+			});
+
+			var i = 0;
+			var	isAllowed = false;
+
+			// Find the correct staff inside business staff array and change the visibility value
+			do{
+				if(String(businessFound.staffs[i].staffId) === String(staffFound._id)){
+					businessFound.staffs[i].staffVisibility = staffFound.isActive;
+					businessFound.save(function(err, businessUpdated){
+						if (err) return next(err);
+					});
+
+					isAllowed = true;
+				}
+
+				i++;
+			}while(i <= businessFound.staffs.length-1 && isAllowed === false);
+
+			// if allowed to update this staff
+			if (isAllowed === true) {
+		 		staffFound.save(function (err, staffUpdated){
+		 			if (err) return next(err);
+
+		 			return res.status(200).json({ 
+		 				message: 'Le status de '+ staffUpdated.name +' a été correctement modifié. Prise de rendez-vous possible :' + staffUpdated.isActive
+		 			}).end();
+		 		});
+			} else {
+				return res.status(403).json({
+					message : 'Vous n\'avez pas l\'autorisation de modifier d\'éléments liés à ce salon.'
+				}).end();
+			}
+
+ 		});
+ 	});
 };
 
 /**
@@ -431,7 +503,7 @@ exports.statusStaff = function(req, res, next){
 * restriction : 'staff'
 */
 exports.deleteStaff = function(req, res, next){
- return res.status(403).json({ message : 'fonction non implémentée.'}).end();
+	return res.status(501).json({ message : 'fonction non implémentée.'}).end();
 };
 
 
@@ -439,21 +511,45 @@ exports.deleteStaff = function(req, res, next){
 // --- Prestations routes ------------
 
 /**
-* GET 	/businesses/:id/Prestations
+* GET 	/businesses/:id/prestations
 * Get a list of prestations for this business
 * restriction : 'staff'
 */
 exports.getPrestations = function(req, res, next){
+	var businessId = req.params.id;
 
+	Prestation.find({businessId : businessId}, function (err, prestationsFound){
+		if (err) next(err);
+		if (prestationsFound.length <= 0) return res.status(404).json({ message : 'Il n\'y a pas de prestations à afficher.' });
+		return res.status(200).json({ 
+			prestations: prestationsFound
+		}).end();
+	});
 };
 
 /**
-* POST 	/businesses/:id/Prestations
+* POST 	/businesses/:id/prestations
 * Create a prestation for this business
 * restriction : 'staff'
 */
 exports.createPrestation = function(req, res, next){
+ 	var newPrestation = new Prestation({
+		name: req.body.name,
+		shortDescription : req.body.shortDescription,
+		description: req.body.description,
+		duration: req.body.duration,
+		businessId: req.staff.businessId,
+		//price: new Price(),
+		isActive: false
+ 	});
 
+ 	newPrestation.save(function (err, prestationSaved){
+ 		if (err) return next(err);
+ 		return res.status(201).json({
+ 			message : 'La prestation a été ajoutée avec succès. <br/> Les prix sont modifiable via le menu de gestion des prestations.',
+ 			prestation : prestationSaved
+ 		}).end();
+ 	});
 };
 
 /**
@@ -462,7 +558,15 @@ exports.createPrestation = function(req, res, next){
 * restriction : 'staff'
 */
 exports.showPrestation = function(req, res, next){
+	var prestationId = req.params.prestationId;
 
+	Prestation.findById(prestationId, function (err, prestationFound){
+		if (err) return next(err);
+		if (!prestationFound) return res.status(404).json({ message : 'Prestation non existante.' });
+		return res.status(200).json({
+			prestation : prestationFound
+		}).end();
+	});
 };
 
 /**
@@ -471,7 +575,25 @@ exports.showPrestation = function(req, res, next){
 * restriction : 'staff'
 */
 exports.updatePrestation = function(req, res, next){
+ 	var prestationId = req.params.prestationId;
 
+ 	Prestation.findById(prestationId, function (err, prestationFound){
+ 		if (err) return next(err);
+		if (!prestationFound) return res.status(404).json({ message : 'Prestation non existante.' });
+ 		
+		prestationFound.name = req.body.name,
+		prestationFound.shortDescription = req.body.shortDescription,
+		prestationFound.description = req.body.description,
+		prestationFound.duration = req.body.duration
+
+		prestationFound.save(function(err, prestationUpdated){
+	 		if (err) return next(err);
+	 		res.status(200).json({
+	 			message : 'La prestation a été modifiée avec succès. <br/> Les prix sont modifiable via le menu de gestion des prestations.',
+	 			prestation : prestationUpdated
+	 		}).end();
+		});
+ 	});
 };
 
 /**
@@ -480,7 +602,26 @@ exports.updatePrestation = function(req, res, next){
 * restriction : 'staff'
 */
 exports.statusPrestation = function(req, res, next){
+ 	var prestationId = req.params.prestationId;
 
+ 	Prestation.findById(prestationId, function (err, prestationFound){
+ 		if (err) return next(err);
+		if (!prestationFound) return res.status(404).json({ message : 'Prestation non existante.' });
+ 		
+ 		if (prestationFound.isActive === false) {
+ 			prestationFound.isActive = true;
+ 		} else {
+ 			prestationFound.isActive = false;
+ 		}
+
+		prestationFound.save(function(err, prestationUpdated){
+	 		if (err) return next(err);
+	 		res.status(200).json({
+	 			message : 'Le status de la prestation a été modifiée avec succès. Visibilité par la clientèle : ' + prestationUpdated.isActive,
+	 			prestation : prestationUpdated
+	 		}).end();
+		});
+ 	});
 };
 
 /**

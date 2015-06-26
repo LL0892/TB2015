@@ -4,7 +4,6 @@
  * GET     /staffs/me           ->  me
  * PUT	   /staffs/me 			->	update
  * GET     /staffs/:id          ->  show
- \* PUT     /staffs/:id/status   ->  status
  */
 
 'use strict';
@@ -16,6 +15,7 @@ var mongoose = require('mongoose');
 
 
 /*
+* POST    /staffs
 * Create a new Staff
 * restriction: 'staff'
 */
@@ -39,7 +39,7 @@ exports.create = function (req, res, next) {
 				},
 				photoStaffURL: req.body.photoStaffURL,
 				businessId: req.body.businessId,
-				isActive: true
+				isActive: false
 			});
 
 			// Check business is existant
@@ -73,9 +73,7 @@ exports.create = function (req, res, next) {
 					if (err) return next(err);
 
 					return res.status(201).json({
-						message : 'Votre profil staff a été crée avec succès.',
-						user: userUpdated,
-						staff: staffSaved
+						message : 'Votre profil staff a été crée avec succès.'
 					}).end();
 				});
 			});
@@ -89,6 +87,7 @@ exports.create = function (req, res, next) {
 };
 
 /*
+* GET     /staffs/me
 * Get my staff profile
 * restriction: 'staff'
 */
@@ -105,6 +104,7 @@ exports.me = function(req, res, next){
 };
 
 /*
+* PUT     /staffs/me
 * Update my staff profile
 * restriction : 'staff'
 */
@@ -136,6 +136,7 @@ exports.update = function (req, res, next){
 };
 
 /*
+* GET     /staffs/:id
 * Get a single staff profile
 */
 exports.show = function(req, res, next){
@@ -148,70 +149,6 @@ exports.show = function(req, res, next){
 			staff : staffFound
 		}).end();
 	})
-};
-
-/*
-* Change the status of this staff (and the public status in business)
-* restriction : 'staff'
-*/
-exports.status = function (req, res, next){
- 	var staffId = req.params.id;
- 	var businessId = req.staff.businessId;
- 	// businessId = req.params.businessId;
-
- 	Staff.findOne(staffId, function (err, staffFound){
- 		if(err) return res.send(500, err);
-		if(!staffFound) return res.status(404).json({
-			message : 'ce staff n\'existe pas.'
-		});
-
- 		if (staffFound.isActive === false) {
- 			staffFound.isActive = true;
- 		} else {
- 			staffFound.isActive = false;
- 		}
-
- 		Business.findById(businessId, function(err, businessFound){
- 			if(err) return res.send(500, err);
-			if(!businessFound) return res.status(404).json({
-				message : 'Le salon ou doit travailler ce staff n\'existe pas.'
-			});
-
-			var i = 0;
-			var	isAllowed = false;
-
-			// Find the correct staff inside business staff array and change the visibility value
-			do{
-				if(String(businessFound.staffs[i].staffId) === String(staffFound._id)){
-					businessFound.staffs[i].staffVisibility = staffFound.isActive;
-					businessFound.save(function(err, businessUpdated){
-						if (err) return next(err);
-					});
-
-					isAllowed = true;
-				}
-
-				i++;
-			}while(i <= businessFound.staffs.length-1 && isAllowed === false);
-
-			// if allowed to update this staff
-			if (isAllowed === true) {
-		 		staffFound.save(function (err, staffUpdated){
-		 			if (err) return next(err);
-
-		 			return res.status(200).json({ 
-		 				message: 'Le status de '+ staffUpdated.name +' a été correctement modifié. Prise de rendez-vous possible :' + staffUpdated.isActive, 
-		 				staff: staffUpdated 
-		 			}).end();
-		 		});
-			} else {
-				return res.status(403).json({
-					message : 'Vous n\'avez pas l\'autorisation de modifier d\'éléments liés à ce salon.'
-				}).end();
-			}
-
- 		});
- 	});
 };
 
 function handleError(res, err) {

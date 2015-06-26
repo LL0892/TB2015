@@ -9,11 +9,11 @@ var router = express.Router();
 
 // --- Prestations routes ---
 router.get('/', auth.isAuthenticated(), controller.index);
-router.post('/', auth.hasRole('staff'), controller.create);
+//router.post('/', auth.hasRole('staff'), controller.create);
 router.get('/:id', auth.isAuthenticated(), controller.show);
-router.put('/:id', auth.hasRole('staff'), controller.update);
-router.put('/:id/status', auth.hasRole('staff'), controller.status);
-router.delete('/:id', auth.hasRole('manager'), controller.destroy);
+//router.put('/:id', auth.hasRole('staff'), controller.update);
+//router.put('/:id/status', auth.hasRole('staff'), controller.status);
+//router.delete('/:id', auth.hasRole('manager'), controller.destroy);
 
 // --- Prices routes ---
 router.post('/:id/prices', auth.hasRole('staff'), controller.addPrice);
