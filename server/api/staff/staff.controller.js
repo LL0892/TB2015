@@ -14,51 +14,6 @@ var User = require('../user/user.model');
 var Business = require('../business/business.model');
 var mongoose = require('mongoose');
 
-/*
-* Get a list of staff from a business
-* UNUSED NOW
-*/
-exports.index = function (req, res, next){
- 	Staff.find({
- 		businessId: req.body.businessId
- 	}, '-createdOn -updatedOn', function (err, staffsFound){
- 		if(err) return res.send(500, err);
-		return res.status(200).json({
-			staffs : staffsFound
-		}).end();
- 	});
-};
-
-/*
-* Get a single staff profile
-*/
-exports.show = function(req, res, next){
-	var staffId = req.params.id;
-
-	Staff.findById(staffId, function (err, staffFound){
-		if(err) return handleError(res, err);
-		if(!staffFound) return res.status(404).json({ message : 'Ce staff n\'existe pas.' });
-		return res.status(200).json({
-			staff : staffFound
-		}).end();
-	})
-};
-
-/*
-* Get my staff profile
-* restriction: 'staff'
-*/
-exports.me = function(req, res, next){
-	var staffId = req.user.staffId;
-
-	Staff.findById(staffId, function (err, staffFound){
-		if(err) return handleError(res, err);
-		if(!staffFound) return res.status(404).json({ message : 'Vous n\'avez pas de profil staff existant.' });
-		return res.status(200).json({
-			staff : staffFound
-		}).end();
-	});
-};
 
 /*
 * Create a new Staff
@@ -134,6 +89,22 @@ exports.create = function (req, res, next) {
 };
 
 /*
+* Get my staff profile
+* restriction: 'staff'
+*/
+exports.me = function(req, res, next){
+	var staffId = req.user.staffId;
+
+	Staff.findById(staffId, function (err, staffFound){
+		if(err) return handleError(res, err);
+		if(!staffFound) return res.status(404).json({ message : 'Vous n\'avez pas de profil staff existant.' });
+		return res.status(200).json({
+			staff : staffFound
+		}).end();
+	});
+};
+
+/*
 * Update my staff profile
 * restriction : 'staff'
 */
@@ -162,6 +133,21 @@ exports.update = function (req, res, next){
 			});
 		});
 	});
+};
+
+/*
+* Get a single staff profile
+*/
+exports.show = function(req, res, next){
+	var staffId = req.params.id;
+
+	Staff.findById(staffId, function (err, staffFound){
+		if(err) return handleError(res, err);
+		if(!staffFound) return res.status(404).json({ message : 'Ce staff n\'existe pas.' });
+		return res.status(200).json({
+			staff : staffFound
+		}).end();
+	})
 };
 
 /*

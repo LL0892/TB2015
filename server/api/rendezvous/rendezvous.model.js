@@ -19,7 +19,7 @@ var RendezvousSchema = new Schema({
 	clientId: { type: Schema.Types.ObjectId, ref: 'user', required: true },
 	staffId: { type: Schema.Types.ObjectId, ref: 'user', required: true },
 	prestationRdvId: { type: Schema.Types.ObjectId, ref: 'prestationRdv' },
-	status: { type: String, default: 'reserved' },
+	status: { type: String, default: 'reservé', enum: ['reservé', 'annulé', 'terminé', 'déplacé', 'manqué'] },
 
 	recurance: {
 		loopStatus: { type: Boolean, default: false },

@@ -10,7 +10,7 @@
  \* DELETE /prestations/				->	destroy
 
  --- Prices routes ---
- \* POST    /prestations/:id/prices     		    ->  addPrice
+ \* POST    /prestations/:id/prices     		->  addPrice
  \* GET     /prestations/:id/prices/:idPrice 	->  getPrice
  \* PUT     /prestations/:id/prices/:idPrice 	->  updatePrice
  \* DELETE  /prestations/:id/prices/:idPrice 	->  deletePrice

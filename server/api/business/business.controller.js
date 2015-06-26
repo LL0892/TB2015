@@ -44,7 +44,7 @@
  * DELETE 	/businesses/:id/rendezvous/:rdvId/				->  deleteRendevous
 
  --- Notification routes ---
- * POST 	/businesses/:id/notifications/				->  getNotifications
+ * POST 	/businesses/:id/notifications				->  getNotifications
  * DELETE 	/businesses/:id/notifications/:notifId		->  deleteNotification
 
  --- Test auth.hasAccess ---
@@ -388,46 +388,86 @@ exports.deleteSchedule = function(req, res, next){
 
 // --- Staffs routes ------------
 
+/**
+* Get a list of staffs for this business
+* restriction : 'staff'
+*/
 exports.getStaffs = function(req, res, next){
 
 };
 
+/**
+* Get a single staff for this business
+* restriction : 'staff'
+*/
 exports.showStaff = function(req, res, next){
 
 };
 
+/**
+* Update a staff status for this business
+* restriction : 'staff'
+*/
 exports.statusStaff = function(req, res, next){
 
 };
 
+/**
+* Delete a staff for this business
+* restriction : 'staff'
+*/
 exports.deleteStaff = function(req, res, next){
-
+ return res.status(403).json({ message : 'fonction non implémentée.'}).end();
 };
 
 
 
 // --- Prestations routes ------------
 
+/**
+* Get a list of prestations for this business
+* restriction : 'staff'
+*/
 exports.getPrestations = function(req, res, next){
 
 };
 
+/**
+* Create a prestation for this business
+* restriction : 'staff'
+*/
 exports.createPrestation = function(req, res, next){
 
 };
 
+/**
+* Get a single prestation for this business
+* restriction : 'staff'
+*/
 exports.showPrestation = function(req, res, next){
 
 };
 
+/**
+* Update a prestation for this business
+* restriction : 'staff'
+*/
 exports.updatePrestation = function(req, res, next){
 
 };
 
+/**
+* Change the prestation status for this business
+* restriction : 'staff'
+*/
 exports.statusPrestation = function(req, res, next){
 
 };
 
+/**
+* Delete a prestation for this business
+* restriction : 'staff'
+*/
 exports.deletePrestation = function(req, res, next){
 
 };
@@ -436,18 +476,34 @@ exports.deletePrestation = function(req, res, next){
 
 // --- Prices subdocument routes ------------
 
+/**
+* Create a price category (inside a prestation) for this business
+* restriction : 'staff'
+*/
 exports.createPrice = function(req, res, next){
 
 };
 
+/**
+* Get a single price category (inside a prestation) for this business
+* restriction : 'staff'
+*/
 exports.showPrice = function(req, res, next){
 
 };
 
+/**
+* Update a price category (inside a prestation) for this business
+* restriction : 'staff'
+*/
 exports.updatePrice = function(req, res, next){
 
 };
 
+/**
+* Delete a price category (inside a prestation) for this business
+* restriction : 'staff'
+*/
 exports.deletePrice = function(req, res, next){
 
 };
@@ -456,34 +512,66 @@ exports.deletePrice = function(req, res, next){
 
 // --- Rendezvous routes ------------
 
+/**
+* Get a list of rendezvous for this business
+* restriction : 'staff'
+*/
 exports.getRendezvous = function(req, res, next){
 
 };
 
+/**
+* Create a rendezvous for this business
+* restriction : 'staff'
+*/
 exports.createRendezvous = function(req, res, next){
 
 };
 
+/**
+* Get a single rendezvous for this business
+* restriction : 'staff'
+*/
 exports.showRendezvous = function(req, res, next){
 
 };
 
+/**
+* Update the rendezvous status to 'manqué' for this business
+* restriction : 'staff'
+*/
 exports.rendezvousMissed = function(req, res, next){
 
 };
 
+/**
+* Update the rendezvous status to 'terminé' for this business
+* restriction : 'staff'
+*/
 exports.rendezvousFinished = function(req, res, next){
 
 };
 
+/**
+* Update the rendezvous status to 'annulé' for this business
+* restriction : 'staff'
+*/
 exports.rendezvousCancelled = function(req, res, next){
 
 };
 
+/**
+* Update the rendezvous date & status to 'déplacé' for this business
+* restriction : 'staff'
+*/
 exports.moveRendezvous = function(req, res, next){
 
 };
 
+/**
+* Delete a rendezvous for this business
+* restriction : 'staff'
+*/
 exports.deleteRendevous = function(req, res, next){
 
 };
@@ -492,10 +580,18 @@ exports.deleteRendevous = function(req, res, next){
 
 // --- Notification routes ------------
 
+/**
+* Get a list of notifications for this business
+* restriction : 'staff'
+*/
 exports.getNotifications = function(req, res, next){
 
 };
 
+/**
+* Delete a notification for this business
+* restriction : 'staff'
+*/
 exports.deleteNotification = function(req, res, next){
 
 };
