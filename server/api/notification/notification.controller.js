@@ -21,9 +21,7 @@ var Notification = require('./notification.model'),
  	var userId = req.user._id;
 
 	var query = Notification.find({
-		'sentTo': {
-	  		$in: [userId]
-	  	}
+		'sentTo': userId
 	}).select(
 		'-createdOn -updatedOn -__v'
 	);

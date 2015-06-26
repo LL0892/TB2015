@@ -203,7 +203,7 @@ var Notification = require('../notification/notification.model');
  * restriction: 'staff'
  */
  exports.updateBusiness = function(req, res, next){
- 	var businessId = req.params.id;
+ 	var businessId = req.staff.businessId;
 
  	Business.findById(businessId, function (err, businessFound){
  		if(!businessFound) return res.status(404).json({ message : 'Ce salon n\'existe pas.' });
@@ -237,7 +237,7 @@ var Notification = require('../notification/notification.model');
  * restriction : 'staff'
  */
  exports.statusBusiness = function(req, res, next){
- 	var businessId = req.params.id;
+ 	var businessId = req.staff.businessId;
 
  	Business.findById(businessId, function (err, businessFound){
  		if(!businessFound) return res.status(404).json({ message : 'Ce salon n\'existe pas.' });
@@ -408,7 +408,7 @@ exports.deleteSchedule = function(req, res, next){
 * restriction : 'staff'
 */
 exports.getStaffs = function(req, res, next){
-	var businessId = req.params.id;
+	var businessId = req.staff.businessId;
 
 	Staff.find({businessId : businessId}, function (err, staffsFound){
 		if(err) return res.send(500, err);
@@ -425,9 +425,10 @@ exports.getStaffs = function(req, res, next){
 * restriction : 'staff'
 */
 exports.showStaff = function(req, res, next){
-	var staffId = req.params.staffId;
+	var staffId = req.params.staffId,
+		businessId = req.staff.businessId;
 
-	Staff.findById(staffId, function (err, staffFound){
+	Staff.findOne({_id: staffId, businessId: businessId}, function (err, staffFound){
 		if(err) return res.send(500, err);
 		if (!staffFound) return res.status(404).json({ message : 'Il n\'y a pas de staffs à afficher.' });
 		return res.status(200).json({ 
@@ -442,10 +443,10 @@ exports.showStaff = function(req, res, next){
 * restriction : 'staff'
 */
 exports.statusStaff = function(req, res, next){
- 	var businessId = req.params.id,
+ 	var businessId = req.staff.businessId,
  		staffId = req.params.staffId;
 
- 	Staff.findOne(staffId, function (err, staffFound){
+ 	Staff.findOne({_id: staffId, businessId: businessId}, function (err, staffFound){
  		if(err) return res.send(500, err);
 		if(!staffFound) return res.status(404).json({
 			message : 'ce staff n\'existe pas.'
@@ -518,7 +519,7 @@ exports.deleteStaff = function(req, res, next){
 * restriction : 'staff'
 */
 exports.getPrestations = function(req, res, next){
-	var businessId = req.params.id;
+	var businessId = req.staff.businessId;
 
 	Prestation.find({businessId : businessId}, function (err, prestationsFound){
 		if(err) return res.send(500, err);
@@ -535,12 +536,14 @@ exports.getPrestations = function(req, res, next){
 * restriction : 'staff'
 */
 exports.createPrestation = function(req, res, next){
+	var businessId = req.staff.businessId;
+
  	var newPrestation = new Prestation({
 		name: req.body.name,
 		shortDescription : req.body.shortDescription,
 		description: req.body.description,
 		duration: req.body.duration,
-		businessId: req.staff.businessId,
+		businessId: businessId,
 		//price: new Price(),
 		isActive: false
  	});
@@ -560,9 +563,10 @@ exports.createPrestation = function(req, res, next){
 * restriction : 'staff'
 */
 exports.showPrestation = function(req, res, next){
-	var prestationId = req.params.prestationId;
+	var prestationId = req.params.prestationId,
+		businessId = req.staff.businessId;
 
-	Prestation.findById(prestationId, function (err, prestationFound){
+	Prestation.findOne({_id: prestationId, businessId: businessId}, function (err, prestationFound){
 		if(err) return res.send(500, err);
 		if (!prestationFound) return res.status(404).json({ message : 'Prestation non existante.' });
 		return res.status(200).json({
@@ -577,9 +581,10 @@ exports.showPrestation = function(req, res, next){
 * restriction : 'staff'
 */
 exports.updatePrestation = function(req, res, next){
- 	var prestationId = req.params.prestationId;
+ 	var prestationId = req.params.prestationId,
+ 		businessId = req.staff.businessId;
 
- 	Prestation.findById(prestationId, function (err, prestationFound){
+ 	Prestation.findOne({_id: prestationId, businessId: businessId}, function (err, prestationFound){
  		if(err) return res.send(500, err);
 		if (!prestationFound) return res.status(404).json({ message : 'Prestation non existante.' });
  		
@@ -604,9 +609,10 @@ exports.updatePrestation = function(req, res, next){
 * restriction : 'staff'
 */
 exports.statusPrestation = function(req, res, next){
- 	var prestationId = req.params.prestationId;
+ 	var prestationId = req.params.prestationId,
+ 		businessId = req.staff.businessId;
 
- 	Prestation.findById(prestationId, function (err, prestationFound){
+ 	Prestation.findOne({_id: prestationId, businessId: businessId}, function (err, prestationFound){
  		if(err) return res.send(500, err);
 		if (!prestationFound) return res.status(404).json({ message : 'Prestation non existante.' });
  		
@@ -645,9 +651,10 @@ exports.deletePrestation = function(req, res, next){
 * restriction : 'staff'
 */
 exports.createPrice = function(req, res, next){
- 	var prestationId = req.params.prestationId;
+ 	var prestationId = req.params.prestationId,
+ 		businessId = req.staff.businessId;
 
-	Prestation.findById(prestationId, function (err, prestationFound){
+	Prestation.findOne({_id: prestationId, businessId: businessId}, function (err, prestationFound){
 		if(err) return res.send(500, err);
 		if (!prestationFound) return res.status(404).json({ message : 'Prestation non existante.' });
 
@@ -676,9 +683,10 @@ exports.createPrice = function(req, res, next){
 */
 exports.showPrice = function(req, res, next){
  	var prestationId = req.params.prestationId,
+ 	 	businessId = req.staff.businessId,
  		priceId = req.params.priceId;
 
-	Prestation.findById(prestationId, function (err, prestationFound){
+	Prestation.findOne({_id: prestationId, businessId: businessId}, function (err, prestationFound){
 		if(err) return res.send(500, err);
 		if (!prestationFound) return res.status(404).json({ message : 'Prestation non existante.' });
 		if (!prestationFound.prices.id(priceId)) return res.status(404).json({ message : 'Prix demandé non existant.' });
@@ -696,9 +704,10 @@ exports.showPrice = function(req, res, next){
 */
 exports.updatePrice = function(req, res, next){
  	var prestationId = req.params.prestationId,
+ 	 	businessId = req.staff.businessId,
  		priceId = req.params.priceId;
 
-	Prestation.findById(prestationId, function (err, prestationFound){
+	Prestation.findOne({_id: prestationId, businessId: businessId}, function (err, prestationFound){
 		if(err) return res.send(500, err);
 		if (!prestationFound) return res.status(404).json({ message : 'Prestation non existante.' });
 		if (!prestationFound.prices.id(priceId)) return res.status(404).json({ message : 'Prix demandé non existant.' });
@@ -726,9 +735,10 @@ exports.updatePrice = function(req, res, next){
 */
 exports.deletePrice = function(req, res, next){
  	var prestationId = req.params.prestationId,
+ 	 	businessId = req.staff.businessId,
  		priceId = req.params.priceId;
 
-	Prestation.findById(prestationId, function (err, prestationFound){
+	Prestation.findOne({_id: prestationId, businessId: businessId}, function (err, prestationFound){
 		if(err) return res.send(500, err);
 		if (!prestationFound) return res.status(404).json({ message : 'Prestation non existante.' });
 		if (!prestationFound.prices.id(priceId)) return res.status(404).json({ message : 'Prix demandé non existant.' });
