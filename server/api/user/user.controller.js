@@ -162,7 +162,6 @@ exports.createManager = function (req, res, next){
 
 /**
  * Get a single user
- * restriction: 'staff'
  */
 exports.show = function (req, res, next) {
   var userId = req.params.id;

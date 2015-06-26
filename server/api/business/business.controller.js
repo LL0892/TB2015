@@ -2,21 +2,21 @@
  * Using Rails-like standard naming convention for endpoints.
 
  --- Business routes ---
- * GET     /businesses              	->  getBusinesses
- * POST    /businesses              	->  createBusiness
- * GET     /businesses/:id          	->  showBusiness
- * PUT     /businesses/:id          	->  updateBusiness
- * PUT	   /businesses/:id/status   	->  statusBusiness
-
- --- Schedule routes ---
+ * GET     /businesses              				->  getBusinesses
+ * POST    /businesses              				->  createBusiness
+ * GET     /businesses/:id          				->  showBusiness
+ * PUT     /businesses/:id          				->  updateBusiness
+ * PUT	   /businesses/:id/status   				->  statusBusiness
+ --- Schedules subdocument routes ---
  * GET  	/businesses/:id/schedules 				->  getSchedules
  * POST     /businesses/:id/Schedules  				->  addSchedule
  * GET      /businesses/:id/schedules/:scheduleId  	->  showSchedule
  * PUT      /businesses/:id/schedules/:scheduleId  	->  updateSchedule
  * DELETE   /businesses/:id/schedules/:scheduleId  	->  deleteSchedule
 
- --- Staff routes ---
- * GET		/businesses/:id/staffs
+ --- Staffs routes ---
+ * GET		/businesses/:id/staffs (+ get notifs for this business)
+ * GET		/businesses/:id/staffs/:staffId
  * PUT		/businesses/:id/staffs/:staffId/status
 
  --- Prestations routes ---
@@ -26,14 +26,13 @@
  * PUT 		/businesses/:id/prestations/:prestationId
  * PUT 		/businesses/:id/prestations/:prestationId/status
  * DELETE 	/businesses/:id/prestations
- --- Price subdocument ---
+ --- Prices subdocument routes ---
  * POST 	/businesses/:id/prestations/:prestationId/prices
  * GET 		/businesses/:id/prestations/:prestationId/prices/:priceId
  * PUT 		/businesses/:id/prestations/:prestationId/prices/:priceId
  * DELETE 	/businesses/:id/prestations/:prestationId/prices/:priceId
 
-
- --- Rendezvous (Staff) routes ---
+ --- Rendezvous routes ---
  * GET 		/businesses/:id/rendezvous
  * POST 	/businesses/:id/rendezvous
  * GET 		/businesses/:id/rendezvous/:rdvId
@@ -41,7 +40,10 @@
  * PUT 		/businesses/:id/rendezvous/:rdvId/finished
  * PUT 		/businesses/:id/rendezvous/:rdvId/cancelled
  * PUT 		/businesses/:id/rendezvous/:rdvId/move
- Todo
+ * DELETE 	/businesses/:id/rendezvous/:rdvId/
+
+ --- Notification routes ---
+ // todo
 
  --- Test auth.hasAccess ---
  * GET  	/businesses/:id/test 		->  test
@@ -56,7 +58,7 @@ var Business = require('./business.model');
 
 
 
-// --- Business Controller ---
+// --- Business routes ---
 
 /**
 * Get a list of business
@@ -247,7 +249,7 @@ var Business = require('./business.model');
  };
 
 
-// --- Schedule Controller ---
+// --- Schedules subdocument routes ---
 
 /**
 * Get a list of schedules for this business
@@ -392,7 +394,7 @@ exports.test = function(req, res, next){
 
 
 
-// --- Staff routes ---
+// --- Staffs routes ---
 // Todo
 
 
@@ -401,8 +403,17 @@ exports.test = function(req, res, next){
 // Todo
 
 
+// --- Prices subdocument routes ---
+// Todo
 
-// --- Rendezvous (Staff) routes ---
+
+
+// --- Rendezvous routes ---
+// Todo
+
+
+
+// --- Notification routes ---
 // Todo
 
 

@@ -3,17 +3,17 @@
  
  --- Prestations routes ---
  * GET     /prestations              	->  index
- * POST    /prestations              	->  create
+ \* POST   /prestations              	->  create
  * GET     /prestations/:id          	->  show
- * PUT     /prestations/:id          	->  update
- * PUT	   /prestations/:id/status   	->  status
- * DELETE  /prestations/				->	destroy
+ \* PUT     /prestations/:id          	->  update
+ \* PUT	   /prestations/:id/status   	->  status
+ \* DELETE /prestations/				->	destroy
 
  --- Prices routes ---
- * POST    /prestations/:id/prices     		    ->  addPrice
- * GET     /prestations/:id/prices/:idPrice 	->  getPrice
- * PUT     /prestations/:id/prices/:idPrice 	->  updatePrice
- * DELETE  /prestations/:id/prices/:idPrice 	->  deletePrice
+ \* POST    /prestations/:id/prices     		    ->  addPrice
+ \* GET     /prestations/:id/prices/:idPrice 	->  getPrice
+ \* PUT     /prestations/:id/prices/:idPrice 	->  updatePrice
+ \* DELETE  /prestations/:id/prices/:idPrice 	->  deletePrice
  */
 
 'use strict';

@@ -4,7 +4,7 @@
  * GET     /staffs/me           ->  me
  * PUT	   /staffs/me 			->	update
  * GET     /staffs/:id          ->  show
- * PUT     /staffs/:id/status   ->  status
+ \* PUT     /staffs/:id/status   ->  status
  */
 
 'use strict';

@@ -1,7 +1,7 @@
 /**
  * Using Rails-like standard naming convention for endpoints.
  * GET     /notifications              ->  index
- * POST    /notifications              ->  create
+ \* POST   /notifications              ->  create
  * GET	   /notifications/:id   	   ->  show
  * PUT	   /notifications/:id/accepted ->  accepted
  * PUT	   /notifications/:id/refused  ->  refused

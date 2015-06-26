@@ -2,18 +2,17 @@
  * Using Rails-like standard naming convention for endpoints.
 
  --- User routes ---
- * GET     /rendezvous              ->  index
- * GET     /rendezvous/me           ->  me
+ * GET     /rendezvous/me           ->  index
  * POST    /rendezvous              ->  create
  * GET     /rendezvous/:id          ->  show
  * PUT     /rendezvous/:id          ->  update
 
  --- Staff routes ---
- * GET     /rendezvous/myRdv        ->  myRdv
- * POST    /rendezvous/book         ->  book
- * PUT     /rendezvous/:id/move     ->  move
- * PUT	   /rendezvous/:id/status   ->  status
- * DELETE  /rendezvous/:id			->	destroy
+ /* GET     /rendezvous/myRdv        ->  myRdv
+ /* POST    /rendezvous/book         ->  book
+ /* PUT     /rendezvous/:id/move     ->  move
+ /* PUT	   /rendezvous/:id/status   ->  status
+ /* DELETE  /rendezvous/:id			->	destroy
  */
 
 'use strict';
@@ -24,16 +23,9 @@ var prestationRdv = require('../prestationRdv/prestationRdv.model');
 // --- User routes ---
 
 /**
- * Get a list of rendezvous
+ * Get a list of my rendezvous
  */
  exports.index = function(req, res){
-
- };
-
-/**
- * Get a list my rendezvous
- */
- exports.me = function(req, res){
 
  };
 
