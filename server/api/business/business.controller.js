@@ -15,35 +15,37 @@
  * DELETE   /businesses/:id/schedules/:scheduleId  	->  deleteSchedule
 
  --- Staffs routes ---
- * GET		/businesses/:id/staffs (+ get notifs for this business)
- * GET		/businesses/:id/staffs/:staffId
- * PUT		/businesses/:id/staffs/:staffId/status
+ * GET		/businesses/:id/staffs						->  getStaffs
+ * GET		/businesses/:id/staffs/:staffId				->  showStaff
+ * PUT		/businesses/:id/staffs/:staffId/status 		->  statusStaff
+ (* DELETE	/businesses/:id/staffs/:staffId		 		->  deleteStaff)
 
  --- Prestations routes ---
- * GET 		/businesses/:id/prestations
- * POST 	/businesses/:id/prestations
- * GET 		/businesses/:id/prestations/:prestationId
- * PUT 		/businesses/:id/prestations/:prestationId
- * PUT 		/businesses/:id/prestations/:prestationId/status
- * DELETE 	/businesses/:id/prestations
+ * GET 		/businesses/:id/Prestations 						->  getPrestations
+ * POST 	/businesses/:id/Prestations 						->  createPrestation
+ * GET 		/businesses/:id/prestations/:prestationId			->  showPrestation
+ * PUT 		/businesses/:id/prestations/:prestationId			->  updatePrestation
+ * PUT 		/businesses/:id/prestations/:prestationId/status 	->  statusPrestation
+ * DELETE 	/businesses/:id/prestations 						->  deletePrestation
  --- Prices subdocument routes ---
- * POST 	/businesses/:id/prestations/:prestationId/prices
- * GET 		/businesses/:id/prestations/:prestationId/prices/:priceId
- * PUT 		/businesses/:id/prestations/:prestationId/prices/:priceId
- * DELETE 	/businesses/:id/prestations/:prestationId/prices/:priceId
+ * POST 	/businesses/:id/prestations/:prestationId/prices 			->  createPrice
+ * GET 		/businesses/:id/prestations/:prestationId/prices/:priceId	->  showPrice
+ * PUT 		/businesses/:id/prestations/:prestationId/prices/:priceId	->  updatePrice
+ * DELETE 	/businesses/:id/prestations/:prestationId/prices/:priceId	->  deletePrice
 
  --- Rendezvous routes ---
- * GET 		/businesses/:id/rendezvous
- * POST 	/businesses/:id/rendezvous
- * GET 		/businesses/:id/rendezvous/:rdvId
- * PUT 		/businesses/:id/rendezvous/:rdvId/missed
- * PUT 		/businesses/:id/rendezvous/:rdvId/finished
- * PUT 		/businesses/:id/rendezvous/:rdvId/cancelled
- * PUT 		/businesses/:id/rendezvous/:rdvId/move
- * DELETE 	/businesses/:id/rendezvous/:rdvId/
+ * GET 		/businesses/:id/rendezvous 						->  getRendezvous
+ * POST 	/businesses/:id/rendezvous 						->  createRendezvous
+ * GET 		/businesses/:id/rendezvous/:rdvId 				->  showRendezvous
+ * PUT 		/businesses/:id/rendezvous/:rdvId/missed		->  rendezvousMissed
+ * PUT 		/businesses/:id/rendezvous/:rdvId/finished		->  rendezvousFinished
+ * PUT 		/businesses/:id/rendezvous/:rdvId/cancelled 	->  rendezvousCancelled
+ * PUT 		/businesses/:id/rendezvous/:rdvId/move			->  moveRendezvous
+ * DELETE 	/businesses/:id/rendezvous/:rdvId/				->  deleteRendevous
 
  --- Notification routes ---
- // todo
+ * POST 	/businesses/:id/notifications/				->  getNotifications
+ * DELETE 	/businesses/:id/notifications/:notifId		->  deleteNotification
 
  --- Test auth.hasAccess ---
  * GET  	/businesses/:id/test 		->  test
@@ -58,7 +60,7 @@ var Business = require('./business.model');
 
 
 
-// --- Business routes ---
+// --- Business routes ------------
 
 /**
 * Get a list of business
@@ -249,7 +251,7 @@ var Business = require('./business.model');
  };
 
 
-// --- Schedules subdocument routes ---
+// --- Schedules subdocument routes ------------
 
 /**
 * Get a list of schedules for this business
@@ -384,7 +386,123 @@ exports.deleteSchedule = function(req, res, next){
 
 
 
-// --- Test auth.hasAccess ---
+// --- Staffs routes ------------
+
+exports.getStaffs = function(req, res, next){
+
+};
+
+exports.showStaff = function(req, res, next){
+
+};
+
+exports.statusStaff = function(req, res, next){
+
+};
+
+exports.deleteStaff = function(req, res, next){
+
+};
+
+
+
+// --- Prestations routes ------------
+
+exports.getPrestations = function(req, res, next){
+
+};
+
+exports.createPrestation = function(req, res, next){
+
+};
+
+exports.showPrestation = function(req, res, next){
+
+};
+
+exports.updatePrestation = function(req, res, next){
+
+};
+
+exports.statusPrestation = function(req, res, next){
+
+};
+
+exports.deletePrestation = function(req, res, next){
+
+};
+
+
+
+// --- Prices subdocument routes ------------
+
+exports.createPrice = function(req, res, next){
+
+};
+
+exports.showPrice = function(req, res, next){
+
+};
+
+exports.updatePrice = function(req, res, next){
+
+};
+
+exports.deletePrice = function(req, res, next){
+
+};
+
+
+
+// --- Rendezvous routes ------------
+
+exports.getRendezvous = function(req, res, next){
+
+};
+
+exports.createRendezvous = function(req, res, next){
+
+};
+
+exports.showRendezvous = function(req, res, next){
+
+};
+
+exports.rendezvousMissed = function(req, res, next){
+
+};
+
+exports.rendezvousFinished = function(req, res, next){
+
+};
+
+exports.rendezvousCancelled = function(req, res, next){
+
+};
+
+exports.moveRendezvous = function(req, res, next){
+
+};
+
+exports.deleteRendevous = function(req, res, next){
+
+};
+
+
+
+// --- Notification routes ------------
+
+exports.getNotifications = function(req, res, next){
+
+};
+
+exports.deleteNotification = function(req, res, next){
+
+};
+
+
+
+// --- Test auth.hasAccess ------------
 
 exports.test = function(req, res, next){
 	return res.status(200).json({
@@ -394,31 +512,7 @@ exports.test = function(req, res, next){
 
 
 
-// --- Staffs routes ---
-// Todo
-
-
-
-// --- Prestations routes ---
-// Todo
-
-
-// --- Prices subdocument routes ---
-// Todo
-
-
-
-// --- Rendezvous routes ---
-// Todo
-
-
-
-// --- Notification routes ---
-// Todo
-
-
-
-// --- Business Applicative Service ---
+// --- Business Applicative Service ------------
 
 /**
 * Get a set of data for this business

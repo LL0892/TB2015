@@ -65,27 +65,6 @@ var BusinessSchema = new Schema({
 module.exports = mongoose.model('Business', BusinessSchema);
 
 /*
-* Validation
-*/
-
-// Validate user is not already a founder
-/*
-BusinessSchema
-  .path('founder')
-  .validate(function(value, respond){
-    var self = this;
-    this.constructor.findOne({founder: value}, function(err, businessFound){
-      if(err) throw err;
-      if(businessFound){
-        if(self.founder === this.founder) return respond(true);
-        return respond(false);
-      }
-      respond(true);
-    });
-  }, 'You did already create an other business in the past.');
-  */
-
-/*
 * Pre-save hook
 */
 BusinessSchema
