@@ -193,9 +193,7 @@ var Notification = require('./notification.model'),
  				message: 'La notification a été supprimée avec succès.'
  			}).end();
  		}else{
- 			return res.status(500).json({
- 				message: 'Une erreur à la suppression de la notification s\'est produite.'
- 			}).end();
+ 			return res.send(500, err);
  		}
  	});
  };

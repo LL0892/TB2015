@@ -831,7 +831,18 @@ exports.deleteRendevous = function(req, res, next){
 * restriction : 'staff'
 */
 exports.getNotifications = function(req, res, next){
+	var businessId = req.staff.businessId;
 
+	Notification.find({ 'business.businessId': businessId }, function (err, notificationsFound){
+		if(err) return res.send(500, err);
+		if (notificationsFound.length <= 0) return res.status(404).json({ 
+			message : 'Il n\'y a pas de notification à afficher.'
+		}).end();
+		
+		res.status(200).json({
+			notifications : notificationsFound
+		}).end();
+	});
 };
 
 /**
@@ -866,11 +877,6 @@ exports.createNotification = function(req, res, next){
 			}
 	 	});
 
-	 	// Check if the receptor exist
-	 	//User.findById(req.body.sentTo, function (err, userFound){
-
-	 	//});
-
 	 	newNotification.save(function (err, notificationSaved){
 	 		if(err) return res.send(500, err);
 	 		return res.status(201).json({
@@ -887,7 +893,23 @@ exports.createNotification = function(req, res, next){
 * restriction : 'staff'
 */
 exports.deleteNotification = function(req, res, next){
+	var businessId = req.staff.businessId,
+		notifId = req.params.notifId;
 
+ 	Notification.remove({_id: notifId, 'business.businessId': businessId}, function (err, notificationRemoved){
+ 		if(!notificationRemoved){
+ 			return res.status(404).json({
+ 				message : 'Cette notification n\'existe pas.'
+ 			}).end();
+ 		}
+ 		if (!err) {
+ 			return res.status(204).json({
+ 				message: 'La notification a été supprimée avec succès.'
+ 			}).end();
+ 		}else{
+			return res.send(500, err);
+ 		}
+ 	});
 };
 
 
