@@ -1,7 +1,8 @@
 'use strict';
 
 var mongoose = require('mongoose'),
-    Schema = mongoose.Schema;
+    Schema = mongoose.Schema,
+    User = require('../user/user.model');
 
 var NotificationSchema = new Schema({
 	createdOn: { type: Date, default: Date.now },
@@ -41,3 +42,32 @@ NotificationSchema
     this.updatedOn = Date.now();
     next();
   });
+
+/*NotificationSchema.pre('save', function (next) {
+  var self = this;
+  User.find({_id : self.sentTo}, function (err, userExists) {
+      if (!userExists.length){
+        next(new Error('Le recepteur n\'existe pas!'));
+      }else{                
+        next();
+      }
+  });
+});*/
+
+/*
+* Validations
+*/
+
+// Validate sentTo field is existant
+NotificationSchema
+  .path('sentTo')
+  .validate(function(value, respond) {
+    var self = this;
+    User.findOne({_id : self.sentTo}, function(err, userExists) {
+      if(err) throw err;
+      if(!userExists) {
+        return respond(false);
+      }
+      respond(true);
+    });
+}, 'Le recepteur n\'existe pas.');

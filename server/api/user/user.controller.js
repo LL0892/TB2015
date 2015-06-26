@@ -47,7 +47,7 @@ exports.me = function(req, res, next) {
   User.findOne({
     _id: userId
   }, '-salt -hashedPassword', function (err, user) { // don't ever give out the password or salt
-    if (err) return next(err);
+    if(err) return res.send(500, err);
     if(!userFound) return res.status(401).json({ message : 'Vous n\'êtes pas connecté.' }).end();
 
     return res.status(200).json({
@@ -64,7 +64,7 @@ exports.update = function(req, res, next) {
   var userId = req.user._id;
 
   User.findById(userId, '-salt -hashedPassword', function (err, userFound){
-    if (err) return next(err);
+    if(err) return res.send(500, err);
     if(!userFound) return res.status(401).json({ message : 'Vous n\'êtes pas connecté.' }).end();
 
     // Update datas
@@ -81,7 +81,7 @@ exports.update = function(req, res, next) {
     userFound.imageProfileURL = req.body.imageProfileURL;
 
     userFound.save(function (err, userUpdated){
-      if (err) return next(err);
+      if(err) return res.send(500, err);
 
       return res.status(200).json({
         message: 'Profil utilisateur modifié avec succès.',
@@ -167,7 +167,7 @@ exports.show = function (req, res, next) {
   var userId = req.params.id;
 
   User.findById(userId, function (err, user) {
-    if (err) return next(err);
+    if(err) return res.send(500, err);
     if (!user) return res.send(401);
     return res.status(200).json({
       utilisateur : user.profile
@@ -217,7 +217,7 @@ exports.changeEmail = function(req, res, next) {
   var newEmail = req.body.email;
 
   User.findById(userId, function (err, userFound) {
-    if(err) next(err);
+    if(err) return res.send(500, err);
 
     userFound.email = newEmail;
     userFound.save(function (err){
@@ -236,7 +236,7 @@ exports.preferenceDisplay = function(req, res, next) {
   var userId = req.user._id;
 
   User.findById(userId, function (err, userFound){
-    if(err) next(err);
+    if(err) return res.send(500, err);
 
     userFound.preferences.homeDisplay = req.body.homeDisplay;
     userFound.save(function (err, userUpdated){
@@ -255,7 +255,7 @@ exports.preferenceFavorite = function(req, res, next){
   var userId = req.user._id;
 
   User.findById(userId, function (err, userFound){
-    if(err) next(err);
+    if(err) return res.send(500, err);
 
     userFound.preferences.favorite = req.body.businessId;
     userFound.save(function (err, userUpdated){

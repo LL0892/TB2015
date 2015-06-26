@@ -52,7 +52,8 @@ router.put('/:id/rendezvous/:rdvId/move', auth.hasAccess('staff'), controller.mo
 router.delete('/:id/rendezvous/:rdvId/', auth.hasAccess('staff'), controller.deleteRendevous);
 
 // --- Notification routes ---
-router.post('/:id/notifications/', auth.hasAccess('staff'), controller.getNotifications);
+router.get('/:id/notifications', auth.hasAccess('staff'), controller.getNotifications);
+router.post('/:id/notifications', auth.hasAccess('staff'), controller.createNotification);
 router.delete('/:id/notifications/:notifId', auth.hasAccess('staff'), controller.deleteNotification);
 
 // --- Test auth.hasAccess ---

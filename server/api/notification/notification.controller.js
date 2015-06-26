@@ -29,7 +29,7 @@ var Notification = require('./notification.model'),
 	);
 
 	query.exec(function (err, notificationsFound) {
-	    if (err) return next(err);
+	    if(err) return res.send(500, err);
 	    if (notificationsFound.length < 1) return res.status(404).json({
 	    	message : 'Il n\'y a pas de notification à afficher.'
 	    }).end();
@@ -44,13 +44,13 @@ var Notification = require('./notification.model'),
  * Create a new notification
  * restriction : 'staff'
  */
- exports.create = function(req, res, next){
+/* exports.create = function(req, res, next){
  	var staffId = req.staff._id,
  		businessId = req.staff.businessId,
 		staffName = String(req.staff.name);
 
  	Business.findById(businessId, function (err, businessFound){
- 		if(err) return next(err);
+ 		if(err) return res.send(500, err);
  		if(!businessFound) return res.status(403).json({
  			message : 'Vous n\'avez pas les droits d\'ajouter une personne au staff sans avoir un profil staff.'
  		}).end();
@@ -72,14 +72,14 @@ var Notification = require('./notification.model'),
 	 	});
 
 	 	newNotification.save(function (err, notificationSaved){
-	 		if (err) return next(err);
+	 		if(err) return res.send(500, err);
 	 		return res.status(201).json({
 	 			message: 'La notification fut envoyée avec succès pour le salon : '+ notificationSaved.business.businessName + '.',
 	 			notification: notificationSaved
 	 		}).end();
 	 	});
  	});
- };
+ };*/
 
  /**
  * Get a notification, change viewed boolean if false, or just show the notif.
@@ -88,13 +88,13 @@ var Notification = require('./notification.model'),
  	var notifId = req.params.id;
 
  	Notification.findById(notifId, function (err, notificationFound){
- 		if (err) return next(err);
+ 		if(err) return res.send(500, err);
  		if (!notificationFound) return res.status(404).json({ message : 'Notification non existante.' }).end();
  		
  		if(notificationFound.isViewed === false){
 	 		notificationFound.isViewed = true;
 	 		notificationFound.save(function (err, notificationSaved){
-		 		if (err) return next(err);
+		 		if(err) return res.send(500, err);
 		 		return res.status(200).json({
 		 			//message : 'La notification suivante désormais notifié comme lue.',
 		 			notification : notificationSaved
@@ -117,22 +117,22 @@ var Notification = require('./notification.model'),
  		userId = req.user._id;
 
  	Notification.findById(notifId, function (err, notificationFound){
- 		if (err) return next(err);
+ 		if(err) return res.send(500, err);
  		if (!notificationFound) return res.status(404).json({ message : 'Notification non existante.' }).end();
  		
  		if(notificationFound.status === 'not processed'){
 	 		notificationFound.status = 'accepted';
 	 		notificationFound.save(function (err, notificationSaved){
-		 		if (err) return next(err);
+		 		if(err) return res.send(500, err);
 
 		 		// Add staff role for this user
 		 		User.findById(userId, function (err, userFound){
-		 			if (err) return next(err);
+		 			if(err) return res.send(500, err);
 		 			if (!userFound) return res.status(404).json({ message : 'Vous n\'êtes pas connecté.' }).end();
 
 		 			userFound.roles.push('staff');
 		 			userFound.save(function (err, userSaved){
-		 				if (err) return next(err);
+		 				if(err) return res.send(500, err);
 		 			});
 		 		});
 
@@ -156,12 +156,12 @@ var Notification = require('./notification.model'),
  	var notifId = req.params.id;
 
  	Notification.findById(notifId, function (err, notificationFound){
- 		if (err) return next(err);
+ 		if(err) return res.send(500, err);
  		if (!notificationFound) return res.status(404).json({ message : 'Notification non existante.' }).end();
  		if(notificationFound.status === 'not processed'){
 	 		notificationFound.status = 'refused';
 	 		notificationFound.save(function (err, notificationSaved){
-		 		if (err) return next(err);
+		 		if(err) return res.send(500, err);
 		 		return res.status(200).json({
 		 			message : 'Le status de la notification a été mit à jours avec succès: ' + notificationSaved.status,
 		 			notification: notificationSaved 
@@ -199,16 +199,3 @@ var Notification = require('./notification.model'),
  		}
  	});
  };
-
-function convertNotification(notif){
-	return { 	
-		id: notif.id,
-	 	name: notif.name,
-	 	text: notif.text,
-	 	sentBy: notif.sentBy,
-	 	sentTo: notif.sentTo,
-	 	businessId: notif.businessId,
-	 	status: notif.status,
-	 	isViewed: notif.isViewed
-	}
-};

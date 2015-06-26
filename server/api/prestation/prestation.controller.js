@@ -27,7 +27,7 @@ var Prestation = require('./prestation.model');
  */
  exports.index = function(req, res, next){
   Prestation.find({}, function (err, prestationsFound) {
-    if(err) { return handleError(res, err); }
+    if(err) return res.send(500, err);
     if (prestationsFound.length <= 0) return res.status(404).json({ message : 'Il n\'y a pas de prestations à afficher.' });
     return res.status(200).json({
     	prestations: prestationsFound
@@ -66,7 +66,7 @@ var Prestation = require('./prestation.model');
  	var prestationId = req.params.id;
 
 	Prestation.findById(prestationId, function (err, prestationFound) {
-		if (err) return next(err);
+		if(err) return res.send(500, err);
 		if (!prestationFound) return res.status(404).json({ message : 'Prestation non existante.' });
 		return res.status(200).json({
 			prestation : prestationFound

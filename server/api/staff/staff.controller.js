@@ -24,7 +24,7 @@ exports.create = function (req, res, next) {
 	//console.log(userId);
 
 	User.findById(userId, function(err, userFound){
-		if(err) return next(err);
+		if(err) return res.send(500, err);
 		if(!userFound) return res.status(404).json({ message : 'Cet utilisateur n\'existe pas.' });
 
 		// If no staff profile already created
@@ -44,7 +44,7 @@ exports.create = function (req, res, next) {
 
 			// Check business is existant
 			Business.findById(req.body.businessId, function (err, businessFound){
-				if (err) return next(err);
+				if(err) return res.send(500, err);
 				if (!businessFound) { 
 					return res.status(404).json({
 						message: 'Le salon de coiffure demandé est introuvable.'
@@ -57,7 +57,7 @@ exports.create = function (req, res, next) {
 					});
 
 					businessFound.save(function (err, businessUpdated){
-						if (err) return next(err);
+						if(err) return res.send(500, err);
 						//console.log(businessUpdated);
 					});
 				}
@@ -65,12 +65,12 @@ exports.create = function (req, res, next) {
 
 			// Create the staff
 			newStaff.save(function (err, staffSaved){
-				if (err) return next(err);
+				if(err) return res.send(500, err);
 				
 				// Update User
 				userFound.staffId = staffSaved._id;
 				userFound.save(function (err, userUpdated){
-					if (err) return next(err);
+					if(err) return res.send(500, err);
 
 					return res.status(201).json({
 						message : 'Votre profil staff a été crée avec succès.'
@@ -95,7 +95,7 @@ exports.me = function(req, res, next){
 	var staffId = req.user.staffId;
 
 	Staff.findById(staffId, function (err, staffFound){
-		if(err) return handleError(res, err);
+		if(err) return res.send(500, err);
 		if(!staffFound) return res.status(404).json({ message : 'Vous n\'avez pas de profil staff existant.' });
 		return res.status(200).json({
 			staff : staffFound
@@ -126,7 +126,7 @@ exports.update = function (req, res, next){
 		staffFound.isActive = staffFound.isActive;
 
 		staffFound.save(function (err, staffUpdated){
-			if (err) return next(err);
+			if(err) return res.send(500, err);
 			return res.status(200).json({
 				message : 'Votre profil staff a été correctement modifié.',
 				staff: staffUpdated
@@ -143,14 +143,10 @@ exports.show = function(req, res, next){
 	var staffId = req.params.id;
 
 	Staff.findById(staffId, function (err, staffFound){
-		if(err) return handleError(res, err);
+		if(err) return res.send(500, err);
 		if(!staffFound) return res.status(404).json({ message : 'Ce staff n\'existe pas.' });
 		return res.status(200).json({
 			staff : staffFound
 		}).end();
 	})
 };
-
-function handleError(res, err) {
-  return res.send(500, err);
-}

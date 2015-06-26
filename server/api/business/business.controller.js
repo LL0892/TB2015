@@ -60,6 +60,7 @@
 var Business = require('./business.model');
 var Staff = require('../staff/staff.model');
 var Prestation = require('../prestation/prestation.model');
+var Notification = require('../notification/notification.model');
 
 
 // --- Business routes ------------
@@ -166,8 +167,8 @@ var Prestation = require('../prestation/prestation.model');
 		  	);
 			
 			// Save the business
-		  	newBusiness.save(function(err, businessSaved){
-		    	if (err) return next(err);
+		  	newBusiness.save(function (err, businessSaved){
+		    	if(err) return res.send(500, err);
 		    	return res.status(201).json({ 
 		    		message: 'Votre salon a été créé avec succès.', 
 		    		business: businessSaved 
@@ -221,7 +222,7 @@ var Prestation = require('../prestation/prestation.model');
  		businessFound.imageBusinessURL = req.body.imageBusinessURL;
  		
  		businessFound.save(function (err, businessUpdated){
- 			if(err) return next(err);
+ 			if(err) return res.send(500, err);
  			res.status(200).json({ 
  				message: 'Votre salon a été modifié avec succès.', 
  				business: businessUpdated 
@@ -249,7 +250,7 @@ var Prestation = require('../prestation/prestation.model');
  		}
 
  		businessFound.save(function (err, businessUpdated){
- 			if (err) return next(err);
+ 			if(err) return res.send(500, err);
  			res.status(200).json({ 
  				message: 'Le status de votre salon a été correctement modifié, prise de rendez-vous possible :' + businessFound.isActive, 
  				business: businessUpdated 
@@ -289,7 +290,7 @@ exports.addSchedule = function(req, res, next){
 	var businessId = req.params.id;
 
 	Business.findById(businessId, function (err, businessFound){
-		if (err) return next (err);
+		if(err) return res.send(500, err);
 		if (!businessFound) return res.status(404).json({ message : 'Ce salon n\'existe pas.' });
 
 		businessFound.schedules.push({
@@ -301,8 +302,8 @@ exports.addSchedule = function(req, res, next){
 			workingDay: req.body.workingDay
 		});
 
-		businessFound.save(function(err, businessUpdated){
-			if (err) return next(err);
+		businessFound.save(function (err, businessUpdated){
+			if(err) return res.send(500, err);
 			res.status(200).json({
 				message : 'L\'horaire a été ajouté avec succès.',
 				horaire : businessFound.schedules
@@ -362,7 +363,7 @@ exports.updateSchedule = function(req, res, next){
 		// TODO check sur le format des dates d'horaires (00:00) et length (5 charactères)
 
 		businessFound.save(function (err, businessUpdated){
-			if (err) return next(err);
+			if(err) return res.send(500, err);
 			res.status(200).json({
 				message : 'L\'horaire a été modifié avec succès.',
 				horaire : businessUpdated.schedules.id(scheduleId)
@@ -388,7 +389,7 @@ exports.deleteSchedule = function(req, res, next){
 		businessFound.schedules.id(scheduleId).remove();
 
 		businessFound.save(function (err, businessUpdated){
-	 		if (err) return next(err);
+	 		if(err) return res.send(500, err);
 	 		res.status(200).json({
 	 			message : 'L\'hoaire a été correctement supprimé du salon.',
 	 			prestation : businessUpdated
@@ -410,7 +411,7 @@ exports.getStaffs = function(req, res, next){
 	var businessId = req.params.id;
 
 	Staff.find({businessId : businessId}, function (err, staffsFound){
-		if (err) next(err);
+		if(err) return res.send(500, err);
 		if (staffsFound.length <= 0) return res.status(404).json({ message : 'Il n\'y a pas de staffs à afficher.' });
 		return res.status(200).json({ 
 			staffs: staffsFound
@@ -427,7 +428,7 @@ exports.showStaff = function(req, res, next){
 	var staffId = req.params.staffId;
 
 	Staff.findById(staffId, function (err, staffFound){
-		if (err) next(err);
+		if(err) return res.send(500, err);
 		if (!staffFound) return res.status(404).json({ message : 'Il n\'y a pas de staffs à afficher.' });
 		return res.status(200).json({ 
 			staff: staffFound
@@ -456,7 +457,7 @@ exports.statusStaff = function(req, res, next){
  			staffFound.isActive = false;
  		}
 
- 		Business.findById(businessId, function(err, businessFound){
+ 		Business.findById(businessId, function (err, businessFound){
  			if(err) return res.send(500, err);
 			if(!businessFound) return res.status(404).json({
 				message : 'Le salon ou doit travailler ce staff n\'existe pas.'
@@ -469,8 +470,8 @@ exports.statusStaff = function(req, res, next){
 			do{
 				if(String(businessFound.staffs[i].staffId) === String(staffFound._id)){
 					businessFound.staffs[i].staffVisibility = staffFound.isActive;
-					businessFound.save(function(err, businessUpdated){
-						if (err) return next(err);
+					businessFound.save(function (err, businessUpdated){
+						if(err) return res.send(500, err);
 					});
 
 					isAllowed = true;
@@ -482,7 +483,7 @@ exports.statusStaff = function(req, res, next){
 			// if allowed to update this staff
 			if (isAllowed === true) {
 		 		staffFound.save(function (err, staffUpdated){
-		 			if (err) return next(err);
+		 			if(err) return res.send(500, err);
 
 		 			return res.status(200).json({ 
 		 				message: 'Le status de '+ staffUpdated.name +' a été correctement modifié. Prise de rendez-vous possible :' + staffUpdated.isActive
@@ -520,7 +521,7 @@ exports.getPrestations = function(req, res, next){
 	var businessId = req.params.id;
 
 	Prestation.find({businessId : businessId}, function (err, prestationsFound){
-		if (err) next(err);
+		if(err) return res.send(500, err);
 		if (prestationsFound.length <= 0) return res.status(404).json({ message : 'Il n\'y a pas de prestations à afficher.' });
 		return res.status(200).json({ 
 			prestations: prestationsFound
@@ -545,7 +546,7 @@ exports.createPrestation = function(req, res, next){
  	});
 
  	newPrestation.save(function (err, prestationSaved){
- 		if (err) return next(err);
+ 		if(err) return res.send(500, err);
  		return res.status(201).json({
  			message : 'La prestation a été ajoutée avec succès. <br/> Les prix sont modifiable via le menu de gestion des prestations.',
  			prestation : prestationSaved
@@ -562,7 +563,7 @@ exports.showPrestation = function(req, res, next){
 	var prestationId = req.params.prestationId;
 
 	Prestation.findById(prestationId, function (err, prestationFound){
-		if (err) return next(err);
+		if(err) return res.send(500, err);
 		if (!prestationFound) return res.status(404).json({ message : 'Prestation non existante.' });
 		return res.status(200).json({
 			prestation : prestationFound
@@ -579,7 +580,7 @@ exports.updatePrestation = function(req, res, next){
  	var prestationId = req.params.prestationId;
 
  	Prestation.findById(prestationId, function (err, prestationFound){
- 		if (err) return next(err);
+ 		if(err) return res.send(500, err);
 		if (!prestationFound) return res.status(404).json({ message : 'Prestation non existante.' });
  		
 		prestationFound.name = req.body.name,
@@ -587,8 +588,8 @@ exports.updatePrestation = function(req, res, next){
 		prestationFound.description = req.body.description,
 		prestationFound.duration = req.body.duration
 
-		prestationFound.save(function(err, prestationUpdated){
-	 		if (err) return next(err);
+		prestationFound.save(function (err, prestationUpdated){
+	 		if(err) return res.send(500, err);
 	 		return res.status(200).json({
 	 			message : 'La prestation a été modifiée avec succès. <br/> Les prix sont modifiable via le menu de gestion des prestations.',
 	 			prestation : prestationUpdated
@@ -606,7 +607,7 @@ exports.statusPrestation = function(req, res, next){
  	var prestationId = req.params.prestationId;
 
  	Prestation.findById(prestationId, function (err, prestationFound){
- 		if (err) return next(err);
+ 		if(err) return res.send(500, err);
 		if (!prestationFound) return res.status(404).json({ message : 'Prestation non existante.' });
  		
  		if (prestationFound.isActive === false) {
@@ -615,8 +616,8 @@ exports.statusPrestation = function(req, res, next){
  			prestationFound.isActive = false;
  		}
 
-		prestationFound.save(function(err, prestationUpdated){
-	 		if (err) return next(err);
+		prestationFound.save(function (err, prestationUpdated){
+	 		if(err) return res.send(500, err);
 	 		return res.status(200).json({
 	 			message : 'Le status de la prestation a été modifiée avec succès. Visibilité par la clientèle : ' + prestationUpdated.isActive,
 	 			prestation : prestationUpdated
@@ -647,7 +648,7 @@ exports.createPrice = function(req, res, next){
  	var prestationId = req.params.prestationId;
 
 	Prestation.findById(prestationId, function (err, prestationFound){
-		if (err) return next(err);
+		if(err) return res.send(500, err);
 		if (!prestationFound) return res.status(404).json({ message : 'Prestation non existante.' });
 
 		prestationFound.prices.push({
@@ -659,7 +660,7 @@ exports.createPrice = function(req, res, next){
 		});
 
 		prestationFound.save(function (err, prestationUpdated){
-	 		if (err) return next(err);
+	 		if(err) return res.send(500, err);
 	 		return res.status(201).json({
 	 			message : 'Le prix a été correctement ajouté à votre prestation.',
 	 			prestation : prestationUpdated
@@ -678,7 +679,7 @@ exports.showPrice = function(req, res, next){
  		priceId = req.params.priceId;
 
 	Prestation.findById(prestationId, function (err, prestationFound){
-		if (err) return next(err);
+		if(err) return res.send(500, err);
 		if (!prestationFound) return res.status(404).json({ message : 'Prestation non existante.' });
 		if (!prestationFound.prices.id(priceId)) return res.status(404).json({ message : 'Prix demandé non existant.' });
 
@@ -698,7 +699,7 @@ exports.updatePrice = function(req, res, next){
  		priceId = req.params.priceId;
 
 	Prestation.findById(prestationId, function (err, prestationFound){
-		if (err) return next(err);
+		if(err) return res.send(500, err);
 		if (!prestationFound) return res.status(404).json({ message : 'Prestation non existante.' });
 		if (!prestationFound.prices.id(priceId)) return res.status(404).json({ message : 'Prix demandé non existant.' });
 
@@ -709,7 +710,7 @@ exports.updatePrice = function(req, res, next){
 		prestationFound.prices.id(priceId).gender = req.body.gender;
 
 		prestationFound.save(function (err, prestationUpdated){
-	 		if (err) return next(err);
+	 		if(err) return res.send(500, err);
 	 		return res.status(200).json({
 	 			message : 'Le prix a été correctement modifié pour la prestation souhaitée.',
 	 			prestation : prestationUpdated
@@ -728,14 +729,14 @@ exports.deletePrice = function(req, res, next){
  		priceId = req.params.priceId;
 
 	Prestation.findById(prestationId, function (err, prestationFound){
-		if (err) return next(err);
+		if(err) return res.send(500, err);
 		if (!prestationFound) return res.status(404).json({ message : 'Prestation non existante.' });
 		if (!prestationFound.prices.id(priceId)) return res.status(404).json({ message : 'Prix demandé non existant.' });
 
 		prestationFound.prices.id(priceId).remove();
 
 		prestationFound.save(function (err, prestationUpdated){
-	 		if (err) return next(err);
+	 		if(err) return res.send(500, err);
 	 		res.status(200).json({
 	 			message : 'Le prix a été correctement supprimé de la prestation souhaitée.',
 	 			prestation : prestationUpdated
@@ -839,7 +840,45 @@ exports.getNotifications = function(req, res, next){
 * restriction : 'staff'
 */
 exports.createNotification = function(req, res, next){
+ 	var staffId = req.staff._id,
+ 		businessId = req.staff.businessId,
+		staffName = String(req.staff.name);
 
+ 	Business.findById(businessId, function (err, businessFound){
+ 		if(err) return res.send(500, err);
+ 		if(!businessFound) return res.status(403).json({
+ 			message : 'Vous n\'avez pas les droits d\'ajouter une personne au staff sans avoir un profil staff.'
+ 		}).end();
+
+	 	var newNotification = new Notification({
+			title: req.body.title,
+			text: req.body.text,
+			sentBy : {
+				emitterId : staffId,
+				emitterName: staffName
+			},
+			sentTo : req.body.sentTo,
+			status : 'not processed',
+			isViewed : false,
+			business : {
+				businessId: businessFound._id,
+				businessName: businessFound.name
+			}
+	 	});
+
+	 	// Check if the receptor exist
+	 	//User.findById(req.body.sentTo, function (err, userFound){
+
+	 	//});
+
+	 	newNotification.save(function (err, notificationSaved){
+	 		if(err) return res.send(500, err);
+	 		return res.status(201).json({
+	 			message: 'La notification fut envoyée avec succès pour le salon : '+ notificationSaved.business.businessName + '.',
+	 			notification: notificationSaved
+	 		}).end();
+	 	});
+ 	});
 };
 
 /**
@@ -856,7 +895,7 @@ exports.deleteNotification = function(req, res, next){
 // --- Test auth.hasAccess ------------
 
 exports.test = function(req, res, next){
-	return res.status(200).json({
+	return res.status(204).json({
 		message : 'test done.'
 	});
 }
