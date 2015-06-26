@@ -18,7 +18,7 @@
  * GET		/businesses/:id/staffs						->  getStaffs
  * GET		/businesses/:id/staffs/:staffId				->  showStaff
  * PUT		/businesses/:id/staffs/:staffId/status 		->  statusStaff
- (* DELETE	/businesses/:id/staffs/:staffId		 		->  deleteStaff)
+ * DELETE	/businesses/:id/staffs/:staffId		 		->  deleteStaff
 
  --- Prestations routes ---
  * GET 		/businesses/:id/Prestations 						->  getPrestations
@@ -41,7 +41,7 @@
  * PUT 		/businesses/:id/rendezvous/:rdvId/finished		->  rendezvousFinished
  * PUT 		/businesses/:id/rendezvous/:rdvId/cancelled 	->  rendezvousCancelled
  * PUT 		/businesses/:id/rendezvous/:rdvId/move			->  moveRendezvous
- * DELETE 	/businesses/:id/rendezvous/:rdvId/				->  deleteRendevous
+ * DELETE 	/businesses/:id/rendezvous/:rdvId				->  deleteRendevous
 
  --- Notification routes ---
  * POST 	/businesses/:id/notifications				->  getNotifications
@@ -63,6 +63,7 @@ var Business = require('./business.model');
 // --- Business routes ------------
 
 /**
+* GET	/businesses
 * Get a list of business
 */
  exports.getBusinesses = function(req, res, next){
@@ -73,6 +74,7 @@ var Business = require('./business.model');
  };
 
  /**
+ * POST		/businesses 
  * Create a new business
  * restriction: 'manager'
  */
@@ -178,6 +180,7 @@ var Business = require('./business.model');
  };
 
  /**
+ * GET	/businesses/:id
  * Get a single business
  */
  exports.showBusiness = function(req, res, next){
@@ -191,6 +194,7 @@ var Business = require('./business.model');
  };
 
  /**
+ * PUT	/businesses/:id
  * Update a business
  * restriction: 'staff'
  */
@@ -224,6 +228,7 @@ var Business = require('./business.model');
  };
 
  /**
+ * PUT	/businesses/:id/status
  * Change the business status
  * restriction : 'staff'
  */
@@ -254,6 +259,7 @@ var Business = require('./business.model');
 // --- Schedules subdocument routes ------------
 
 /**
+* GET	/businesses/:id/schedules
 * Get a list of schedules for this business
 * restriction : 'staff'
 */
@@ -272,6 +278,7 @@ exports.getSchedules = function(req, res, next){
 };
 
 /**
+* POST	/businesses/:id/Schedules
 * Add a schedule for this business
 * restriction : 'staff'
 */
@@ -302,6 +309,7 @@ exports.addSchedule = function(req, res, next){
 };
 
 /**
+* GET	/businesses/:id/schedules/:scheduleId
 * Get a single schedule for this business
 * restriction : 'staff'
 */
@@ -321,6 +329,7 @@ exports.showSchedule = function(req, res, next){
 };
 
 /**
+* PUT	/businesses/:id/schedules/:scheduleId
 * Update a schedule for this business
 * restriction : 'staff'
 */
@@ -360,6 +369,7 @@ exports.updateSchedule = function(req, res, next){
 };
 
 /**
+* DELETE   /businesses/:id/schedules/:scheduleId
 * Remove a schedule for this business
 * restriction : 'staff'
 */
@@ -389,6 +399,7 @@ exports.deleteSchedule = function(req, res, next){
 // --- Staffs routes ------------
 
 /**
+* GET	/businesses/:id/staffs
 * Get a list of staffs for this business
 * restriction : 'staff'
 */
@@ -397,6 +408,7 @@ exports.getStaffs = function(req, res, next){
 };
 
 /**
+* GET	/businesses/:id/staffs/:staffId
 * Get a single staff for this business
 * restriction : 'staff'
 */
@@ -405,6 +417,7 @@ exports.showStaff = function(req, res, next){
 };
 
 /**
+* PUT	/businesses/:id/staffs/:staffId/status
 * Update a staff status for this business
 * restriction : 'staff'
 */
@@ -413,6 +426,7 @@ exports.statusStaff = function(req, res, next){
 };
 
 /**
+* DELETE 	/businesses/:id/staffs/:staffId
 * Delete a staff for this business
 * restriction : 'staff'
 */
@@ -425,6 +439,7 @@ exports.deleteStaff = function(req, res, next){
 // --- Prestations routes ------------
 
 /**
+* GET 	/businesses/:id/Prestations
 * Get a list of prestations for this business
 * restriction : 'staff'
 */
@@ -433,6 +448,7 @@ exports.getPrestations = function(req, res, next){
 };
 
 /**
+* POST 	/businesses/:id/Prestations
 * Create a prestation for this business
 * restriction : 'staff'
 */
@@ -441,6 +457,7 @@ exports.createPrestation = function(req, res, next){
 };
 
 /**
+* GET 	/businesses/:id/prestations/:prestationId
 * Get a single prestation for this business
 * restriction : 'staff'
 */
@@ -449,6 +466,7 @@ exports.showPrestation = function(req, res, next){
 };
 
 /**
+* PUT 	/businesses/:id/prestations/:prestationId
 * Update a prestation for this business
 * restriction : 'staff'
 */
@@ -457,6 +475,7 @@ exports.updatePrestation = function(req, res, next){
 };
 
 /**
+* PUT 	/businesses/:id/prestations/:prestationId/status
 * Change the prestation status for this business
 * restriction : 'staff'
 */
@@ -465,6 +484,7 @@ exports.statusPrestation = function(req, res, next){
 };
 
 /**
+* DELETE /businesses/:id/prestations
 * Delete a prestation for this business
 * restriction : 'staff'
 */
@@ -477,6 +497,7 @@ exports.deletePrestation = function(req, res, next){
 // --- Prices subdocument routes ------------
 
 /**
+* POST 	/businesses/:id/prestations/:prestationId/prices
 * Create a price category (inside a prestation) for this business
 * restriction : 'staff'
 */
@@ -485,6 +506,8 @@ exports.createPrice = function(req, res, next){
 };
 
 /**
+* GET 	/businesses/:id/prestations/:prestationId/prices/:priceId
+
 * Get a single price category (inside a prestation) for this business
 * restriction : 'staff'
 */
@@ -493,6 +516,8 @@ exports.showPrice = function(req, res, next){
 };
 
 /**
+* PUT	/businesses/:id/prestations/:prestationId/prices/:priceId
+
 * Update a price category (inside a prestation) for this business
 * restriction : 'staff'
 */
@@ -501,6 +526,7 @@ exports.updatePrice = function(req, res, next){
 };
 
 /**
+* DELETE 	/businesses/:id/prestations/:prestationId/prices/:priceId
 * Delete a price category (inside a prestation) for this business
 * restriction : 'staff'
 */
@@ -513,6 +539,7 @@ exports.deletePrice = function(req, res, next){
 // --- Rendezvous routes ------------
 
 /**
+* GET 	/businesses/:id/rendezvous
 * Get a list of rendezvous for this business
 * restriction : 'staff'
 */
@@ -521,6 +548,7 @@ exports.getRendezvous = function(req, res, next){
 };
 
 /**
+* POST 	/businesses/:id/rendezvous
 * Create a rendezvous for this business
 * restriction : 'staff'
 */
@@ -529,6 +557,7 @@ exports.createRendezvous = function(req, res, next){
 };
 
 /**
+* GET 	/businesses/:id/rendezvous/:rdvId
 * Get a single rendezvous for this business
 * restriction : 'staff'
 */
@@ -537,6 +566,7 @@ exports.showRendezvous = function(req, res, next){
 };
 
 /**
+* PUT 	/businesses/:id/rendezvous/:rdvId/missed
 * Update the rendezvous status to 'manqué' for this business
 * restriction : 'staff'
 */
@@ -545,6 +575,7 @@ exports.rendezvousMissed = function(req, res, next){
 };
 
 /**
+* PUT 	/businesses/:id/rendezvous/:rdvId/finished
 * Update the rendezvous status to 'terminé' for this business
 * restriction : 'staff'
 */
@@ -553,6 +584,7 @@ exports.rendezvousFinished = function(req, res, next){
 };
 
 /**
+* PUT 	/businesses/:id/rendezvous/:rdvId/cancelled
 * Update the rendezvous status to 'annulé' for this business
 * restriction : 'staff'
 */
@@ -561,6 +593,7 @@ exports.rendezvousCancelled = function(req, res, next){
 };
 
 /**
+* PUT 	/businesses/:id/rendezvous/:rdvId/move
 * Update the rendezvous date & status to 'déplacé' for this business
 * restriction : 'staff'
 */
@@ -569,6 +602,7 @@ exports.moveRendezvous = function(req, res, next){
 };
 
 /**
+* DELETE 	/businesses/:id/rendezvous/:rdvId
 * Delete a rendezvous for this business
 * restriction : 'staff'
 */
@@ -581,6 +615,7 @@ exports.deleteRendevous = function(req, res, next){
 // --- Notification routes ------------
 
 /**
+* POST 	/businesses/:id/notifications
 * Get a list of notifications for this business
 * restriction : 'staff'
 */
@@ -589,6 +624,7 @@ exports.getNotifications = function(req, res, next){
 };
 
 /**
+* DELETE 	/businesses/:id/notifications/:notifId
 * Delete a notification for this business
 * restriction : 'staff'
 */

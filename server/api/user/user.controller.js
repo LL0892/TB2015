@@ -3,7 +3,7 @@
  * GET     /users                   ->  index
  * GET     /users/me                ->  me
  * PUT     /users/me                ->  update
- * POST    /users/                  ->  create
+ * POST    /users                   ->  create
  * POST    /users/Manager           ->  createManager
  * GET     /users/:id               ->  show
  * DELETE  /users/:id               ->  destroy
