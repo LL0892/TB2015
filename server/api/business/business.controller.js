@@ -44,7 +44,8 @@
  * DELETE 	/businesses/:id/rendezvous/:rdvId				->  deleteRendevous
 
  --- Notification routes ---
- * POST 	/businesses/:id/notifications				->  getNotifications
+ * GET  	/businesses/:id/notifications				->  getNotifications
+ * POST 	/businesses/:id/notifications				->  createNotification
  * DELETE 	/businesses/:id/notifications/:notifId		->  deleteNotification
 
  --- Test auth.hasAccess ---
@@ -824,11 +825,20 @@ exports.deleteRendevous = function(req, res, next){
 // --- Notification routes ------------
 
 /**
-* POST 	/businesses/:id/notifications
+* GET 	/businesses/:id/notifications
 * Get a list of notifications for this business
 * restriction : 'staff'
 */
 exports.getNotifications = function(req, res, next){
+
+};
+
+/**
+* POST 	/businesses/:id/notifications
+* Create a notification (staff request) for this business
+* restriction : 'staff'
+*/
+exports.createNotification = function(req, res, next){
 
 };
 
