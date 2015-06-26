@@ -141,7 +141,7 @@ var Prestation = require('./prestation.model');
  * Add a price category
  * restriction: 'staff'
  */
- exports.addPrice = function(req, res, next){
+/* exports.addPrice = function(req, res, next){
  	var prestationId = req.params.id;
 
 	Prestation.findById(prestationId, function (err, prestationFound){
@@ -164,26 +164,13 @@ var Prestation = require('./prestation.model');
 	 		}).end();
 		});
 	});
-
-/* Prestation.findByIdAndUpdate(
-     prestationId,
-     { $push: {"prices": priceToAdd} },
-     //{  safe: true, upsert: true}, 
-     function (err, prestationUpdated) {
-     	if (!prestationUpdated) return res.status(404).json({ message : 'Prestation non existante.' });
- 		if (err) return next(err);
- 		res.status(200).json({
- 			message : 'Le prix a été correctement ajouté à votre prestation.',
- 			prestation : prestationUpdated
- 		});
-    });*/
- };
+ };*/
 
  /**
  * Get a price category
  * restriction: 'staff'
  */
- exports.getPrice = function(req, res, next){
+/* exports.getPrice = function(req, res, next){
  	var prestationId = req.params.id,
  		priceId = req.params.priceId;
 
@@ -196,13 +183,13 @@ var Prestation = require('./prestation.model');
 			price : prestationFound.prices.id(priceId)
 		}).end();
 	});
- };
+ };*/
 
  /**
  * Update a price category
  * restriction: 'staff'
  */
- exports.updatePrice = function(req, res, next){
+/* exports.updatePrice = function(req, res, next){
  	var prestationId = req.params.id,
  		priceId = req.params.priceId;
 
@@ -225,13 +212,13 @@ var Prestation = require('./prestation.model');
 	 		}).end();
 		});
 	});
- };
-
+ };*/
+ 
  /**
  * delete a price category
  * restriction: 'staff'
  */
- exports.deletePrice = function(req, res, next){
+/* exports.deletePrice = function(req, res, next){
  	var prestationId = req.params.id,
  		priceId = req.params.priceId;
 
@@ -250,4 +237,4 @@ var Prestation = require('./prestation.model');
 	 		}).end();
 		});
 	});
- };
+ };*/

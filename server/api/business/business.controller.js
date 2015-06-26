@@ -588,7 +588,7 @@ exports.updatePrestation = function(req, res, next){
 
 		prestationFound.save(function(err, prestationUpdated){
 	 		if (err) return next(err);
-	 		res.status(200).json({
+	 		return res.status(200).json({
 	 			message : 'La prestation a été modifiée avec succès. <br/> Les prix sont modifiable via le menu de gestion des prestations.',
 	 			prestation : prestationUpdated
 	 		}).end();
@@ -616,7 +616,7 @@ exports.statusPrestation = function(req, res, next){
 
 		prestationFound.save(function(err, prestationUpdated){
 	 		if (err) return next(err);
-	 		res.status(200).json({
+	 		return res.status(200).json({
 	 			message : 'Le status de la prestation a été modifiée avec succès. Visibilité par la clientèle : ' + prestationUpdated.isActive,
 	 			prestation : prestationUpdated
 	 		}).end();
@@ -630,7 +630,7 @@ exports.statusPrestation = function(req, res, next){
 * restriction : 'staff'
 */
 exports.deletePrestation = function(req, res, next){
-
+	return res.status(501).json({ message : 'fonction non implémentée.'}).end();
 };
 
 
@@ -643,27 +643,78 @@ exports.deletePrestation = function(req, res, next){
 * restriction : 'staff'
 */
 exports.createPrice = function(req, res, next){
+ 	var prestationId = req.params.prestationId;
 
+	Prestation.findById(prestationId, function (err, prestationFound){
+		if (err) return next(err);
+		if (!prestationFound) return res.status(404).json({ message : 'Prestation non existante.' });
+
+		prestationFound.prices.push({
+		  	categoryName: req.body.name,
+		  	ageLowLimit: req.body.ageLowLimit,
+		  	ageHighLimit: req.body.ageHighLimit,
+		  	price: req.body.price,
+			gender: req.body.gender
+		});
+
+		prestationFound.save(function (err, prestationUpdated){
+	 		if (err) return next(err);
+	 		return res.status(201).json({
+	 			message : 'Le prix a été correctement ajouté à votre prestation.',
+	 			prestation : prestationUpdated
+	 		}).end();
+		});
+	});
 };
 
 /**
 * GET 	/businesses/:id/prestations/:prestationId/prices/:priceId
-
 * Get a single price category (inside a prestation) for this business
 * restriction : 'staff'
 */
 exports.showPrice = function(req, res, next){
+ 	var prestationId = req.params.prestationId,
+ 		priceId = req.params.priceId;
 
+	Prestation.findById(prestationId, function (err, prestationFound){
+		if (err) return next(err);
+		if (!prestationFound) return res.status(404).json({ message : 'Prestation non existante.' });
+		if (!prestationFound.prices.id(priceId)) return res.status(404).json({ message : 'Prix demandé non existant.' });
+
+		return res.status(200).json({
+			price : prestationFound.prices.id(priceId)
+		}).end();
+	});
 };
 
 /**
 * PUT	/businesses/:id/prestations/:prestationId/prices/:priceId
-
 * Update a price category (inside a prestation) for this business
 * restriction : 'staff'
 */
 exports.updatePrice = function(req, res, next){
+ 	var prestationId = req.params.prestationId,
+ 		priceId = req.params.priceId;
 
+	Prestation.findById(prestationId, function (err, prestationFound){
+		if (err) return next(err);
+		if (!prestationFound) return res.status(404).json({ message : 'Prestation non existante.' });
+		if (!prestationFound.prices.id(priceId)) return res.status(404).json({ message : 'Prix demandé non existant.' });
+
+		prestationFound.prices.id(priceId).categoryName = req.body.name;
+		prestationFound.prices.id(priceId).ageLowLimit = req.body.ageLowLimit;
+		prestationFound.prices.id(priceId).ageHighLimit = req.body.ageHighLimit;
+		prestationFound.prices.id(priceId).price = req.body.price;
+		prestationFound.prices.id(priceId).gender = req.body.gender;
+
+		prestationFound.save(function (err, prestationUpdated){
+	 		if (err) return next(err);
+	 		return res.status(200).json({
+	 			message : 'Le prix a été correctement modifié pour la prestation souhaitée.',
+	 			prestation : prestationUpdated
+	 		}).end();
+		});
+	});
 };
 
 /**
@@ -672,7 +723,24 @@ exports.updatePrice = function(req, res, next){
 * restriction : 'staff'
 */
 exports.deletePrice = function(req, res, next){
+ 	var prestationId = req.params.prestationId,
+ 		priceId = req.params.priceId;
 
+	Prestation.findById(prestationId, function (err, prestationFound){
+		if (err) return next(err);
+		if (!prestationFound) return res.status(404).json({ message : 'Prestation non existante.' });
+		if (!prestationFound.prices.id(priceId)) return res.status(404).json({ message : 'Prix demandé non existant.' });
+
+		prestationFound.prices.id(priceId).remove();
+
+		prestationFound.save(function (err, prestationUpdated){
+	 		if (err) return next(err);
+	 		res.status(200).json({
+	 			message : 'Le prix a été correctement supprimé de la prestation souhaitée.',
+	 			prestation : prestationUpdated
+	 		}).end();
+		});
+	});
 };
 
 
