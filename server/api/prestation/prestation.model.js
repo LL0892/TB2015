@@ -30,7 +30,7 @@ var PrestationSchema = new Schema({
 
 	prices: [PriceSchema],
 
-	businessID: { type: Schema.Types.ObjectId, ref: 'option', required: true },
+	businessId: { type: Schema.Types.ObjectId, ref: 'option', required: true },
 	isActive: { type: Boolean, default: true }
 });
 
