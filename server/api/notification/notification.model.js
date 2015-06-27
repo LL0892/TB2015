@@ -12,7 +12,7 @@ var NotificationSchema = new Schema({
 	text: { type: String, required: true },
 
 	sentBy : { 
-    emitterId : { type: Schema.Types.ObjectId, ref: 'user', required: true },
+    emitterId : { type: Schema.Types.ObjectId, ref: 'staff', required: true },
     emitterName : { type: String, required: true }
   },
 	sentTo : { type: Schema.Types.ObjectId, ref: 'user', required: true },

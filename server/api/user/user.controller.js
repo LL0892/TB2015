@@ -46,12 +46,12 @@ exports.me = function(req, res, next) {
   var userId = req.user._id;
   User.findOne({
     _id: userId
-  }, '-salt -hashedPassword', function (err, user) { // don't ever give out the password or salt
+  }, '-salt -hashedPassword', function (err, userFound) { // don't ever give out the password or salt
     if(err) return res.send(500, err);
     if(!userFound) return res.status(401).json({ message : 'Vous n\'êtes pas connecté.' }).end();
 
     return res.status(200).json({
-      myProfile : user,
+      myProfile : userFound,
       staffProfile: req.staff
     }).end();
   });
@@ -70,8 +70,8 @@ exports.update = function(req, res, next) {
     // Update datas
     userFound.firstName = req.body.firstName;
     userFound.lastName = req.body.lastName;
-    userFound.dateOfBirth = req.body.dateOfBirth;
-    userFound.gender = req.body.gender;
+    //userFound.dateOfBirth = req.body.dateOfBirth;
+    //userFound.gender = req.body.gender;
     userFound.phone = req.body.phone;
     userFound.mobile = req.body.mobile;
     userFound.city = req.body.city;

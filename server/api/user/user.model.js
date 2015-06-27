@@ -89,6 +89,17 @@ UserSchema
     return this.firstName + ' ' + this.lastName;
   });
 
+// User age
+UserSchema
+  .virtual('age')
+  .get(function(){
+    var birth = this.dateOfBirth,
+        now = new Date();
+    var age = new Number((now - birth) / 31536000000).toFixed(1);
+    age = Math.floor(age);
+    return age;
+  });
+
 // Non-sensitive info we'll be putting in the token
 UserSchema
   .virtual('token')

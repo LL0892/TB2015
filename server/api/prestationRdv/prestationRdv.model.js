@@ -21,7 +21,7 @@ var PrestationRdvSchema = new Schema({
 		ageLowLimit: { type: Number, required: true, default: '1' },
 		ageHighLimit: { type: Number, required: true, default: '99' },
 		price: { type: Number, required: true, default: '1' },
-		gender: { type: String, enum: ['Homme', 'Femme', 'Mixte'], default: 'Mixte' }
+		gender: { type: String, enum: ['homme', 'femme', 'mixte'], default: 'mixte' }
 	}
 });
 

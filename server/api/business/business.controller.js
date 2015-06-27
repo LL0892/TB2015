@@ -57,10 +57,13 @@
 
 'use strict';
 
-var Business = require('./business.model');
-var Staff = require('../staff/staff.model');
-var Prestation = require('../prestation/prestation.model');
-var Notification = require('../notification/notification.model');
+var Business = require('./business.model'),
+	Staff = require('../staff/staff.model'),
+	User = require('../user/user.model'),
+	Prestation = require('../prestation/prestation.model'),
+	Rendezvous = require('../rendezvous/rendezvous.model'),
+	PrestationRdv = require('../prestationRdv/prestationRdv.model'),
+	Notification = require('../notification/notification.model');
 
 
 // --- Business routes ------------
@@ -765,7 +768,16 @@ exports.deletePrice = function(req, res, next){
 * restriction : 'staff'
 */
 exports.getRendezvous = function(req, res, next){
+	var businessId = req.staff.businessId;
 
+	Rendezvous.find({businessId: businessId}, function (err, rendezvousFound){
+		if(err) return res.send(500, err);
+		if (rendezvousFound.length <= 0) return res.status(404).json({ message : 'Il n\'y a pas de rendez-vous à afficher.' });
+
+		return res.status(200).json({ 
+			rendezvous: rendezvousFound
+		}).end();
+	})
 };
 
 /**
@@ -774,7 +786,100 @@ exports.getRendezvous = function(req, res, next){
 * restriction : 'staff'
 */
 exports.createRendezvous = function(req, res, next){
+	var businessId = req.staff.businessId,
+		staffId = req.staff._id,
+		prestationId = req.body.prestationId,
+		userId = req.body.clientId;
 
+	Prestation.findOne({ _id: prestationId, businessId: businessId }, function (err, prestationFound){
+		if(err) return res.send(500, err);
+		if (!prestationFound) return res.status(404).json({ message : 'Prestation non trouvé.' });
+
+		User.findOne({_id: userId}, function (err, userFound){
+			if(err) return res.send(500, err);
+			if (!userFound) return res.status(404).json({ message : 'Ce client n\'existe pas.' });
+
+			console.log('age user : '+ userFound.age+' ans');
+			
+			
+			// Initiate var for price category search
+			var i = 0,
+				loop = true,
+				message = '',
+				status = 404,
+				priceId = undefined;
+
+			// Find the correct price category (compare with user schema age virtual)
+			do{
+				if(prestationFound.prices[i].ageLowLimit <= userFound.age && 
+					prestationFound.prices[i].ageHighLimit > userFound.age){
+
+					if(prestationFound.prices[i].gender === userFound.gender ||
+						prestationFound.prices[i].gender === 'mixte'){
+						
+						loop = false;
+						status = 200;
+						priceId = prestationFound.prices[i]._id;
+
+					} else {
+						message : 'Sexe de l\'utilisateur : '+userFound.gender+'<br/> Sexe applicable à cette prestation : '+prestationsFound.prices[i].gender;
+					}
+				} else {
+					message : 'Aucun prix de cette prestation ne convient à votre age.';
+				}
+
+				i++;
+			} while(i <= prestationFound.prices.length-1 && loop === true)
+
+			// Stop the process if the status is still '404'
+			if (status === 404) {
+				return res.status(404).json({ message : message }).end();
+			} 
+			// We have the correct price -> PrestationRdv & Rendezvous creation
+			else {
+				var myPrice = prestationFound.prices.id(priceId);
+
+				var newPrestationRdv = new PrestationRdv({
+					name: prestationFound.name,
+					shortDescription: prestationFound.shortDescription,
+					description: prestationFound.description,
+					duration: prestationFound.duration,
+					price: {
+						categoryName: myPrice.categoryName,
+						ageLowLimit: myPrice.ageLowLimit,
+						ageHighLimit: myPrice.ageHighLimit,
+						price: myPrice.price,
+						gender: myPrice.gender
+					}
+				});
+
+				var newRendezvous = new Rendezvous({
+					startHour: req.body.startHour,
+					endHour: req.body.endHour,
+					businessId: businessId,
+					clientId: userId,
+					staffId: staffId,
+					prestationRdvId: newPrestationRdv._id,
+					status: 'reservé' 
+				});
+				
+				console.log(newRendezvous);
+
+				newPrestationRdv.save(function (err, prestationRdvSaved){
+					if(err) return res.send(500, err);
+				});
+
+				newRendezvous.save(function (err, rendezvousSaved){
+					if(err) return res.send(500, err);
+				});
+
+				return res.status(201).json({
+					message : 'Votre rendez-vous a été enregistré avec succès.'
+				}).end();
+			}
+			
+		});
+	});
 };
 
 /**
