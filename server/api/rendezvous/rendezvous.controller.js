@@ -4,7 +4,7 @@
  * GET     /rendezvous		           	->  index
  * POST    /rendezvous              	->  create
  * GET     /rendezvous/:id    			->  show
- * PUT     /rendezvous/:id/cancelled    ->  update
+ * PUT     /rendezvous/:id    			->  update
  * DELETE  /rendezvous/:id          	->  destroy
  */
 
@@ -63,15 +63,39 @@ var PrestationRdv = require('../prestationRdv/prestationRdv.model');
  };
 
 /**
- * Update a rendezvous
+ * Cancel a rendezvous (if the start Hour is in more than 24h)
  */
  exports.update = function(req, res, next){
+	var clientId = req.user._id,
+		rendezvousId = req.params.id;
 
+	Rendezvous.findOne({_id: rendezvousId, 'client.clientId': clientId}, function (err, rendezvousFound){
+		if(err) return res.send(500, err);
+		if (!rendezvousFound) return res.status(404).json({ message : 'Le rendez-vous demandé n\'existe pas.' });
+
+		var now = new Date();
+		var tommorow = new Date();
+		tommorow.setDate(now.getDate()+1);
+		
+		if (rendezvousFound.startHour > tommorow) {
+			rendezvousFound.status = 'annulé'
+			rendezvousFound.save(function (err, rendezvousUpdated){
+				if(err) return res.send(500, err);
+				return res.status(200).json({ 
+					message : 'Status du rendez-vous changé avec succès en : ' + rendezvousUpdated.status
+				}).end();
+			});
+		} else {
+			return res.status(403).json({
+				message: 'Vous ne pouvez pas réaliser cette action après que l\'heure de départ soit passée.'
+			}).end();
+		}
+	});
  };
 
  /**
  * Delete a rendezvous
  */
  exports.destroy = function(req, res, next){
-
+ 	return res.status(501).json({ message : 'Fonction non implémentée.'}).end();
  };
