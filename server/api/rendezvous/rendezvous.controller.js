@@ -10,8 +10,11 @@
 
 'use strict';
 
-var Rendezvous = require('./rendezvous.model');
-var PrestationRdv = require('../prestationRdv/prestationRdv.model');
+var Rendezvous = require('./rendezvous.model'),
+	Staff = require('../staff/staff.model'),
+	Business = require('../business/business.model'),
+	Prestation = require('../prestation/prestation.model'),
+	PrestationRdv = require('../prestationRdv/prestationRdv.model');
 
 /**
  * Get a list of my rendezvous
@@ -34,7 +37,119 @@ var PrestationRdv = require('../prestationRdv/prestationRdv.model');
  * Create a new rendezvous
  */
  exports.create = function(req, res, next){
+	var clientId = req.user._id,
+		clientName = req.user.fullname,
+		clientAge = req.user.age,
+		prestationId = req.body.prestationId,
+		businessId = req.body.businessId,
+		staffId = req.body.staffId;
 
+	Prestation.findOne({ _id: prestationId, businessId: businessId }, function (err, prestationFound){
+		if(err) return res.send(500, err);
+		if (!prestationFound) return res.status(404).json({ message : 'Prestation non trouvé.' });
+
+		Staff.findOne({_id: staffId}, function (err, staffFound){
+			if(err) return res.send(500, err);
+			if (!staffFound) return res.status(404).json({ message : 'Ce staff n\'existe pas.' });
+
+			console.log('age user : '+clientAge+' ans');
+			
+			
+			// Initiate var for price category search
+			var i = 0,
+				loop = true,
+				message = '',
+				status = 404,
+				priceId = undefined;
+
+			// Find the correct price category (compare with user schema age virtual)
+			do{
+				if(prestationFound.prices[i].ageLowLimit <= clientAge && 
+					prestationFound.prices[i].ageHighLimit > clientAge){
+
+					if(prestationFound.prices[i].gender === req.user.gender ||
+						prestationFound.prices[i].gender === 'mixte'){
+						
+						loop = false;
+						status = 200;
+						priceId = prestationFound.prices[i]._id;
+
+					} else {
+						message : 'Sexe de l\'utilisateur : '+req.user.gender+'<br/> Sexe applicable à cette prestation : '+prestationsFound.prices[i].gender;
+					}
+				} else {
+					message : 'Aucun prix de cette prestation ne convient à votre age.';
+				}
+
+				i++;
+			} while(i <= prestationFound.prices.length-1 && loop === true)
+
+			// Stop the process if the status is still '404'
+			if (status === 404) {
+				return res.status(404).json({ message : message }).end();
+			} 
+			// We have the correct price -> PrestationRdv & Rendezvous creation
+			else {
+				var myPrice = prestationFound.prices.id(priceId);
+
+				var newPrestationRdv = new PrestationRdv({
+					name: prestationFound.name,
+					shortDescription: prestationFound.shortDescription,
+					description: prestationFound.description,
+					duration: prestationFound.duration,
+					price: {
+						categoryName: myPrice.categoryName,
+						ageLowLimit: myPrice.ageLowLimit,
+						ageHighLimit: myPrice.ageHighLimit,
+						price: myPrice.price,
+						gender: myPrice.gender
+					}
+				});
+
+				Business.findOne({_id: businessId}, function (err, businessFound){
+					if(err) return res.send(500, err);
+					if (!businessFound) return res.status(404).json({ message : 'Le salon recherché n\'existe pas.' });
+					
+					var newRendezvous = new Rendezvous({
+						startHour: req.body.startHour,
+						endHour: req.body.endHour,
+						business: {
+							businessId: businessId,
+							businessName: businessFound.name
+						},
+						client: {
+							clientId: clientId,
+							clientName: clientName
+						},
+						staff: {
+							staffId: staffId,
+							staffName: staffFound.name
+						},
+						prestation: {
+							prestationRdvId: newPrestationRdv._id,
+							prestationRdvName: prestationFound.name
+						},
+						status: 'reservé' 
+					});
+
+					newPrestationRdv.save(function (err, prestationRdvSaved){
+						if(err) return res.send(500, err);
+					});
+
+					newRendezvous.save(function (err, rendezvousSaved){
+						if(err) return res.send(500, err);
+					});
+
+					return res.status(201).json({
+						message : 'Votre rendez-vous a été enregistré avec succès.'
+					}).end();
+
+				}); // fin Business.find();
+
+			} // fin else{}
+			
+		}); // fin User.find();
+	}); // fin Prestation.find();
  };
 
 /**
@@ -76,7 +191,7 @@ var PrestationRdv = require('../prestationRdv/prestationRdv.model');
 		var now = new Date();
 		var tommorow = new Date();
 		tommorow.setDate(now.getDate()+1);
-		
+
 		if (rendezvousFound.startHour > tommorow) {
 			rendezvousFound.status = 'annulé'
 			rendezvousFound.save(function (err, rendezvousUpdated){
