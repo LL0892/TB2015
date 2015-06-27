@@ -1,95 +1,77 @@
 /**
  * Using Rails-like standard naming convention for endpoints.
 
- --- User routes ---
- * GET     /rendezvous/me           ->  index
- * POST    /rendezvous              ->  create
- * GET     /rendezvous/:id          ->  show
- * PUT     /rendezvous/:id          ->  update
-
- --- Staff routes ---
- /* GET     /rendezvous/myRdv        ->  myRdv
- /* POST    /rendezvous/book         ->  book
- /* PUT     /rendezvous/:id/move     ->  move
- /* PUT	   /rendezvous/:id/status   ->  status
- /* DELETE  /rendezvous/:id			->	destroy
+ * GET     /rendezvous		           	->  index
+ * POST    /rendezvous              	->  create
+ * GET     /rendezvous/:id    			->  show
+ * PUT     /rendezvous/:id/cancelled    ->  update
+ * DELETE  /rendezvous/:id          	->  destroy
  */
 
 'use strict';
 
-var rendezvous = require('./rendezvous.model');
-var prestationRdv = require('../prestationRdv/prestationRdv.model');
-
-// --- User routes ---
+var Rendezvous = require('./rendezvous.model');
+var PrestationRdv = require('../prestationRdv/prestationRdv.model');
 
 /**
  * Get a list of my rendezvous
  */
- exports.index = function(req, res){
+ exports.index = function(req, res, next){
+	var clientId = req.user._id;
 
+	Rendezvous.find({'client.clientId': clientId}, 
+		'-recurance -__v -createdOn -updatedOn', function (err, rendezvousFound){
+		if(err) return res.send(500, err);
+		if (rendezvousFound.length <= 0) return res.status(404).json({ message : 'Il n\'y a pas de rendez-vous à afficher.' });
+
+		return res.status(200).json({ 
+			rendezvous: rendezvousFound
+		}).end();
+	});
  };
 
 /**
  * Create a new rendezvous
  */
- exports.create = function(req, res){
+ exports.create = function(req, res, next){
 
  };
 
 /**
  * Get a single rendezvous
  */
- exports.show = function(req, res){
+ exports.show = function(req, res, next){
+	var clientId = req.user._id,
+		rendezvousId = req.params.id;
 
+	Rendezvous.findOne({_id: rendezvousId, 'client.clientId': clientId}, 
+		'-recurance -__v -createdOn -updatedOn',  function (err, rendezvousFound){
+		if(err) return res.send(500, err);
+		if (!rendezvousFound) return res.status(404).json({ message : 'Il n\'y a pas de rendez-vous à afficher.' });
+
+		PrestationRdv.findOne({_id: rendezvousFound.prestation.prestationRdvId}, 
+			'-__v -createdOn -updatedOn', function (err, prestationRdvFound){
+			if(err) return res.send(500, err);
+			if (!prestationRdvFound) return res.status(404).json({ message : 'Il n\'y a pas de prestation pour ce rendez-vous à afficher.' });
+			
+			return res.status(200).json({ 
+				rendezvous: rendezvousFound,
+				detailRdv : prestationRdvFound
+			}).end();
+		})
+	});
  };
-
 
 /**
  * Update a rendezvous
  */
- exports.update = function(req, res){
+ exports.update = function(req, res, next){
 
  };
 
-
-// --- Staff routes ---
-
-/**
- * Get a list of rendezvous as a staff
- * restriction: 'staff'
+ /**
+ * Delete a rendezvous
  */
- exports.myRdv = function(req, res){
-
- };
-
-/**
- * Create a rendezvous for a user as a staff
- * restriction: 'staff'
- */
- exports.book = function(req, res){
-
- };
-
-/**
- * Update the date of a rendezvous
- * restriction: 'staff'
- */
- exports.move = function(req, res){
-
- };
-
-/**
- * Change the rendezvous status
- * restriction: 'staff'
- */
- exports.status = function(req, res){
-
- };
-
-/**
- * Remove a rendezvous
- * restriction: 'staff'
- */
- exports.destroy = function(req, res){
+ exports.destroy = function(req, res, next){
 
  };
