@@ -770,14 +770,15 @@ exports.deletePrice = function(req, res, next){
 exports.getRendezvous = function(req, res, next){
 	var businessId = req.staff.businessId;
 
-	Rendezvous.find({businessId: businessId}, function (err, rendezvousFound){
+	Rendezvous.find({'business.businessId': businessId}, 
+		'-recurance -__v -createdOn -updatedOn', function (err, rendezvousFound){
 		if(err) return res.send(500, err);
 		if (rendezvousFound.length <= 0) return res.status(404).json({ message : 'Il n\'y a pas de rendez-vous à afficher.' });
 
 		return res.status(200).json({ 
 			rendezvous: rendezvousFound
 		}).end();
-	})
+	});
 };
 
 /**
@@ -880,8 +881,6 @@ exports.createRendezvous = function(req, res, next){
 						status: 'reservé' 
 					});
 
-					console.log(newRendezvous);
-
 					newPrestationRdv.save(function (err, prestationRdvSaved){
 						if(err) return res.send(500, err);
 					});
@@ -908,7 +907,25 @@ exports.createRendezvous = function(req, res, next){
 * restriction : 'staff'
 */
 exports.showRendezvous = function(req, res, next){
+	var businessId = req.staff.businessId,
+		rendezvousId = req.params.rdvId;
 
+	Rendezvous.findOne({_id: rendezvousId, 'business.businessId': businessId}, 
+		'-recurance -__v -createdOn -updatedOn',  function (err, rendezvousFound){
+		if(err) return res.send(500, err);
+		if (!rendezvousFound) return res.status(404).json({ message : 'Il n\'y a pas de rendez-vous à afficher.' });
+
+		PrestationRdv.findOne({_id: rendezvousFound.prestation.prestationRdvId}, 
+			'-__v -createdOn -updatedOn', function (err, prestationRdvFound){
+			if(err) return res.send(500, err);
+			if (!prestationRdvFound) return res.status(404).json({ message : 'Il n\'y a pas de prestation pour ce rendez-vous à afficher.' });
+			
+			return res.status(200).json({ 
+				rendezvous: rendezvousFound,
+				detailRdv : prestationRdvFound
+			}).end();
+		})
+	});
 };
 
 /**
