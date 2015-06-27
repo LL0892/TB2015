@@ -801,9 +801,6 @@ exports.createRendezvous = function(req, res, next){
 			if(err) return res.send(500, err);
 			if (!userFound) return res.status(404).json({ message : 'Ce client n\'existe pas.' });
 
-			console.log('age user : '+ userFound.age+' ans');
-			
-			
 			// Initiate var for price category search
 			var i = 0,
 				loop = true,

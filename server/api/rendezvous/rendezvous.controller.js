@@ -52,9 +52,6 @@ var Rendezvous = require('./rendezvous.model'),
 			if(err) return res.send(500, err);
 			if (!staffFound) return res.status(404).json({ message : 'Ce staff n\'existe pas.' });
 
-			console.log('age user : '+clientAge+' ans');
-			
-			
 			// Initiate var for price category search
 			var i = 0,
 				loop = true,
