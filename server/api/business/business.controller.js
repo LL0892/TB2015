@@ -788,6 +788,7 @@ exports.getRendezvous = function(req, res, next){
 exports.createRendezvous = function(req, res, next){
 	var businessId = req.staff.businessId,
 		staffId = req.staff._id,
+		staffName = req.staff.name,
 		prestationId = req.body.prestationId,
 		userId = req.body.clientId;
 
@@ -853,33 +854,52 @@ exports.createRendezvous = function(req, res, next){
 					}
 				});
 
-				var newRendezvous = new Rendezvous({
-					startHour: req.body.startHour,
-					endHour: req.body.endHour,
-					businessId: businessId,
-					clientId: userId,
-					staffId: staffId,
-					prestationRdvId: newPrestationRdv._id,
-					status: 'reservé' 
-				});
-				
-				console.log(newRendezvous);
-
-				newPrestationRdv.save(function (err, prestationRdvSaved){
+				Business.findOne({_id: businessId}, function (err, businessFound){
 					if(err) return res.send(500, err);
-				});
+					if (!businessFound) return res.status(404).json({ message : 'Le salon recherché n\'existe pas.' });
+					
+					var newRendezvous = new Rendezvous({
+						startHour: req.body.startHour,
+						endHour: req.body.endHour,
+						business: {
+							businessId: businessId,
+							businessName: businessFound.name
+						},
+						client: {
+							clientId: userFound._id,
+							clientName: userFound.fullname
+						},
+						staff: {
+							staffId: staffId,
+							staffName: staffName
+						},
+						prestation: {
+							prestationRdvId: newPrestationRdv._id,
+							prestationRdvName: prestationFound.name
+						},
+						status: 'reservé' 
+					});
 
-				newRendezvous.save(function (err, rendezvousSaved){
-					if(err) return res.send(500, err);
-				});
+					console.log(newRendezvous);
 
-				return res.status(201).json({
-					message : 'Votre rendez-vous a été enregistré avec succès.'
-				}).end();
-			}
+					newPrestationRdv.save(function (err, prestationRdvSaved){
+						if(err) return res.send(500, err);
+					});
+
+					newRendezvous.save(function (err, rendezvousSaved){
+						if(err) return res.send(500, err);
+					});
+
+					return res.status(201).json({
+						message : 'Votre rendez-vous a été enregistré avec succès.'
+					}).end();
+
+				}); // fin Business.find();
+
+			} // fin else{}
 			
-		});
-	});
+		}); // fin User.find();
+	}); // fin Prestation.find();
 };
 
 /**

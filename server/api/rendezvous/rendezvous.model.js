@@ -19,10 +19,23 @@ var RendezvousSchema = new Schema({
 	startHour: { type: Date, required: true },
 	endHour: { type: Date, required: true },
 
-	businessId: { type: Schema.Types.ObjectId, ref: 'business', required: true },
-	clientId: { type: Schema.Types.ObjectId, ref: 'user', required: true },
-	staffId: { type: Schema.Types.ObjectId, ref: 'staff', required: true },
-	prestationRdvId: { type: Schema.Types.ObjectId, ref: 'prestationRdv', required: true  },
+	business: {
+		businessId: { type: Schema.Types.ObjectId, ref: 'business', required: true },
+		businessName: { type: String, required: true }
+	},
+	client: {
+		clientId: { type: Schema.Types.ObjectId, ref: 'user', required: true },
+		clientName: { type: String, required: true }
+	},
+	staff: {
+		staffId: { type: Schema.Types.ObjectId, ref: 'staff', required: true },
+		staffName: { type: String, required: true }
+	},
+	prestation: {
+		prestationRdvId: { type: Schema.Types.ObjectId, ref: 'prestationRdv', required: true  },
+		prestationRdvName: { type: String, required: true }
+	},
+	
 	status: { type: String, default: 'reservé', enum: ['reservé', 'annulé', 'terminé', 'déplacé', 'manqué'] },
 
 	recurance: {
@@ -55,7 +68,7 @@ RendezvousSchema
 
 // Validate prestationRdv exists
 RendezvousSchema
-  .path('prestationRdvId')
+  .path('prestation.prestationRdvId')
   .validate(function(value, respond) {
     var self = this;
     PrestationRdv.findOne({_id : value}, function(err, presRdvExists) {
@@ -69,7 +82,7 @@ RendezvousSchema
 
 // Validate client (user) exists
 RendezvousSchema
-  .path('clientId')
+  .path('client.clientId')
   .validate(function(value, respond) {
     var self = this;
     User.findOne({_id : value}, function(err, userExists) {
@@ -83,7 +96,7 @@ RendezvousSchema
 
 // Validate staff exists
 RendezvousSchema
-  .path('staffId')
+  .path('staff.staffId')
   .validate(function(value, respond) {
     var self = this;
     Staff.findOne({_id : value}, function(err, staffExists) {
@@ -97,7 +110,7 @@ RendezvousSchema
 
 // Validate business exists
 RendezvousSchema
-  .path('businessId')
+  .path('business.businessId')
   .validate(function(value, respond) {
     var self = this;
     Business.findOne({_id : value}, function(err, businessExists) {
