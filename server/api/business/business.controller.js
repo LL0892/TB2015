@@ -509,7 +509,7 @@ exports.statusStaff = function(req, res, next){
 * restriction : 'staff'
 */
 exports.deleteStaff = function(req, res, next){
-	return res.status(501).json({ message : 'fonction non implémentée.'}).end();
+	return res.status(501).json({ message : 'Fonction non implémentée.'}).end();
 };
 
 
@@ -641,7 +641,7 @@ exports.statusPrestation = function(req, res, next){
 * restriction : 'staff'
 */
 exports.deletePrestation = function(req, res, next){
-	return res.status(501).json({ message : 'fonction non implémentée.'}).end();
+	return res.status(501).json({ message : 'Fonction non implémentée.'}).end();
 };
 
 
@@ -934,7 +934,28 @@ exports.showRendezvous = function(req, res, next){
 * restriction : 'staff'
 */
 exports.rendezvousMissed = function(req, res, next){
+	var businessId = req.staff.businessId,
+		rendezvousId = req.params.rdvId;
 
+	Rendezvous.findOne({_id: rendezvousId, 'business.businessId': businessId}, function (err, rendezvousFound){
+		if(err) return res.send(500, err);
+		if (!rendezvousFound) return res.status(404).json({ message : 'Le rendez-vous demandé n\'existe pas.' });
+		
+		var now = new Date();
+		if (rendezvousFound.endHour < now) {
+			rendezvousFound.status = 'manqué'
+			rendezvousFound.save(function (err, rendezvousUpdated){
+				if(err) return res.send(500, err);
+				return res.status(200).json({ 
+					message : 'Status du rendez-vous changé avec succès en : ' + rendezvousUpdated.status
+				}).end();
+			});
+		} else{
+			return res.status(403).json({
+				message: 'Vous ne pouvez pas réaliser cette action avant que l\'heure de fin soit passée.'
+			}).end();
+		}
+	});
 };
 
 /**
@@ -943,7 +964,28 @@ exports.rendezvousMissed = function(req, res, next){
 * restriction : 'staff'
 */
 exports.rendezvousFinished = function(req, res, next){
+	var businessId = req.staff.businessId,
+		rendezvousId = req.params.rdvId;
 
+	Rendezvous.findOne({_id: rendezvousId, 'business.businessId': businessId}, function (err, rendezvousFound){
+		if(err) return res.send(500, err);
+		if (!rendezvousFound) return res.status(404).json({ message : 'Le rendez-vous demandé n\'existe pas.' });
+		
+		var now = new Date();
+		if (rendezvousFound.endHour < now) {
+			rendezvousFound.status = 'terminé'
+			rendezvousFound.save(function (err, rendezvousUpdated){
+				if(err) return res.send(500, err);
+				return res.status(200).json({ 
+					message : 'Status du rendez-vous changé avec succès en : ' + rendezvousUpdated.status
+				}).end();
+			});
+		} else{
+			return res.status(403).json({
+				message: 'Vous ne pouvez pas réaliser cette action avant que l\'heure de fin soit passée.'
+			}).end();
+		}
+	});
 };
 
 /**
@@ -952,7 +994,21 @@ exports.rendezvousFinished = function(req, res, next){
 * restriction : 'staff'
 */
 exports.rendezvousCancelled = function(req, res, next){
+	var businessId = req.staff.businessId,
+		rendezvousId = req.params.rdvId;
 
+	Rendezvous.findOne({_id: rendezvousId, 'business.businessId': businessId}, function (err, rendezvousFound){
+		if(err) return res.send(500, err);
+		if (!rendezvousFound) return res.status(404).json({ message : 'Le rendez-vous demandé n\'existe pas.' });
+
+			rendezvousFound.status = 'annulé'
+			rendezvousFound.save(function (err, rendezvousUpdated){
+				if(err) return res.send(500, err);
+				return res.status(200).json({ 
+					message : 'Status du rendez-vous changé avec succès en : ' + rendezvousUpdated.status
+				}).end();
+			});
+	});
 };
 
 /**
@@ -961,7 +1017,7 @@ exports.rendezvousCancelled = function(req, res, next){
 * restriction : 'staff'
 */
 exports.moveRendezvous = function(req, res, next){
-
+	return res.status(501).json({ message : 'Fonction non implémentée.'}).end();
 };
 
 /**
@@ -970,7 +1026,7 @@ exports.moveRendezvous = function(req, res, next){
 * restriction : 'staff'
 */
 exports.deleteRendevous = function(req, res, next){
-
+	return res.status(501).json({ message : 'Fonction non implémentée.'}).end();
 };
 
 
@@ -1069,8 +1125,8 @@ exports.deleteNotification = function(req, res, next){
 // --- Test auth.hasAccess ------------
 
 exports.test = function(req, res, next){
-	return res.status(204).json({
-		message : 'test done.'
+	return res.status(200).json({
+		message : 'Access Granted.'
 	});
 }
 
