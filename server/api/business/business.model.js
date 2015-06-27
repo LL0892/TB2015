@@ -1,7 +1,8 @@
 'use strict';
 
 var mongoose = require('mongoose'),
-    Schema = mongoose.Schema;
+    Schema = mongoose.Schema,
+    User = require('../user/user.model');
 
 /*
 * Schema
@@ -47,7 +48,7 @@ var BusinessSchema = new Schema({
   staffs: [
     {
       staffName : { type: String },
-      staffId : { type: Schema.Types.ObjectId, ref: 'user' },
+      staffId : { type: Schema.Types.ObjectId, ref: 'staff' },
       staffVisibility : { type: Boolean, default: true }
     }
    ],
@@ -78,3 +79,21 @@ BusinessSchema
     this.updatedOn = Date.now();
     next();
   });
+
+/*
+* Validations
+*/
+
+// Validate founder is existant
+BusinessSchema
+  .path('founder')
+  .validate(function(value, respond) {
+    var self = this;
+    User.findOne({_id : self.sentTo}, function(err, userExists) {
+      if(err) throw err;
+      if(!userExists) {
+        return respond(false);
+      }
+      respond(true);
+    });
+}, 'L\'utilisateur n\'existe pas.');

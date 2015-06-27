@@ -21,7 +21,6 @@ var mongoose = require('mongoose');
 */
 exports.create = function (req, res, next) {
 	var userId = req.user._id;
-	//console.log(userId);
 
 	User.findById(userId, function(err, userFound){
 		if(err) return res.send(500, err);
@@ -58,7 +57,6 @@ exports.create = function (req, res, next) {
 
 					businessFound.save(function (err, businessUpdated){
 						if(err) return res.send(500, err);
-						//console.log(businessUpdated);
 					});
 				}
 			});

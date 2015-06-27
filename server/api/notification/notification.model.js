@@ -2,7 +2,9 @@
 
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
-    User = require('../user/user.model');
+    Staff = require('../staff/staff.model'),
+    User = require('../user/user.model'),
+    Business = require('../business/business.model');
 
 var NotificationSchema = new Schema({
 	createdOn: { type: Date, default: Date.now },
@@ -43,17 +45,6 @@ NotificationSchema
     next();
   });
 
-/*NotificationSchema.pre('save', function (next) {
-  var self = this;
-  User.find({_id : self.sentTo}, function (err, userExists) {
-      if (!userExists.length){
-        next(new Error('Le recepteur n\'existe pas!'));
-      }else{                
-        next();
-      }
-  });
-});*/
-
 /*
 * Validations
 */
@@ -63,7 +54,7 @@ NotificationSchema
   .path('sentTo')
   .validate(function(value, respond) {
     var self = this;
-    User.findOne({_id : self.sentTo}, function(err, userExists) {
+    User.findOne({_id : value}, function(err, userExists) {
       if(err) throw err;
       if(!userExists) {
         return respond(false);
@@ -71,3 +62,31 @@ NotificationSchema
       respond(true);
     });
 }, 'Le recepteur n\'existe pas.');
+
+// Validate emitter is existant
+NotificationSchema
+  .path('sentBy.emitterId')
+  .validate(function(value, respond) {
+    var self = this;
+    Staff.findOne({_id : value}, function(err, staffExists) {
+      if(err) throw err;
+      if(!staffExists) {
+        return respond(false);
+      }
+      respond(true);
+    });
+}, 'Le staff n\'existe pas.');
+
+// Validate emitter is existant
+NotificationSchema
+  .path('business.businessId')
+  .validate(function(value, respond) {
+    var self = this;
+    Business.findOne({_id : value}, function(err, staffExists) {
+      if(err) throw err;
+      if(!staffExists) {
+        return respond(false);
+      }
+      respond(true);
+    });
+}, 'Le salon n\'existe pas.');
