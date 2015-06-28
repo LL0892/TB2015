@@ -96,7 +96,7 @@ exports.me = function(req, res, next){
 		if(err) return res.send(500, err);
 		if(!staffFound) return res.status(404).json({ message : 'Vous n\'avez pas de profil staff existant.' });
 		return res.status(200).json({
-			staff : staffFound
+			staff : staffFound.profilePrivate
 		}).end();
 	});
 };
@@ -144,7 +144,7 @@ exports.show = function(req, res, next){
 		if(err) return res.send(500, err);
 		if(!staffFound) return res.status(404).json({ message : 'Ce staff n\'existe pas.' });
 		return res.status(200).json({
-			staff : staffFound
+			staff : staffFound.profilePublic
 		}).end();
 	})
 };

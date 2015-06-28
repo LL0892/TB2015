@@ -19,7 +19,38 @@ var StaffSchema = new Schema({
   isActive: { type: Boolean, default: false }
 });
 
-module.exports = mongoose.model('Staff', StaffSchema);
+/**
+ * Virtuals
+ */
+
+// Private profile information
+StaffSchema
+  .virtual('profilePrivate')
+  .get(function() {
+    return {
+      '_id': this._id,
+      'name': this.name,
+      'email': this.staffContact.email,
+      'phone': this.staffContact.phone,
+      'mobile': this.staffContact.mobile,
+      'imageProfileUrl': this.photoStaffURL,
+      'active': this.isActive
+    };
+  });
+
+// Public profile information
+StaffSchema
+  .virtual('profilePublic')
+  .get(function() {
+    return {
+      '_id': this._id,
+      'name': this.name,
+      'email': this.staffContact.email,
+      'phone': this.staffContact.phone,
+      'mobile': this.staffContact.mobile,
+      'imageProfileUrl': this.photoStaffURL
+    };
+  });
 
 /*
 * Validation
@@ -53,3 +84,5 @@ StaffSchema
     this.updatedOn = Date.now();
     next();
   });
+
+module.exports = mongoose.model('Staff', StaffSchema);
