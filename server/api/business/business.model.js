@@ -13,12 +13,17 @@ var ScheduleSchema = new Schema({
   updatedOn: { type: Date, default: Date.now },
 
   dayName: { type: String, required: true, enum: ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi','samedi', 'dimanche'] },
-  dayID: { type: Number, required: true, enum: ['0', '1', '2', '3', '4', '5', '6'] },
+  dayId: { type: Number, required: true, enum: ['0', '1', '2', '3', '4', '5', '6'] },
   startHour: { type: String },
   endHour: { type: String },
   description: { type: String },
   workingDay: { type: Boolean, default: true },
-  affiliatedStaff: { type: [Schema.Types.ObjectId], ref: 'staff' }
+  staffs: [
+    { 
+      staffId : { type: Schema.Types.ObjectId, ref: 'staff' },
+      staffName : { type: String }
+    }
+  ]
 });
 
 /**
@@ -123,23 +128,5 @@ BusinessSchema
     this.updatedOn = Date.now();
     next();
   });
-
-/*
-* Validations
-*/
-
-// Validate founder is existant
-BusinessSchema
-  .path('founder')
-  .validate(function(value, respond) {
-    var self = this;
-    User.findOne({_id : self.sentTo}, function (err, userExists) {
-      if(err) throw err;
-      if(!userExists) {
-        return respond(false);
-      }
-      respond(true);
-    });
-}, 'L\'utilisateur n\'existe pas.');
 
 module.exports = mongoose.model('Business', BusinessSchema);

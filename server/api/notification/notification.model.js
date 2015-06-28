@@ -60,7 +60,9 @@ NotificationSchema
       'title': this.title,
       'text': this.text,
       'emitterName': this.sentBy.emitterName,
+      'emitterId': this.sentBy.emitterId,
       'receptorName': this.sentTo.receptorName,
+      'receptorId': this.sentTo.receptorId,
       'status': this.status
     };
   });

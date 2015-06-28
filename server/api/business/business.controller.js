@@ -134,7 +134,7 @@ var Business = require('./business.model'),
 		  	newBusiness.schedules.push(
 		  		{
 					dayName: 'lundi',
-					dayID: '0',
+					dayId: '0',
 					startHour: '08:00',
 					endHour: '17:00',
 					description: 'Horaire du lundi',
@@ -142,7 +142,7 @@ var Business = require('./business.model'),
 		  		},
 		  		{
 					dayName: 'mardi',
-					dayID: '1',
+					dayId: '1',
 					startHour: '08:00',
 					endHour: '17:00',
 					description: 'Horaire du mardi',
@@ -150,7 +150,7 @@ var Business = require('./business.model'),
 		  		},
 		  		{
 					dayName: 'mercredi',
-					dayID: '2',
+					dayId: '2',
 					startHour: '08:00',
 					endHour: '17:00',
 					description: 'Horaire du mercredi',
@@ -158,7 +158,7 @@ var Business = require('./business.model'),
 		  		},
 		  		{
 					dayName: 'jeudi',
-					dayID: '3',
+					dayId: '3',
 					startHour: '08:00',
 					endHour: '17:00',
 					description: 'Horaire du jeudi',
@@ -166,7 +166,7 @@ var Business = require('./business.model'),
 		  		},
 		  		{
 					dayName: 'vendredi',
-					dayID: '4',
+					dayId: '4',
 					startHour: '08:00',
 					endHour: '17:00',
 					description: 'Horaire du vendredi',
@@ -174,13 +174,13 @@ var Business = require('./business.model'),
 		  		},
 		  		{
 					dayName: 'samedi',
-					dayID: '5',
+					dayId: '5',
 					description: 'Fermé le samedi',
 					workingDay: false
 		  		},
 		  		{
 					dayName: 'dimanche',
-					dayID: '6',
+					dayId: '6',
 					description: 'Fermé le dimanche',
 					workingDay: false
 		  		}
@@ -320,14 +320,18 @@ exports.addSchedule = function(req, res, next){
 		if(err) return res.send(500, err);
 		if (!businessFound) return res.status(404).json({ message : 'Ce salon n\'existe pas.' });
 
+		var days = ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi', 'dimanche'];
+		var dayId = days.indexOf(req.body.dayName);
+
 		businessFound.schedules.push({
 			dayName: req.body.dayName,
-			dayID: req.body.dayID,
+			dayId : dayId,
 			startHour: req.body.startHour,
 			endHour: req.body.endHour,
 			description: req.body.description,
 			workingDay: req.body.workingDay
 		});
+		console.log(businessFound.schedules);
 
 		businessFound.save(function (err, businessUpdated){
 			if(err) return res.send(500, err);
@@ -373,27 +377,32 @@ exports.updateSchedule = function(req, res, next){
 		if(!businessFound) return res.status(404).json({ message : 'Ce salon n\'existe pas.' });
 		if(!businessFound.schedules.id(scheduleId)) return res.status(404).json({ message : 'Cette horaire n\'existe pas.' });
 
+		var days = ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi', 'dimanche'];
+
 		var schedule = businessFound.schedules.id(scheduleId);
 		schedule.dayName = req.body.dayName;
-		schedule.dayID = req.body.dayID;
+		schedule.dayId = days.indexOf(schedule.dayName);
 		schedule.startHour = req.body.startHour;
 		schedule.endHour = req.body.endHour;
 		schedule.description = req.body.description;
 		schedule.workingDay = req.body.workingDay;
+
+		// TODO affiliate staffs to schedule
+		//schedule.staffs.push({
+		//	staffId: req.staff._id,
+		//	staffName: req.staff.name
+		//});
 
 		// Remove hours if this isn't a working day
 		if(schedule.workingDay === false){
 			schedule.startHour = undefined;
 			schedule.endHour = undefined;
 		}
-		// TODO determiner dayId sur dayName automatiquement
-		// TODO check sur le format des dates d'horaires (00:00) et length (5 charactères)
 
 		businessFound.save(function (err, businessUpdated){
 			if(err) return res.send(500, err);
 			res.status(200).json({
-				message : 'L\'horaire a été modifié avec succès.',
-				horaire : businessUpdated.schedules.id(scheduleId)
+				message : 'L\'horaire a été modifié avec succès.'
 			}).end();
 		})
 	});
@@ -417,9 +426,8 @@ exports.deleteSchedule = function(req, res, next){
 
 		businessFound.save(function (err, businessUpdated){
 	 		if(err) return res.send(500, err);
-	 		res.status(200).json({
-	 			message : 'L\'hoaire a été correctement supprimé du salon.',
-	 			prestation : businessUpdated
+	 		res.status(204).json({
+	 			message : 'L\'hoaire a été correctement supprimé du salon.'
 	 		}).end();
 		});
 	});
