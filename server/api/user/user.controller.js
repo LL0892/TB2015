@@ -4,7 +4,7 @@
  * GET     /users/me                ->  me
  * PUT     /users/me                ->  update
  * POST    /users                   ->  create
- * POST    /users/Manager           ->  createManager
+ * POST    /users/manager           ->  createManager
  * GET     /users/:id               ->  show
  * DELETE  /users/:id               ->  destroy
  * PUT     /users/:id/password      ->  changePassword
@@ -16,7 +16,6 @@
 'use strict';
 
 var User = require('./user.model');
-var Business = require('../business/business.model');
 
 var passport = require('passport');
 var config = require('../../config/environment');
@@ -51,7 +50,7 @@ exports.me = function(req, res, next) {
     if(!userFound) return res.status(401).json({ message : 'Vous n\'êtes pas connecté.' }).end();
 
     return res.status(200).json({
-      myProfile : userFound,
+      myProfile : userFound.profile,
       staffProfile: req.staff
     }).end();
   });
@@ -84,8 +83,7 @@ exports.update = function(req, res, next) {
       if(err) return res.send(500, err);
 
       return res.status(200).json({
-        message: 'Profil utilisateur modifié avec succès.',
-        profil : userUpdated.profile
+        message: 'Profil utilisateur modifié avec succès.'
       }).end();
     });
   

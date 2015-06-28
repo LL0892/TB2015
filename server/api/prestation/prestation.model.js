@@ -1,7 +1,8 @@
 'use strict';
 
 var mongoose = require('mongoose'),
-    Schema = mongoose.Schema;
+    Schema = mongoose.Schema,
+    Business = require('../business/business.model');
 
 /*
 * Schemas
@@ -26,11 +27,9 @@ var PrestationSchema = new Schema({
 	description: { type: String },
 	duration: { type: Number, required: true, default: '5' },
 
-	//prestationOptions: { type: [Schema.Types.ObjectId], ref: 'option' },
-
 	prices: [PriceSchema],
 
-	businessId: { type: Schema.Types.ObjectId, ref: 'option', required: true },
+	businessId: { type: Schema.Types.ObjectId, ref: 'business', required: true },
 	isActive: { type: Boolean, default: true }
 });
 
@@ -40,20 +39,19 @@ module.exports = mongoose.model('Prestation', PrestationSchema);
 * Validation
 */
 
-// Validate existing businessID
-/*PrestationSchema
-  .path('businessID')
+// Validate existing business
+PrestationSchema
+  .path('businessId')
   .validate(function(value, respond) {
     var self = this;
-    this.constructor.findOne({_id: value}, function (){
-      if (err) throw err;
-      if(err || !doc) {
+    Business.findOne({_id: value}, function (err, businessExists){
+      if(err) throw err;
+      if(!businessExists) {
         return respond(false);
-      } else {
-        return respond(true);
       }
+      respond(true);
     });
-  }, 'Salon non existant.');*/
+  }, 'Salon non existant.');
 
 /*
 * Pre-save hook

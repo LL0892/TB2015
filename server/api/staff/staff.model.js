@@ -1,7 +1,8 @@
 'use strict';
 
 var mongoose = require('mongoose'),
-    Schema = mongoose.Schema;
+    Schema = mongoose.Schema,
+    Business = require('../business/business.model');
 
 var StaffSchema = new Schema({
   createdOn: { type: Date, default: Date.now },
@@ -24,21 +25,19 @@ module.exports = mongoose.model('Staff', StaffSchema);
 * Validation
 */
 
-// Validate existing busines ID
-/*StaffSchema
-  .path('businessID')
+// Validate existing business
+StaffSchema
+  .path('businessId')
   .validate(function(value, respond) {
     var self = this;
-    this.constructor.findOne({_id: value}, function (){
-      if (err) throw err;
-      if(err || !doc) {
+    Business.findOne({_id: value}, function (err, businessExists){
+      if(err) throw err;
+      if(!businessExists) {
         return respond(false);
-      } else {
-        return respond(true);
       }
+      respond(true);
     });
-  }, 'Business non existant.');
-*/
+  }, 'Salon non existant.');
 
   /*
 * Pre-save hook

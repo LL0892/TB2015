@@ -89,7 +89,7 @@ BusinessSchema
   .path('founder')
   .validate(function(value, respond) {
     var self = this;
-    User.findOne({_id : self.sentTo}, function(err, userExists) {
+    User.findOne({_id : self.sentTo}, function (err, userExists) {
       if(err) throw err;
       if(!userExists) {
         return respond(false);

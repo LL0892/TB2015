@@ -54,7 +54,7 @@ NotificationSchema
   .path('sentTo')
   .validate(function(value, respond) {
     var self = this;
-    User.findOne({_id : value}, function(err, userExists) {
+    User.findOne({_id : value}, function (err, userExists) {
       if(err) throw err;
       if(!userExists) {
         return respond(false);
@@ -68,7 +68,7 @@ NotificationSchema
   .path('sentBy.emitterId')
   .validate(function(value, respond) {
     var self = this;
-    Staff.findOne({_id : value}, function(err, staffExists) {
+    Staff.findOne({_id : value}, function (err, staffExists) {
       if(err) throw err;
       if(!staffExists) {
         return respond(false);
@@ -82,7 +82,7 @@ NotificationSchema
   .path('business.businessId')
   .validate(function(value, respond) {
     var self = this;
-    Business.findOne({_id : value}, function(err, staffExists) {
+    Business.findOne({_id : value}, function (err, staffExists) {
       if(err) throw err;
       if(!staffExists) {
         return respond(false);

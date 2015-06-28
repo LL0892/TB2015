@@ -33,13 +33,13 @@ var UserSchema = new Schema({
   zip: { type : Number, default: '' },
   imageProfileURL: { type : String, default : 'userProfile.png' },
   
-  stats: {
+/*  stats: {
     nbRdvDone: { type: Number, default: '0' },
     nbRdvMissed: { type: Number, default: '0' },
     nbRdvCancelled: { type: Number, default: '0' },
     nbRdvMoved: { type: Number, default: '0' },
     lastRdv: { type: Date }
-  },
+  },*/
 
   preferences: {
     homeDisplay: { type: String, enum: ['list', 'fav', 'dual'], default: 'list' },
@@ -67,10 +67,9 @@ UserSchema
   .get(function() {
     return {
       '_id': this._id,
-      'firstName': this.firstName,
-      'lastName': this.lastName,
+      'name': this.fullname,
       'email': this.email,
-      'dateOfBirth': this.dateOfBirth,
+      'age': this.age,
       'gender': this.gender,
       'phone': this.phone,
       'mobile': this.mobile,
