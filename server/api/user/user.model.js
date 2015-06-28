@@ -4,6 +4,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var crypto = require('crypto');
 var authTypes = ['github', 'twitter', 'facebook', 'google'];
+var Staff = require('../staff/staff.model');
 
 // User Schema
 var UserSchema = new Schema({
@@ -77,7 +78,7 @@ UserSchema
       'street': this.street,
       'canton': this.canton,
       'zip': this.zip,
-      'imageProfileURL': this.imageProfileURL
+      'imageProfileUrl': this.imageProfileURL
     };
   });
 
@@ -148,6 +149,20 @@ UserSchema
 var validatePresenceOf = function(value) {
   return value && value.length;
 };
+
+// Validate staff exist
+UserSchema
+  .path('staffId')
+  .validate(function(value, respond) {
+    var self = this;
+    Staff.findOne({_id: value}, function (err, staffExists){
+      if(err) throw err;
+      if(!staffExists) {
+        return respond(false);
+      }
+      respond(true);
+    });
+  }, 'Salon non existant.');
 
 /**
  * Pre-save hook

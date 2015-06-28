@@ -76,6 +76,23 @@ var Business = require('./business.model'),
  	Business.find({}, function (err, businessesFound){
  		if(err) return res.send(500, err);
  		if(businessesFound.length <= 0) return res.status(404).json({ message : 'Il n\'y a pas de salons à afficher.' });
+ 		
+ 		// Loop through the businesses - apply profile virtual for businesses
+ 		var i = 0;
+ 		do{
+ 			
+ 			// Loop through the schedules - apply profile virtual for schedules
+ 			var j = 0;
+ 			do{
+				businessesFound[i].schedules[j] = businessesFound[i].schedules[j].profile
+ 				j++;
+ 			}while(j <= businessesFound[i].schedules.length-1)
+
+ 			businessesFound = businessesFound[i].profile
+
+ 			i++;
+ 		}while(i <= businessesFound.length-1)
+
  		res.status(200).json({ businesses: businessesFound }).end();
  	});
  };
@@ -173,8 +190,7 @@ var Business = require('./business.model'),
 		  	newBusiness.save(function (err, businessSaved){
 		    	if(err) return res.send(500, err);
 		    	return res.status(201).json({ 
-		    		message: 'Votre salon a été créé avec succès.', 
-		    		business: businessSaved 
+		    		message: 'Votre salon a été créé avec succès.'
 		    	}).end();
 		  	});
 
@@ -196,7 +212,15 @@ var Business = require('./business.model'),
  	Business.findById(businessId, function (err, businessFound){
  		if(!businessFound) return res.status(404).json({ message : 'Ce salon n\'existe pas.' });
  		if(err) return res.send(500, err);
- 		res.status(200).json({ salon : businessFound }).end();
+
+		// Loop through the schedules - apply profile virtual for schedules
+		var i = 0;
+		do{
+			businessFound.schedules[i] = businessFound.schedules[i].profile
+			i++;
+		}while(i <= businessFound.schedules.length-1)
+
+ 		res.status(200).json({ salon : businessFound.profile }).end();
  	});
  };
 

@@ -5,10 +5,9 @@ var mongoose = require('mongoose'),
     User = require('../user/user.model');
 
 /*
-* Schema
+* Schema Schedule
 */
 
-// Schedule Schema
 var ScheduleSchema = new Schema({
   createdOn: { type: Date, default: Date.now },
   updatedOn: { type: Date, default: Date.now },
@@ -22,7 +21,29 @@ var ScheduleSchema = new Schema({
   affiliatedStaff: { type: [Schema.Types.ObjectId], ref: 'staff' }
 });
 
-// Business Schema
+/**
+ * Virtuals for schedule
+ */
+
+// Public schedule information
+ScheduleSchema
+  .virtual('profile')
+  .get(function() {
+    return {
+      '_id': this._id,
+      'dayName': this.dayName,
+      'startHour': this.startHour,
+      'endHour': this.endHour,
+      'workingDay': this.workingDay,
+      'description': this.description,
+      'affiliatedStaff': this.affiliatedStaff
+    };
+  });
+
+/*
+* Schema Business
+*/
+
 var BusinessSchema = new Schema({
   createdOn: { type: Date, default: Date.now },
   updatedOn: { type: Date, default: Date.now },
@@ -52,18 +73,41 @@ var BusinessSchema = new Schema({
       staffVisibility : { type: Boolean, default: true }
     }
    ],
-  schedules: [ ScheduleSchema ],
-  //prestations: { type: Schema.Types.ObjectId, ref: 'prestation' },
 
-  // Ratting d'un business
-  ratting: {
+  schedules: [ ScheduleSchema ]
+/*  ratting: {
     nbVotes: { type: Number, default: '0' },
     nbStars: { type: Number, default: '0' }
-  } 
+  } */
 });
 
-//module.exports = mongoose.model('Schedule', ScheduleSchema);
-module.exports = mongoose.model('Business', BusinessSchema);
+BusinessSchema.set('toJSON', { getters: true });
+BusinessSchema.set('toObject', { getters: true });
+
+/**
+ * Virtuals for business
+ */
+
+// Public business information
+BusinessSchema
+  .virtual('profile')
+  .get(function() {
+    return {
+      '_id': this._id,
+      'name': this.name,
+      'city': this.city,
+      'zip': this.zip,
+      'canton': this.canton,
+      'street': this.street,
+      'email': this.businessContact.email,
+      'phone': this.businessContact.phone,
+      'mobile': this.businessContact.mobile,
+      'site': this.businessContact.siteURL,
+      'facebook': this.businessContact.facebookURL,
+      'imageBusinessUrl': this.imageBusinessURL,
+      'schedules': this.schedules
+    };
+  });
 
 /*
 * Pre-save hook
@@ -97,3 +141,5 @@ BusinessSchema
       respond(true);
     });
 }, 'L\'utilisateur n\'existe pas.');
+
+module.exports = mongoose.model('Business', BusinessSchema);
