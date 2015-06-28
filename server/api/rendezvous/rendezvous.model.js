@@ -45,8 +45,6 @@ var RendezvousSchema = new Schema({
 	}
 });
 
-module.exports = mongoose.model('Rendezvous', RendezvousSchema);
-
 /*
 * Pre-save hook
 */
@@ -124,3 +122,5 @@ RendezvousSchema
 
 // Validate startHour is not empty or null
 // Validate endHour is not empty or null
+
+module.exports = mongoose.model('Rendezvous', RendezvousSchema);

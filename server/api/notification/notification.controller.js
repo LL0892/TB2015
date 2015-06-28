@@ -20,10 +20,8 @@ var Notification = require('./notification.model'),
  	var userId = req.user._id;
 
 	var query = Notification.find({
-		'sentTo': userId
-	}).select(
-		'-createdOn -updatedOn -__v'
-	);
+		'sentTo.receptorId': userId
+	});
 
 	query.exec(function (err, notificationsFound) {
 	    if(err) return res.send(500, err);
@@ -31,6 +29,14 @@ var Notification = require('./notification.model'),
 	    	message : 'Il n\'y a pas de notification à afficher.'
 	    }).end();
 	    
+
+		// Loop through the notifications - apply profile virtual for each notifications
+		var i = 0;
+		do{
+			notificationsFound[i] = notificationsFound[i].profileUser
+			i++;
+		}while(i <= notificationsFound.length-1)
+
 	    return res.status(200).json({
 	    	notifications :	notificationsFound
 	    }).end();
@@ -41,9 +47,10 @@ var Notification = require('./notification.model'),
  * Get a notification, change viewed boolean if false, or just show the notif.
  */
  exports.show = function(req, res, next){
- 	var notifId = req.params.id;
+ 	var notifId = req.params.id,
+ 		userId = req.user._id;
 
- 	Notification.findById(notifId, '-createdOn -updatedOn -__v', function (err, notificationFound){
+ 	Notification.findOne({'sentTo.receptorId': userId, _id: notifId}, function (err, notificationFound){
  		if(err) return res.send(500, err);
  		if (!notificationFound) return res.status(404).json({ message : 'Notification non existante.' }).end();
  		
@@ -52,12 +59,12 @@ var Notification = require('./notification.model'),
 	 		notificationFound.save(function (err, notificationSaved){
 		 		if(err) return res.send(500, err);
 		 		return res.status(200).json({
-		 			notification : notificationSaved
+		 			notification : notificationSaved.profileUser
 		 		}).end();
 	 		});
  		} else {
  			return res.status(200).json({
- 				notification : notificationFound
+ 				notification : notificationFound.profileUser
  			}).end();
  		}
  	});
@@ -70,7 +77,7 @@ var Notification = require('./notification.model'),
  	var notifId = req.params.id,
  		userId = req.user._id;
 
- 	Notification.findById(notifId, function (err, notificationFound){
+ 	Notification.findOne({'sentTo.receptorId': userId, _id: notifId}, function (err, notificationFound){
  		if(err) return res.send(500, err);
  		if (!notificationFound) return res.status(404).json({ message : 'Notification non existante.' }).end();
  		
@@ -106,9 +113,10 @@ var Notification = require('./notification.model'),
  * Change the status to refused
  */
  exports.refused = function(req, res, next){
- 	var notifId = req.params.id;
+ 	var notifId = req.params.id,
+ 		userId = req.user._id;
 
- 	Notification.findById(notifId, function (err, notificationFound){
+ 	Notification.findOne({'sentTo.receptorId': userId, _id: notifId}, function (err, notificationFound){
  		if(err) return res.send(500, err);
  		if (!notificationFound) return res.status(404).json({ message : 'Notification non existante.' }).end();
  		if(notificationFound.status === 'not processed'){
@@ -116,8 +124,7 @@ var Notification = require('./notification.model'),
 	 		notificationFound.save(function (err, notificationSaved){
 		 		if(err) return res.send(500, err);
 		 		return res.status(200).json({
-		 			message : 'Le status de la notification a été mit à jours avec succès: ' + notificationSaved.status,
-		 			notification: notificationSaved 
+		 			message : 'Le status de la notification a été mit à jours avec succès: ' + notificationSaved.status
 		 		}).end();
 	 		});
  		} else {
@@ -132,9 +139,10 @@ var Notification = require('./notification.model'),
  * Remove a notification
  */
  exports.destroy = function(req, res, next){
- 	var notifId = req.params.id;
+ 	var notifId = req.params.id,
+ 		userId = req.user._id;
 
- 	Notification.remove({_id: notifId}, function (err, notificationRemoved){
+ 	Notification.remove({'sentTo.receptorId': userId, _id: notifId}, function (err, notificationRemoved){
  		if(!notificationRemoved){
  			return res.status(404).json({
  				message : 'Cette notification n\'existe pas.'

@@ -77,11 +77,11 @@ var Business = require('./business.model'),
  		if(err) return res.send(500, err);
  		if(businessesFound.length <= 0) return res.status(404).json({ message : 'Il n\'y a pas de salons à afficher.' });
  		
- 		// Loop through the businesses - apply profile virtual for businesses
+ 		// Loop through the businesses - apply profile virtual for each businesses
  		var i = 0;
  		do{
  			
- 			// Loop through the schedules - apply profile virtual for schedules
+ 			// Loop through the schedules - apply profile virtual for each schedules
  			var j = 0;
  			do{
 				businessesFound[i].schedules[j] = businessesFound[i].schedules[j].profile
@@ -213,7 +213,7 @@ var Business = require('./business.model'),
  		if(!businessFound) return res.status(404).json({ message : 'Ce salon n\'existe pas.' });
  		if(err) return res.send(500, err);
 
-		// Loop through the schedules - apply profile virtual for schedules
+		// Loop through the schedules - apply profile virtual for each schedules
 		var i = 0;
 		do{
 			businessFound.schedules[i] = businessFound.schedules[i].profile
@@ -1068,6 +1068,13 @@ exports.getNotifications = function(req, res, next){
 			message : 'Il n\'y a pas de notification à afficher.'
 		}).end();
 		
+		// Loop through the notifications - apply profile virtual for each notifications
+		var i = 0;
+		do{
+			notificationsFound[i] = notificationsFound[i].profileStaff
+			i++;
+		}while(i <= notificationsFound.length-1)
+
 		res.status(200).json({
 			notifications : notificationsFound
 		}).end();
@@ -1090,14 +1097,23 @@ exports.createNotification = function(req, res, next){
  			message : 'Vous n\'avez pas les droits d\'ajouter une personne au staff sans avoir un profil staff.'
  		}).end();
 
-	 	var newNotification = new Notification({
+ 		User.findOne({_id: req.body.receptorId}, function (err, userFound){
+ 			if(err) return res.send(500, err);
+ 			if (!userFound) return res.status(404).json({
+ 				message : 'L\'utilisateur demandé n\'est pas trouvable.'
+ 			});
+
+ 			var newNotification = new Notification({
 			title: req.body.title,
 			text: req.body.text,
 			sentBy : {
 				emitterId : staffId,
 				emitterName: staffName
 			},
-			sentTo : req.body.sentTo,
+			sentTo : {
+				receptorId : userFound._id,
+				receptorName: userFound.fullname
+			},
 			status : 'not processed',
 			isViewed : false,
 			business : {
@@ -1109,10 +1125,12 @@ exports.createNotification = function(req, res, next){
 	 	newNotification.save(function (err, notificationSaved){
 	 		if(err) return res.send(500, err);
 	 		return res.status(201).json({
-	 			message: 'La notification fut envoyée avec succès pour le salon : '+ notificationSaved.business.businessName + '.',
-	 			notification: notificationSaved
+	 			message: 'La notification fut envoyée avec succès pour le salon : '+ notificationSaved.business.businessName
 	 		}).end();
 	 	});
+ 		});
+
+
  	});
 };
 

@@ -70,7 +70,7 @@ StaffSchema
     });
   }, 'Salon non existant.');
 
-  /*
+/*
 * Pre-save hook
 */
 StaffSchema

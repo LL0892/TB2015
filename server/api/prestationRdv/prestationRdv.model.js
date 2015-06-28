@@ -25,8 +25,6 @@ var PrestationRdvSchema = new Schema({
 	}
 });
 
-module.exports = mongoose.model('PrestationRdv', PrestationRdvSchema);
-
 /*
 * Pre-save hook
 */
@@ -41,3 +39,5 @@ PrestationRdvSchema
     this.updatedOn = Date.now();
     next();
   });
+
+module.exports = mongoose.model('PrestationRdv', PrestationRdvSchema);

@@ -33,8 +33,6 @@ var PrestationSchema = new Schema({
 	isActive: { type: Boolean, default: true }
 });
 
-module.exports = mongoose.model('Prestation', PrestationSchema);
-
 /*
 * Validation
 */
@@ -67,3 +65,5 @@ PrestationSchema
     this.updatedOn = Date.now();
     next();
   });
+
+module.exports = mongoose.model('Prestation', PrestationSchema);
