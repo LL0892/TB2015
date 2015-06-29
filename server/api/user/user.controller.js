@@ -50,8 +50,8 @@ exports.me = function(req, res, next) {
     if(!userFound) return res.status(401).json({ message : 'Vous n\'êtes pas connecté.' }).end();
 
     return res.status(200).json({
-      myProfile : userFound.profile,
-      staffProfile: req.staff.profilePrivate
+      user : userFound.profile,
+      staff: req.staff.profilePrivate
     }).end();
   });
 };

@@ -82,7 +82,7 @@ angular.module('tbApp')
       changePassword: function(oldPassword, newPassword, callback) {
         var cb = callback || angular.noop;
 
-        return User.changePassword({ id: currentUser._id }, {
+        return User.changePassword({ id: currentUser.user._id }, {
           oldPassword: oldPassword,
           newPassword: newPassword
         }, function(user) {
@@ -107,7 +107,7 @@ angular.module('tbApp')
        * @return {Boolean}
        */
       isLoggedIn: function() {
-        return currentUser.hasOwnProperty('role');
+        return currentUser.user.hasOwnProperty('roles');
       },
 
       /**
@@ -120,7 +120,7 @@ angular.module('tbApp')
           }).catch(function() {
             cb(false);
           });
-        } else if(currentUser.hasOwnProperty('role')) {
+        } else if(currentUser.user.hasOwnProperty('roles')) {
           cb(true);
         } else {
           cb(false);
@@ -128,12 +128,12 @@ angular.module('tbApp')
       },
 
       /**
-       * Check if a user is an admin
+       * Check if a user is an staff
        *
        * @return {Boolean}
        */
-      isAdmin: function() {
-        return currentUser.role === 'admin';
+      isStaff: function() {
+        return currentUser.user.roles.indexOf('staff');
       },
 
       /**

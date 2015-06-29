@@ -78,7 +78,8 @@ UserSchema
       'street': this.street,
       'canton': this.canton,
       'zip': this.zip,
-      'imageProfileUrl': this.imageProfileURL
+      'imageProfileUrl': this.imageProfileURL,
+      'roles': this.roles
     };
   });
 
