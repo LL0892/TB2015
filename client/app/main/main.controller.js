@@ -2,9 +2,9 @@
 
 angular.module('tbApp')
   .controller('MainCtrl', function ($scope, $http) {
-    $scope.awesomeThings = [];
+    $scope.busiesses = [];
 
-    $http.get('/api/things').success(function(awesomeThings) {
+/*    $http.get('/api/things').success(function(awesomeThings) {
       $scope.awesomeThings = awesomeThings;
     });
 
@@ -18,5 +18,14 @@ angular.module('tbApp')
 
     $scope.deleteThing = function(thing) {
       $http.delete('/api/things/' + thing._id);
-    };
+    };*/
+
+    $http.get('/api/businesses').success(function(businesses){
+      $scope.businesses = businesses;
+    });
+
+
+
+
+
   });

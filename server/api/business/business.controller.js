@@ -220,7 +220,8 @@ var Business = require('./business.model'),
 			i++;
 		}while(i <= businessFound.schedules.length-1)
 
- 		res.status(200).json({ salon : businessFound.profile }).end();
+ 		//res.status(200).json({ salon : businessFound.profile }).end();
+ 		res.status(200).json(businessFound.profile).end();
  	});
  };
 
