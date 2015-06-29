@@ -54,7 +54,6 @@ var Rendezvous = require('./rendezvous.model'),
 
 			// Initiate var for price category search
 			var i = 0,
-				loop = true,
 				message = '',
 				status = 404,
 				priceId = undefined;
@@ -67,7 +66,6 @@ var Rendezvous = require('./rendezvous.model'),
 					if(prestationFound.prices[i].gender === req.user.gender ||
 						prestationFound.prices[i].gender === 'mixte'){
 						
-						loop = false;
 						status = 200;
 						priceId = prestationFound.prices[i]._id;
 
@@ -79,7 +77,7 @@ var Rendezvous = require('./rendezvous.model'),
 				}
 
 				i++;
-			} while(i <= prestationFound.prices.length-1 && loop === true)
+			} while(i <= prestationFound.prices.length-1 && status === 404)
 
 			// Stop the process if the status is still '404'
 			if (status === 404) {
@@ -199,7 +197,7 @@ var Rendezvous = require('./rendezvous.model'),
 			});
 		} else {
 			return res.status(403).json({
-				message: 'Vous ne pouvez pas réaliser cette action après que l\'heure de départ soit passée.'
+				message: 'Vous ne pouvez pas réaliser cette action si votre rendez-vous à lieu dans moins de 24h.'
 			}).end();
 		}
 	});

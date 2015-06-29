@@ -835,7 +835,6 @@ exports.createRendezvous = function(req, res, next){
 
 			// Initiate var for price category search
 			var i = 0,
-				loop = true,
 				message = '',
 				status = 404,
 				priceId = undefined;
@@ -848,7 +847,6 @@ exports.createRendezvous = function(req, res, next){
 					if(prestationFound.prices[i].gender === userFound.gender ||
 						prestationFound.prices[i].gender === 'mixte'){
 						
-						loop = false;
 						status = 200;
 						priceId = prestationFound.prices[i]._id;
 
@@ -860,7 +858,7 @@ exports.createRendezvous = function(req, res, next){
 				}
 
 				i++;
-			} while(i <= prestationFound.prices.length-1 && loop === true)
+			} while(i <= prestationFound.prices.length-1 && status === 404)
 
 			// Stop the process if the status is still '404'
 			if (status === 404) {
