@@ -33,7 +33,7 @@ exports.index = function(req, res) {
   User.find({}, '-salt -hashedPassword', function (err, users) {
     if(err) return res.send(500, err);
     return res.status(200).json({
-      utilisateurs : users.profile
+      utilisateurs : users.profilePublic
     }).end();
   });
 };
@@ -49,10 +49,10 @@ exports.me = function(req, res, next) {
     if(err) return res.send(500, err);
     if(!userFound) return res.status(401).json({ message : 'Vous n\'êtes pas connecté.' }).end();
 
-    return res.status(200).json({
-      user : userFound.profile,
-      staff: req.staff.profilePrivate
-    }).end();
+    return res.status(200).json(
+      userFound.profilePrivate
+      //staff: req.staff.profilePrivate
+    ).end();
   });
 };
 
@@ -168,7 +168,7 @@ exports.show = function (req, res, next) {
     if(err) return res.send(500, err);
     if (!user) return res.send(401);
     return res.status(200).json({
-      utilisateur : user.profile
+      utilisateur : user.profilePublic
     }).end();
   });
 };

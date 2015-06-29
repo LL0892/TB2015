@@ -27,7 +27,7 @@ angular.module('tbApp')
 
     function getMyBusiness(data){
       Business.getBusiness(
-        data.businessId,
+        data.staff.businessId,
         function (data, status, headers, config){
           $scope.business = data;
         },

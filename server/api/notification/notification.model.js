@@ -46,6 +46,7 @@ NotificationSchema
       'emitterName': this.sentBy.emitterName,
       'receptorName': this.sentTo.receptorName,
       'businessName': this.business.businessName,
+      'businessId': this.business.businessId,
       'isViewed': this.isViewed,
       'status': this.status
     };
