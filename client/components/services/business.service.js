@@ -18,9 +18,10 @@ angular.module('tbApp')
 					method: 'GET',
 					url: 'api/businesses/' + businessId
 				}).success(function (data, status, headers, config){
-					callback(data);
+					callback(data, status, headers, config);
 				}).error(function (data, status, headers, config){
-					errorCallback(data, status);
+					var error = status + ' : ' + data;
+					errorCallback(error);
 				});
 			}
 		}
