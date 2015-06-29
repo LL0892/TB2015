@@ -51,7 +51,7 @@ exports.me = function(req, res, next) {
 
     return res.status(200).json({
       myProfile : userFound.profile,
-      staffProfile: req.staff
+      staffProfile: req.staff.profilePrivate
     }).end();
   });
 };

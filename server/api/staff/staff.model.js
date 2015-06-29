@@ -34,7 +34,8 @@ StaffSchema
       'phone': this.staffContact.phone,
       'mobile': this.staffContact.mobile,
       'imageProfileUrl': this.photoStaffURL,
-      'active': this.isActive
+      'active': this.isActive,
+      'businessId': this.businessId
     };
   });
 
