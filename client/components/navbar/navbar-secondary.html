@@ -1,0 +1,95 @@
+<nav class="navbar navbar-default navbar-lower" role="navigation" ng-controller="NavbarSecondryCtrl">
+  <div class="container">
+    <div class="collapse navbar-collapse collapse-buttons">
+      <form class="navbar-form navbar-left" role="search">
+
+        <!-- Salon button -->
+        <div class="btn-group" dropdown is-open="status1.isopen">
+          <button type="button" class="btn btn-default dropdown-toggle" dropdown-toggle ng-click="toggleDropdown(status1)">
+            Le salon <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#">Voir les infos du salon</a></li>
+            <li class="divider"></li>
+            <li>
+              <a href="#">
+                <i class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></i>
+                Modifier les infos du salon
+              </a>
+            </li>
+          </ul>
+        </div>
+        
+        <!-- Rendezvous button -->
+        <div id="rendezvous" class="btn-group" dropdown is-open="status5.isopen">
+          <button type="button" class="btn btn-success dropdown-toggle" dropdown-toggle ng-click="toggleDropdown(status5)">
+            Les rendez-vous <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#">Voir les rendez-vous</a></li>
+            <li class="divider"></li>
+            <li>
+              <a href="#">
+                <i class="glyphicon glyphicon glyphicon-book" aria-hidden="true"></i>
+                Prendre un rendez-vous
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Prestation button -->
+        <div id="prestation" class="btn-group" dropdown is-open="status2.isopen">
+          <button type="button" class="btn btn-default dropdown-toggle" dropdown-toggle ng-click="toggleDropdown(status2)">
+            Les prestations <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#">Voir les prestations</a></li>
+            <li class="divider"></li>
+            <li>
+              <a href="#">
+                <i class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></i>
+                Ajouter une prestation
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Horaires button -->
+        <div id="horaire" class="btn-group" dropdown is-open="status3.isopen">
+          <button type="button" class="btn btn-default dropdown-toggle" dropdown-toggle ng-click="toggleDropdown(status3)">
+            Les horaires <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#">Voir les tranches horaires</a></li>
+            <li class="divider"></li>
+            <li>
+              <a href="#">
+                <i class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></i>
+                Ajouter une tranche horaire
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Staff button -->
+        <div id="staff" class="btn-group" dropdown is-open="status4.isopen">
+          <button type="button" class="btn btn-default dropdown-toggle" dropdown-toggle ng-click="toggleDropdown(status4)">
+            Le personnel <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#">Voir le personnel du salon</a></li>
+            <li class="divider"></li>
+            <li>
+              <a href="#">
+                <i class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></i>
+                Ajouter un membre au staff
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <button class="btn btn-warning">Status</button>
+      </form>
+    </div>
+  </div>
+</nav>
