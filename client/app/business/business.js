@@ -4,7 +4,7 @@ angular.module('tbApp')
   .config(function ($stateProvider) {
     $stateProvider
       .state('business', {
-        url: 'businesses',
+        url: '/business',
         templateUrl: 'app/business/business.html',
         controller: 'BusinessCtrl'
       });
