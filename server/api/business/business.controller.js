@@ -73,7 +73,7 @@ var Business = require('./business.model'),
 * Get a list of business
 */
  exports.getBusinesses = function(req, res, next){
- 	Business.find({}, function (err, businessesFound){
+ 	Business.find({ isActive: true }, function (err, businessesFound){
  		if(err) return res.send(500, err);
  		if(businessesFound.length <= 0) return res.status(404).json({ message : 'Il n\'y a pas de salons à afficher.' });
  		

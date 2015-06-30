@@ -15,8 +15,7 @@ angular.module('tbApp')
         },
         function (error){
           $scope.error = error;
-        }
-      );
-    }
+        });
+    };
 
   });

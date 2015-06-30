@@ -52,21 +52,7 @@ var app = angular.module('tbApp');
       return data;
     }).then(getBusiness);
 
-
-    // Change the business status
-    $scope.changeStatus = function(){
-      Business.changeStatus(
-        $scope.business._id,
-        function (data, status, headers, config){
-          $scope.business = data.business;
-        },
-        function (error, status){
-          $scope.error = error;
-        });
-    };
-
-    $scope.items = ['item1', 'item2', 'item3'];
-
+    // Modal for status change
     $scope.open = function (size) {
       var modalInstance = $modal.open({
         animation: true,

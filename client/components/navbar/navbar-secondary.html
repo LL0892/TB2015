@@ -1,11 +1,11 @@
-<nav class="navbar navbar-default navbar-lower" role="navigation" ng-controller="NavbarSecondryCtrl">
+<nav class="navbar navbar-lower" role="navigation" ng-controller="NavbarSecondryCtrl">
   <div class="container">
     <div class="collapse navbar-collapse collapse-buttons">
       <form class="navbar-form navbar-left" role="search">
 
         <!-- Salon button -->
         <div class="btn-group" dropdown is-open="status1.isopen">
-          <button type="button" class="btn btn-default dropdown-toggle" dropdown-toggle ng-click="toggleDropdown(status1)">
+          <button type="button" class="btn btn-default dropdown-toggle btn-lg" dropdown-toggle ng-click="toggleDropdown(status1)">
             Le salon <span class="caret"></span>
           </button>
           <ul class="dropdown-menu" role="menu">
@@ -22,7 +22,7 @@
         
         <!-- Rendezvous button -->
         <div id="rendezvous" class="btn-group" dropdown is-open="status5.isopen">
-          <button type="button" class="btn btn-default dropdown-toggle" dropdown-toggle ng-click="toggleDropdown(status5)">
+          <button type="button" class="btn btn-default dropdown-toggle btn-lg" dropdown-toggle ng-click="toggleDropdown(status5)">
             Rendez-vous <span class="caret"></span>
           </button>
           <ul class="dropdown-menu" role="menu">
@@ -39,7 +39,7 @@
 
         <!-- Prestation button -->
         <div id="prestation" class="btn-group" dropdown is-open="status2.isopen">
-          <button type="button" class="btn btn-default dropdown-toggle" dropdown-toggle ng-click="toggleDropdown(status2)">
+          <button type="button" class="btn btn-default dropdown-toggle btn-lg" dropdown-toggle ng-click="toggleDropdown(status2)">
             Prestations <span class="caret"></span>
           </button>
           <ul class="dropdown-menu" role="menu">
@@ -56,7 +56,7 @@
 
         <!-- Horaires button -->
         <div id="horaire" class="btn-group" dropdown is-open="status3.isopen">
-          <button type="button" class="btn btn-default dropdown-toggle" dropdown-toggle ng-click="toggleDropdown(status3)">
+          <button type="button" class="btn btn-default dropdown-toggle btn-lg" dropdown-toggle ng-click="toggleDropdown(status3)">
             Horaires <span class="caret"></span>
           </button>
           <ul class="dropdown-menu" role="menu">
@@ -73,7 +73,7 @@
 
         <!-- Staff button -->
         <div id="staff" class="btn-group" dropdown is-open="status4.isopen">
-          <button type="button" class="btn btn-default dropdown-toggle" dropdown-toggle ng-click="toggleDropdown(status4)">
+          <button type="button" class="btn btn-default dropdown-toggle btn-lg" dropdown-toggle ng-click="toggleDropdown(status4)">
             Personnel <span class="caret"></span>
           </button>
           <ul class="dropdown-menu" role="menu">
@@ -88,10 +88,11 @@
           </ul>
         </div>
 
-        <button class="btn btn-warning" ng-show="business.isActive" ng-click="open()">Désactiver les réservations</button>
-        <button class="btn btn-success" ng-hide="business.isActive" ng-click="open()">Activer les réservations</button>
+        <!-- Status button -->
+        <button class="btn btn-warning btn-sm" ng-show="business.isActive" ng-click="open()">Désactiver les réservations</button>
+        <button class="btn btn-success btn-sm" ng-hide="business.isActive" ng-click="open()">Activer les réservations</button>
 
-
+        <!-- Modal template -->
         <script type="text/ng-template" id="myModalContent.html">
             <div class="modal-header">
                 <h3 class="modal-title">Changement de status :</h3>

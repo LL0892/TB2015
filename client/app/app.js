@@ -7,6 +7,11 @@ angular.module('tbApp', [
   'ui.router',
   'ui.bootstrap'
 ])
+  .constant('Urls', {
+    client: '/assets/images/',
+    server: 'localhost:9000/server/img'
+  })
+
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider
       .otherwise('/');
