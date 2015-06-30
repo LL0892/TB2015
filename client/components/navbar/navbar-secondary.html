@@ -9,10 +9,10 @@
             Le salon <span class="caret"></span>
           </button>
           <ul class="dropdown-menu" role="menu">
-            <li><a href="#">Voir les infos du salon</a></li>
+            <li><a href="/business/show">Voir les infos du salon</a></li>
             <li class="divider"></li>
             <li>
-              <a href="#">
+              <a href="/business/update">
                 <i class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></i>
                 Modifier les infos du salon
               </a>
@@ -22,14 +22,14 @@
         
         <!-- Rendezvous button -->
         <div id="rendezvous" class="btn-group" dropdown is-open="status5.isopen">
-          <button type="button" class="btn btn-success dropdown-toggle" dropdown-toggle ng-click="toggleDropdown(status5)">
-            Les rendez-vous <span class="caret"></span>
+          <button type="button" class="btn btn-default dropdown-toggle" dropdown-toggle ng-click="toggleDropdown(status5)">
+            Rendez-vous <span class="caret"></span>
           </button>
           <ul class="dropdown-menu" role="menu">
-            <li><a href="#">Voir les rendez-vous</a></li>
+            <li><a href="/business/rendezvous">Voir les rendez-vous</a></li>
             <li class="divider"></li>
             <li>
-              <a href="#">
+              <a href="/business/newRendezvous">
                 <i class="glyphicon glyphicon glyphicon-book" aria-hidden="true"></i>
                 Prendre un rendez-vous
               </a>
@@ -40,13 +40,13 @@
         <!-- Prestation button -->
         <div id="prestation" class="btn-group" dropdown is-open="status2.isopen">
           <button type="button" class="btn btn-default dropdown-toggle" dropdown-toggle ng-click="toggleDropdown(status2)">
-            Les prestations <span class="caret"></span>
+            Prestations <span class="caret"></span>
           </button>
           <ul class="dropdown-menu" role="menu">
-            <li><a href="#">Voir les prestations</a></li>
+            <li><a href="/business/prestations">Voir les prestations</a></li>
             <li class="divider"></li>
             <li>
-              <a href="#">
+              <a href="/business/newPrestation">
                 <i class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></i>
                 Ajouter une prestation
               </a>
@@ -57,13 +57,13 @@
         <!-- Horaires button -->
         <div id="horaire" class="btn-group" dropdown is-open="status3.isopen">
           <button type="button" class="btn btn-default dropdown-toggle" dropdown-toggle ng-click="toggleDropdown(status3)">
-            Les horaires <span class="caret"></span>
+            Horaires <span class="caret"></span>
           </button>
           <ul class="dropdown-menu" role="menu">
-            <li><a href="#">Voir les tranches horaires</a></li>
+            <li><a href="/business/schedules">Voir les tranches horaires</a></li>
             <li class="divider"></li>
             <li>
-              <a href="#">
+              <a href="/business/newSchedule">
                 <i class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></i>
                 Ajouter une tranche horaire
               </a>
@@ -74,21 +74,21 @@
         <!-- Staff button -->
         <div id="staff" class="btn-group" dropdown is-open="status4.isopen">
           <button type="button" class="btn btn-default dropdown-toggle" dropdown-toggle ng-click="toggleDropdown(status4)">
-            Le personnel <span class="caret"></span>
+            Personnel <span class="caret"></span>
           </button>
           <ul class="dropdown-menu" role="menu">
-            <li><a href="#">Voir le personnel du salon</a></li>
+            <li><a href="/business/staffs">Voir le personnel du salon</a></li>
             <li class="divider"></li>
             <li>
-              <a href="#">
+              <a href="/business/newStaff">
                 <i class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></i>
-                Ajouter un membre au staff
+                Ajouter un membre au personnel
               </a>
             </li>
           </ul>
         </div>
 
-        <button class="btn btn-warning">Status</button>
+        <button class="btn btn-info">Status</button>
       </form>
     </div>
   </div>

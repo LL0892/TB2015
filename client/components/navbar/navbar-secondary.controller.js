@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('tbApp')
-  .controller('NavbarSecondryCtrl', function ($scope, $location, Auth) {
+  .controller('NavbarSecondryCtrl', function ($scope, $location, $timeout) {
 
     // bouton salon
     $scope.status1 = {
@@ -37,4 +37,5 @@ angular.module('tbApp')
     $scope.isActive = function(route) {
       return route === $location.path();
     };
+
   });

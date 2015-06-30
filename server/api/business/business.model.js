@@ -110,7 +110,8 @@ BusinessSchema
       'site': this.businessContact.siteURL,
       'facebook': this.businessContact.facebookURL,
       'imageBusinessUrl': this.imageBusinessURL,
-      'schedules': this.schedules
+      'schedules': this.schedules,
+      'isActive': this.isActive
     };
   });
 
