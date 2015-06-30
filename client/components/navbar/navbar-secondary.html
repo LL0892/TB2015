@@ -88,7 +88,8 @@
           </ul>
         </div>
 
-        <button class="btn btn-info">Status</button>
+        <button class="btn btn-warning" ng-show="business.isActive" ng-click="changeStatus(false)">Désactiver les réservations</button>
+        <button class="btn btn-success" ng-hide="business.isActive" ng-click="changeStatus(true)">Activer les réservations</button>
       </form>
     </div>
   </div>

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('tbApp')
-  .controller('NavbarSecondryCtrl', function ($scope, $location, $timeout) {
+  .controller('NavbarSecondryCtrl', function ($scope, Auth, Business) {
 
     // bouton salon
     $scope.status1 = {
@@ -34,8 +34,37 @@ angular.module('tbApp')
       status.isopen = !status.isopen;
     };
 
-    $scope.isActive = function(route) {
-      return route === $location.path();
+
+    // get business data function
+    function getBusiness(data){
+      Business.getBusiness(
+        data.businessId,
+        function (data, status, headers, config){
+          $scope.business = data;
+        },
+        function (error, status){
+          $scope.error = error;
+        });
     };
+
+    // Get current user data then get business data
+    Auth.getCurrentUser(function (data){
+      return data;
+    }).then(getBusiness);
+
+
+    // Change the business status
+    $scope.changeStatus = function(){
+      Business.changeStatus(
+        $scope.business._id,
+        function (data, status, headers, config){
+          $scope.business = data.business;
+        },
+        function (error, status){
+          $scope.error = error;
+        });
+    };
+
+
 
   });

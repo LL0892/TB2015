@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('tbApp')
-  .controller('BusinessCtrl', function ($scope, $rootScope, $http, Auth, Business) {
+  .controller('BusinessCtrl', function ($scope, $http, Auth, Business) {
 
     Auth.getCurrentUser(function (data){
       return data;
@@ -12,7 +12,6 @@ angular.module('tbApp')
         data.businessId,
         function (data, status, headers, config){
           $scope.business = data;
-          //$rootScope.business = $scope.business;
         },
         function (error){
           $scope.error = error;

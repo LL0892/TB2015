@@ -20,8 +20,17 @@ angular.module('tbApp')
 				}).success(function (data, status, headers, config){
 					callback(data, status, headers, config);
 				}).error(function (data, status, headers, config){
-					var error = status + ' : ' + data;
-					errorCallback(error);
+					errorCallback(data, status);
+				});
+			},
+			changeStatus: function(businessId, callback, errorCallback){
+				$http({
+					method: 'PUT',
+					url: 'api/businesses/' + businessId + '/status'
+				}).success(function (data, status, headers, config){
+					callback(data, status, headers, config);
+				}).error(function (data, status, headers, config){
+					errorCallback(data, status);
 				});
 			}
 		}
