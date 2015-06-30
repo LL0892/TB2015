@@ -5,6 +5,7 @@ var Schema = mongoose.Schema;
 var crypto = require('crypto');
 var authTypes = ['github', 'twitter', 'facebook', 'google'];
 var Staff = require('../staff/staff.model');
+var Business = require('../business/business.model');
 
 // User Schema
 var UserSchema = new Schema({
@@ -26,6 +27,7 @@ var UserSchema = new Schema({
   updatedOn: { type: Date, default: Date.now },
 
   staffId: { type: Schema.Types.ObjectId, ref: 'staff'},
+  businessId: { type: Schema.Types.ObjectId, ref: 'business'},
   phone: { type : String, default: '' },
   mobile: { type : String, default: '' },
   city: { type : String, default: '' },
@@ -64,7 +66,7 @@ UserSchema
 
 // Public profile information
 UserSchema
-  .virtual('profile')
+  .virtual('profilePublic')
   .get(function() {
     return {
       '_id': this._id,
@@ -79,9 +81,31 @@ UserSchema
       'canton': this.canton,
       'zip': this.zip,
       'imageProfileUrl': this.imageProfileURL,
-      'roles': this.roles
     };
   });
+
+// Private profile information
+UserSchema
+  .virtual('profilePrivate')
+  .get(function() {
+    return {
+      '_id': this._id,
+      'name': this.fullname,
+      'email': this.email,
+      'age': this.age,
+      'gender': this.gender,
+      'phone': this.phone,
+      'mobile': this.mobile,
+      'city': this.city,
+      'street': this.street,
+      'canton': this.canton,
+      'zip': this.zip,
+      'imageProfileUrl': this.imageProfileURL,
+      'roles': this.roles,
+      'businessId': this.businessId
+    };
+  });
+
 
 // User fullname
 UserSchema
@@ -159,6 +183,20 @@ UserSchema
     Staff.findOne({_id: value}, function (err, staffExists){
       if(err) throw err;
       if(!staffExists) {
+        return respond(false);
+      }
+      respond(true);
+    });
+  }, 'Staff non existant.');
+
+// Validate business exist
+UserSchema
+  .path('businessId')
+  .validate(function(value, respond) {
+    var self = this;
+    Business.findOne({_id: value}, function (err, businessExists){
+      if(err) throw err;
+      if(!businessExists) {
         return respond(false);
       }
       respond(true);

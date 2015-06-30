@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('tbApp')
-  .factory('Auth', function Auth($http, User, $cookieStore, $q) {
+  .factory('Auth', function Auth($http, User, $cookieStore, $q, $rootScope) {
     /**
      * Return a callback or noop function
      *
@@ -16,6 +16,7 @@ angular.module('tbApp')
 
     if ($cookieStore.get('token')) {
       currentUser = User.get();
+      //$rootScope.currentUser = currentUser;
     }
 
     return {
@@ -35,6 +36,7 @@ angular.module('tbApp')
         .then(function(res) {
           $cookieStore.put('token', res.data.token);
           currentUser = User.get();
+          //$rootScope.currentUser = currentUser;
           safeCb(callback)();
           return res.data;
         }, function(err) {
@@ -50,6 +52,7 @@ angular.module('tbApp')
       logout: function() {
         $cookieStore.remove('token');
         currentUser = {};
+        //$rootScope.currentUser = undefined;
       },
 
       /**
@@ -64,6 +67,7 @@ angular.module('tbApp')
           function(data) {
             $cookieStore.put('token', data.token);
             currentUser = User.get();
+            //$rootScope.currentUser = currentUser;
             return safeCb(callback)(null, user);
           },
           function(err) {
@@ -81,7 +85,7 @@ angular.module('tbApp')
        * @return {Promise}
        */
       changePassword: function(oldPassword, newPassword, callback) {
-        return User.changePassword({ id: currentUser.user._id }, {
+        return User.changePassword({ id: currentUser._id }, {
           oldPassword: oldPassword,
           newPassword: newPassword
         }, function(user) {
@@ -123,12 +127,12 @@ angular.module('tbApp')
        */
       isLoggedIn: function(callback) {
         if (arguments.length === 0) {
-          return currentUser.user.hasOwnProperty('roles');
+          return currentUser.hasOwnProperty('roles');
         }
 
         return this.getCurrentUser(null)
           .then(function(user) {
-            var is = user.user.hasOwnProperty('roles');
+            var is = user.hasOwnProperty('roles');
             safeCb(callback)(is);
             return is;
           });
@@ -143,15 +147,23 @@ angular.module('tbApp')
         */
       isStaff: function(callback) {
         if (arguments.length === 0) {
-          return currentUser.user.roles.indexOf('staff');
+          if (currentUser.roles === undefined) {
+            return false;
+          }
+          return currentUser.roles.indexOf('staff');
         }
 
         return this.getCurrentUser(null)
           .then(function(user) {
-            var is = user.user.roles.indexOf('staff');
+            if (user.roles === undefined) {
+              return false;
+            }
+            var is = user.roles.indexOf('staff');
             safeCb(callback)(is);
             return is;
           });
+
+
       },
 
       /**

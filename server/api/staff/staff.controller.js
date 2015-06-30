@@ -67,6 +67,8 @@ exports.create = function (req, res, next) {
 				
 				// Update User
 				userFound.staffId = staffSaved._id;
+				userFound.businessId = req.body.businessId;
+
 				userFound.save(function (err, userUpdated){
 					if(err) return res.send(500, err);
 
