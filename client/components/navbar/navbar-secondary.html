@@ -88,8 +88,28 @@
           </ul>
         </div>
 
-        <button class="btn btn-warning" ng-show="business.isActive" ng-click="changeStatus(false)">Désactiver les réservations</button>
-        <button class="btn btn-success" ng-hide="business.isActive" ng-click="changeStatus(true)">Activer les réservations</button>
+        <button class="btn btn-warning" ng-show="business.isActive" ng-click="open()">Désactiver les réservations</button>
+        <button class="btn btn-success" ng-hide="business.isActive" ng-click="open()">Activer les réservations</button>
+
+
+        <script type="text/ng-template" id="myModalContent.html">
+            <div class="modal-header">
+                <h3 class="modal-title">Changement de status :</h3>
+            </div>
+            <div ng-show="business.isActive" class="modal-body">
+              <p>Vous allez changer le status de ce salon à: inactif.</p>
+              <p>Il ne sera alors plus possible de prendre de rendez-vous pour les clients.</p>
+            </div>
+            <div ng-hide="business.isActive" class="modal-body">
+              <p>Vous allez changer le status de ce salon à: actif.</p> 
+              <p>Il sera alors possible pour les clients de prendre des rendez-vous auprès de votre salon.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success" ng-click="ok()">Confirmer</button>
+                <button class="btn btn-danger" ng-click="cancel()">Annuler</button>
+            </div>
+        </script>
+
       </form>
     </div>
   </div>
