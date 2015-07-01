@@ -507,9 +507,9 @@ exports.statusStaff = function(req, res, next){
 			do{
 				if(String(businessFound.staffs[i].staffId) === String(staffFound._id)){
 					businessFound.staffs[i].staffVisibility = staffFound.isActive;
-					businessFound.save(function (err, businessUpdated){
-						if(err) return res.send(500, err);
-					});
+					//businessFound.save(function (err, businessUpdated){
+					//	if(err) return res.send(500, err);
+					//});
 
 					isAllowed = true;
 				}
@@ -519,6 +519,11 @@ exports.statusStaff = function(req, res, next){
 
 			// if allowed to update this staff
 			if (isAllowed === true) {
+
+				businessFound.save(function (err, businessUpdated){
+					if(err) return res.send(500, err);
+				});
+
 		 		staffFound.save(function (err, staffUpdated){
 		 			if(err) return res.send(500, err);
 
@@ -624,10 +629,10 @@ exports.updatePrestation = function(req, res, next){
  		if(err) return res.send(500, err);
 		if (!prestationFound) return res.status(404).json({ message : 'Prestation non existante.' });
  		
-		prestationFound.name = req.body.name,
-		prestationFound.shortDescription = req.body.shortDescription,
-		prestationFound.description = req.body.description,
-		prestationFound.duration = req.body.duration
+		prestationFound.name = req.body.name;
+		prestationFound.shortDescription = req.body.shortDescription;
+		prestationFound.description = req.body.description;
+		prestationFound.duration = req.body.duration;
 
 		prestationFound.save(function (err, prestationUpdated){
 	 		if(err) return res.send(500, err);
@@ -837,8 +842,8 @@ exports.createRendezvous = function(req, res, next){
 			// Initiate var for price category search
 			var i = 0,
 				message = '',
-				status = 404,
-				priceId = undefined;
+				status = 404;
+				var priceId = '';
 
 			// Find the correct price category (compare with user schema age virtual)
 			do{
@@ -852,10 +857,10 @@ exports.createRendezvous = function(req, res, next){
 						priceId = prestationFound.prices[i]._id;
 
 					} else {
-						message : 'Sexe de l\'utilisateur : '+userFound.gender+'<br/> Sexe applicable à cette prestation : '+prestationsFound.prices[i].gender;
+						message = 'Sexe de l\'utilisateur : '+userFound.gender+'<br/> Sexe applicable à cette prestation : '+prestationFound.prices[i].gender;
 					}
 				} else {
-					message : 'Aucun prix de cette prestation ne convient à votre age.';
+					message = 'Aucun prix de cette prestation ne convient à votre age.';
 				}
 
 				i++;

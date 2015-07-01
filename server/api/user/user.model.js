@@ -121,7 +121,7 @@ UserSchema
   .get(function(){
     var birth = this.dateOfBirth,
         now = new Date();
-    var age = new Number((now - birth) / 31536000000).toFixed(1);
+    var age = ((now - birth) / 31536000000).toFixed(1);
     age = Math.floor(age);
     return age;
   });

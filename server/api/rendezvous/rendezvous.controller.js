@@ -56,7 +56,7 @@ var Rendezvous = require('./rendezvous.model'),
 			var i = 0,
 				message = '',
 				status = 404,
-				priceId = undefined;
+				priceId = '';
 
 			// Find the correct price category (compare with user schema age virtual)
 			do{
@@ -70,10 +70,10 @@ var Rendezvous = require('./rendezvous.model'),
 						priceId = prestationFound.prices[i]._id;
 
 					} else {
-						message : 'Sexe de l\'utilisateur : '+req.user.gender+'<br/> Sexe applicable à cette prestation : '+prestationsFound.prices[i].gender;
+						message = 'Sexe de l\'utilisateur : '+req.user.gender+'<br/> Sexe applicable à cette prestation : '+prestationFound.prices[i].gender;
 					}
 				} else {
-					message : 'Aucun prix de cette prestation ne convient à votre age.';
+					message = 'Aucun prix de cette prestation ne convient à votre age.';
 				}
 
 				i++;
