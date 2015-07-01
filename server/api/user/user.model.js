@@ -102,7 +102,8 @@ UserSchema
       'zip': this.zip,
       'imageProfileUrl': this.imageProfileURL,
       'roles': this.roles,
-      'businessId': this.businessId
+      'businessId': this.businessId,
+      'preferences': this.preferences
     };
   });
 
