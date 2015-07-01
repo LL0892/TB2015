@@ -7,31 +7,31 @@ angular.module('tbApp')
 				$http({
 					method: 'GET',
 					url: 'api/businesses'
-				}).success(function (data, status, headers, config){
+				}).success(function (data){
 					callback(data);
-				}).error(function (data, status, headers, config){
-					errorCallback(data, status);
+				}).error(function (data){
+					errorCallback(data);
 				});
 			},
 			getBusiness : function(businessId, callback, errorCallback){
 				$http({
 					method: 'GET',
 					url: 'api/businesses/' + businessId
-				}).success(function (data, status, headers, config){
-					callback(data, status, headers, config);
-				}).error(function (data, status, headers, config){
-					errorCallback(data, status);
+				}).success(function (data){
+					callback(data);
+				}).error(function (data){
+					errorCallback(data);
 				});
 			},
 			changeStatus: function(businessId, callback, errorCallback){
 				$http({
 					method: 'PUT',
 					url: 'api/businesses/' + businessId + '/status'
-				}).success(function (data, status, headers, config){
-					callback(data, status, headers, config);
-				}).error(function (data, status, headers, config){
-					errorCallback(data, status);
+				}).success(function (data){
+					callback(data);
+				}).error(function (data){
+					errorCallback(data);
 				});
 			}
-		}
+		};
 	}]);

@@ -39,13 +39,13 @@ var app = angular.module('tbApp');
     function getBusiness(data){
       Business.getBusiness(
         data.businessId,
-        function (data, status, headers, config){
+        function (data){
           $scope.business = data;
         },
-        function (error, status){
+        function (error){
           $scope.error = error;
         });
-    };
+    }
 
     // Get current user data then get business data
     Auth.getCurrentUser(function (data){
@@ -53,7 +53,7 @@ var app = angular.module('tbApp');
     }).then(getBusiness);
 
     // Modal for status change
-    $scope.open = function (size) {
+    $scope.open = function () {
       var modalInstance = $modal.open({
         animation: true,
         templateUrl: 'myModalContent.html',
@@ -82,11 +82,11 @@ app.controller('ModalInstanceCtrl', function ($scope, $modalInstance, Business, 
 
   Business.changeStatus(
     $scope.business._id,
-    function (data, status, headers, config){
+    function (data){
       var res = data.business;
       $modalInstance.close(res);
     },
-    function (error, status){
+    function (error){
       $scope.error = error;
       $modalInstance.dismiss($scope.error);
     });

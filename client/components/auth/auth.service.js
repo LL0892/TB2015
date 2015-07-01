@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('tbApp')
-  .factory('Auth', function Auth($http, User, $cookieStore, $q, $rootScope) {
+  .factory('Auth', function Auth($http, User, $cookieStore, $q) {
     /**
      * Return a callback or noop function
      *
