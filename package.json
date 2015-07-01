@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "description": "Bachelor Degree Work",
   "author": "Laurent Lienher laurent.lienher@gmail.com",
-  "main": "server/app.js",
+  "main": "server.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/LL0892/TB2015"

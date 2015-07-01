@@ -5,7 +5,7 @@
 
 'use strict';
 
-var Geodata = require('./Geodata.model');
+var Geodata = require('./geodata.model');
 
 /**
  * Get list of geodatas
