@@ -163,7 +163,11 @@ angular.module('tbApp')
             }
             var is = user.roles.indexOf('staff');
             safeCb(callback)(is);
-            console.log(is);
+            
+            if (is === -1) {
+              is = false;
+            }
+
             return is;
           });
 
