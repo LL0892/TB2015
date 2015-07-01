@@ -8,17 +8,31 @@
     <div class="col-sm-12">
       <form class="form" name="form" ng-submit="register(form)" novalidate>
 
-        <div class="form-group" ng-class="{ 'has-success': form.name.$valid && submitted,
-                                            'has-error': form.name.$invalid && submitted }">
-          <label>Name</label>
+        <!-- First name -->
+        <div class="form-group" ng-class="{ 'has-success': form.firstName.$valid && submitted,
+                                            'has-error': form.firstName.$invalid && submitted }">
+          <label>Prénom</label>
 
-          <input type="text" name="name" class="form-control" ng-model="user.name"
+          <input type="text" name="firstName" class="form-control" ng-model="user.firstName"
                  required/>
-          <p class="help-block" ng-show="form.name.$error.required && submitted">
-            A name is required
+          <p class="help-block" ng-show="form.firstName.$error.required && submitted">
+            Un prénom est requis.
           </p>
         </div>
 
+        <!-- Last name -->
+        <div class="form-group" ng-class="{ 'has-success': form.lastName.$valid && submitted,
+                                            'has-error': form.lastName.$invalid && submitted }">
+          <label>Nom</label>
+
+          <input type="text" name="lastName" class="form-control" ng-model="user.lastName"
+                 required/>
+          <p class="help-block" ng-show="form.lastName.$error.required && submitted">
+            Un nom est requis.
+          </p>
+        </div>
+
+        <!-- Email -->
         <div class="form-group" ng-class="{ 'has-success': form.email.$valid && submitted,
                                             'has-error': form.email.$invalid && submitted }">
           <label>Email</label>
@@ -27,7 +41,7 @@
                  required
                  mongoose-error/>
           <p class="help-block" ng-show="form.email.$error.email && submitted">
-            Doesn't look like a valid email.
+            Ce n'est pas une adresse mail valide.
           </p>
           <p class="help-block" ng-show="form.email.$error.required && submitted">
             What's your email address?
@@ -37,6 +51,7 @@
           </p>
         </div>
 
+        <!-- Password -->
         <div class="form-group" ng-class="{ 'has-success': form.password.$valid && submitted,
                                             'has-error': form.password.$invalid && submitted }">
           <label>Password</label>
@@ -54,6 +69,41 @@
           </p>
         </div>
 
+        <!-- Date of birth & gender -->
+        <div ng-controller="SignupCtrl">
+            <div class="row">
+                <div class="col-sm-6">
+                    <label>Date de naissance</label>
+                    <div class="form-group" ng-class="{ 'has-success': form.dateOfBirth.$valid && submitted, 'has-error': form.dateOfBirth.$invalid && submitted }">
+                      <p class="input-group">
+                        <input type="text" class="form-control" datepicker-popup="{{format}}" name="dateOfBirth" ng-model="user.dateOfBirth" is-open="opened" max-date="maxDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" required mongoose-error close-text="Close" />
+                        <span class="input-group-btn">
+                          <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                        </span>
+                      </p>
+                      <p class="help-block" ng-show="form.dateOfBirth.$error.mongoose">
+                        {{ errors.dateOfBirth }}
+                      </p>
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                  <div class="form-group" ng-class="{ 'has-success': form.dateOfBirth.$valid && submitted, 'has-error': form.dateOfBirth.$invalid && submitted }">
+                    <label>Sexe</label>
+
+                    <select class="form-control" name="gender" ng-model="user.gender" required mongoose-error>
+                      <option value="homme">Homme</option>
+                      <option value="femme">Femme</option>
+                    </select>
+                    <p class="help-block" ng-show="form.gender.$error.mongoose">
+                      {{ errors.gender }}
+                    </p>
+                  </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Buttons -->
         <div>
           <button class="btn btn-inverse btn-lg btn-login" type="submit">
             Sign up

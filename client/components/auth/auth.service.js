@@ -16,9 +16,8 @@ angular.module('tbApp')
 
     if ($cookieStore.get('token')) {
       currentUser = User.get();
-      //$rootScope.currentUser = currentUser;
     }
-
+    
     return {
 
       /**
@@ -36,7 +35,6 @@ angular.module('tbApp')
         .then(function(res) {
           $cookieStore.put('token', res.data.token);
           currentUser = User.get();
-          //$rootScope.currentUser = currentUser;
           safeCb(callback)();
           return res.data;
         }, function(err) {
@@ -52,7 +50,6 @@ angular.module('tbApp')
       logout: function() {
         $cookieStore.remove('token');
         currentUser = {};
-        //$rootScope.currentUser = undefined;
       },
 
       /**
@@ -67,7 +64,6 @@ angular.module('tbApp')
           function(data) {
             $cookieStore.put('token', data.token);
             currentUser = User.get();
-            //$rootScope.currentUser = currentUser;
             return safeCb(callback)(null, user);
           },
           function(err) {
@@ -148,9 +144,16 @@ angular.module('tbApp')
       isStaff: function(callback) {
         if (arguments.length === 0) {
           if (currentUser.roles === undefined) {
+            console.log('false');
             return false;
           }
-          return currentUser.roles.indexOf('staff');
+
+          var res = currentUser.roles.indexOf('staff');
+          if (res === -1) {
+            res = false;
+          }
+
+          return res;
         }
 
         return this.getCurrentUser(null)
@@ -160,6 +163,7 @@ angular.module('tbApp')
             }
             var is = user.roles.indexOf('staff');
             safeCb(callback)(is);
+            console.log(is);
             return is;
           });
 

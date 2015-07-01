@@ -17,5 +17,5 @@ angular.module('tbApp')
     Auth.getCurrentUser(function (data){
       return data;
     }).then(getMyBusiness);
-
+    
   });
