@@ -187,7 +187,7 @@ angular.module('tbApp')
 					errorCallback(data);
 				});
 			},
-			showPrice: function(businessId, prestationId, priceId, callback, errorCallback){
+			deletePrice: function(businessId, prestationId, priceId, callback, errorCallback){
 				$http({
 					method: 'DELETE',
 					url: Urls.api + 'businesses/' + businessId + '/prestations/' + prestationId + '/prices/' + priceId 

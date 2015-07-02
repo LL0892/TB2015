@@ -2,54 +2,57 @@
 <div ng-include="'components/navbar/navbar-secondary.html'"></div>
 
 <div class="container">
+	<div class= "row">
 
-	<!-- colonne gauche -->
-	<div class="col-sm-4">
+		<!-- colonne gauche -->
+		<div class="col-sm-4">
+			
+			<img class="img-rounded" ng-src="{{business.imageBusinessUrl}}" style="max-height:200px" />
+		</div>
 		
-		<img class="img-rounded" ng-src="{{business.imageBusinessUrl}}" style="max-height:200px" />
-	</div>
-	
-	<!-- colonne centrale -->
-	<div class="col-sm-4">
-		<h3>Adresse géographique</h3>
-		<hr class="divider">
-		<h4>{{business.name}}</h4>
-		<p><i class="fa icon-infos fa-building"></i> {{business.zip}} {{business.city}} ({{business.canton}})</p>
-		<p><i class="fa icon-infos fa-road"></i> {{business.street}}</p>
-	</div>
+		<!-- colonne centrale -->
+		<div class="col-sm-4">
+			<h3>Adresse géographique</h3>
+			<hr class="divider">
+			<h4>{{business.name}}</h4>
+			<p><i class="fa icon-infos fa-building"></i> {{business.zip}} {{business.city}} ({{business.canton}})</p>
+			<p><i class="fa icon-infos fa-road"></i> {{business.street}}</p>
+		</div>
 
-	<!-- colonne droite -->
-	<div class="col-sm-4">
-		<h3>Adresse de infos</h3>
-		<hr class="divider">
-		<p><i class="fa icon-infos fa-phone"></i> {{business.phone}}</p>
-		<p><i class="fa icon-infos fa-mobile"></i> {{business.mobile}}</p>
-		<p><i class="fa icon-infos fa-external-link-square"></i> {{business.site}}</p>
-		<p><i class="fa icon-infos fa-facebook-official"></i> {{business.facebook}}</p>
+		<!-- colonne droite -->
+		<div class="col-sm-4">
+			<h3>Adresse de infos</h3>
+			<hr class="divider">
+			<p><i class="fa icon-infos fa-phone"></i> {{business.phone}}</p>
+			<p><i class="fa icon-infos fa-mobile"></i> {{business.mobile}}</p>
+			<p><i class="fa icon-infos fa-external-link-square"></i> {{business.site}}</p>
+			<p><i class="fa icon-infos fa-facebook-official"></i> {{business.facebook}}</p>
+		</div>
 	</div>
-
-	<!-- colonne horaires pleine largeur -->
-	<div class="col-sm-12 col-schedule">
-		<h3>Horaires</h3>
-		<hr class="divider">
-		<table class="table">
-			<thead>
-				<tr>
-					<th>Jour</th>
-					<th>Description</th>
-					<th>Débute</th>
-					<th>Termine</th>
-				</tr>
-				</thead>
-				<tbody>
-				<tr ng-repeat="schedule in business.schedules">
-					<td>{{schedule.dayName}}</td>
-					<td>{{schedule.description}}</td>
-					<td>{{schedule.startHour}}</td>
-					<td>{{schedule.endHour}}</td>
-				</tr>
-			</tbody>
-		</table> 
+	<div class= "row">
+		<!-- colonne horaires pleine largeur -->
+		<div class="col-sm-7 col-schedule">
+			<h3>Horaires</h3>
+			<hr class="divider">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Jour</th>
+						<th>Description</th>
+						<th>Débute</th>
+						<th>Termine</th>
+					</tr>
+					</thead>
+					<tbody>
+					<tr ng-repeat="schedule in business.schedules">
+						<td>{{schedule.dayName}}</td>
+						<td>{{schedule.description}}</td>
+						<td>{{schedule.startHour}}</td>
+						<td>{{schedule.endHour}}</td>
+					</tr>
+				</tbody>
+			</table> 
+		</div>
 	</div>
 
   

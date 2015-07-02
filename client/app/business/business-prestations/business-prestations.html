@@ -1,4 +1,47 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 <div ng-include="'components/navbar/navbar-secondary.html'"></div>
 
-Voir la liste des prestations
+<div class=container>
+	<div class="row" ng-repeat="prestation in prestations">
+
+		<div class="row">
+			<h3>{{prestation.name}}</h3>
+			<hr>
+		</div>
+		<div class="col-sm-5 hr-right">
+			<h4>Description :</h4>
+			<p>{{prestation.description}}</p>
+			<hr>
+			<h4>Courte description :</h4>
+			<p>Courte description :</p>
+		</div>
+		<div class="col-sm-7">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Categorie</th>
+						<th>Description</th>
+						<th>Age min</th>
+						<th>Age max</th>
+						<th>Prix</th>
+						<th>Actions</th>
+					</tr>
+					</thead>
+					<tbody>
+					<tr ng-repeat="price in prestation.prices">
+						<td>{{price.categoryName}}</td>
+						<td>{{price.description}}</td>
+						<td>{{price.ageLowLimit}}</td>
+						<td>{{price.ageHighLimit}}</td>
+						<td>{{price.price}}</td>
+						<td>
+							<a href="#" class="btn btn-primary label"><i class="fa icon-tab fa-pencil-square-o"></i></a>
+							<div class="btn btn-danger label" ng-click="cancel(prestation._id, price._id)"><i class="fa icon-tab fa-trash-o"></i></div>
+						</td>
+					</tr>
+				</tbody>
+			</table> 
+			<a href="/business/prestations/add" class="btn btn-success btn-sm pull-right"><i class="fa icon-tab fa-plus"></i> Ajouter un nouveau prix</a>
+		</div>
+	</div>
+</div>
