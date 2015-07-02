@@ -229,6 +229,7 @@ exports.changeEmail = function(req, res, next) {
 
 /**
 * Update my home display preferences
+* UNUSED IN UI
 */
 exports.preferenceDisplay = function(req, res, next) {
   var userId = req.user._id;
@@ -248,6 +249,7 @@ exports.preferenceDisplay = function(req, res, next) {
 
 /**
 * Update my home display preferences
+* UNUSED IN UI
 */
 exports.preferenceFavorite = function(req, res, next){
   var userId = req.user._id;

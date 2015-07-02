@@ -44,10 +44,10 @@ var UserSchema = new Schema({
     lastRdv: { type: Date }
   },*/
 
-  preferences: {
+/*  preferences: {
     homeDisplay: { type: String, enum: ['list', 'fav', 'dual'], default: 'list' },
     favorite : { type: Schema.Types.ObjectId, ref: 'business' }
-  }
+  }*/
 });
 
 /**
@@ -102,8 +102,8 @@ UserSchema
       'zip': this.zip,
       'imageProfileUrl': this.imageProfileURL,
       'roles': this.roles,
-      'businessId': this.businessId,
-      'preferences': this.preferences
+      'businessId': this.businessId
+      //'preferences': this.preferences
     };
   });
 
