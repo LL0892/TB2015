@@ -73,7 +73,7 @@ var Business = require('./business.model'),
 * Get a list of business
 */
  exports.getBusinesses = function(req, res, next){
- 	Business.find({ isActive: true }, function (err, businessesFound){
+ 	Business.find({}, function (err, businessesFound){
  		if(err) return res.send(500, err);
  		if(businessesFound.length <= 0) return res.status(404).json({ message : 'Il n\'y a pas de salons à afficher.' });
  		
@@ -128,7 +128,7 @@ var Business = require('./business.model'),
 			    imageBusinessURL: req.body.imageBusinessURL
 		 	});
 		 	newBusiness.founder = req.user._id;
-		  	newBusiness.isActive = false;
+		  	//newBusiness.isActive = false;
 
 		  	// Default Schedules
 		  	newBusiness.schedules.push(
@@ -262,6 +262,7 @@ var Business = require('./business.model'),
  /**
  * PUT	/businesses/:id/status
  * Change the business status
+ * REMOVED FROM UI
  * restriction : 'staff'
  */
  exports.statusBusiness = function(req, res, next){
@@ -476,6 +477,7 @@ exports.showStaff = function(req, res, next){
 /**
 * PUT	/businesses/:id/staffs/:staffId/status
 * Update a staff status for this business
+* REMOVED FROM UI
 * restriction : 'staff'
 */
 exports.statusStaff = function(req, res, next){
@@ -574,6 +576,7 @@ exports.getPrestations = function(req, res, next){
 /**
 * POST 	/businesses/:id/prestations
 * Create a prestation for this business
+* REMOVED FROM UI
 * restriction : 'staff'
 */
 exports.createPrestation = function(req, res, next){
@@ -647,6 +650,7 @@ exports.updatePrestation = function(req, res, next){
 /**
 * PUT 	/businesses/:id/prestations/:prestationId/status
 * Change the prestation status for this business
+* REMOVED FROM UI
 * restriction : 'staff'
 */
 exports.statusPrestation = function(req, res, next){

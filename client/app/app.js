@@ -5,7 +5,8 @@ angular.module('tbApp', [
   'ngResource',
   'ngSanitize',
   'ui.router',
-  'ui.bootstrap'
+  'ui.bootstrap',
+  'ezfb'
 ])
   .constant('Urls', {
     client: '/assets/images/',
@@ -19,6 +20,15 @@ angular.module('tbApp', [
     $locationProvider.html5Mode(true);
     $httpProvider.interceptors.push('authInterceptor');
   })
+
+  .config(function (ezfbProvider) {
+    ezfbProvider.setInitParams({
+      appId: '1451571261811947',
+      version: 'v2.3'
+    }); 
+    ezfbProvider.setLocale('fr_CH'); 
+  })
+
 
   .factory('authInterceptor', function ($rootScope, $q, $cookieStore, $location) {
     return {

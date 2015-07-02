@@ -15,8 +15,8 @@ var StaffSchema = new Schema({
     email: { type: String, lowercase: true, default: '' }
   },
   photoStaffURL: { type: String, default: 'staffProfile.png' },
-  businessId: { type: Schema.Types.ObjectId, ref: 'business', required: true },
-  isActive: { type: Boolean, default: false }
+  businessId: { type: Schema.Types.ObjectId, ref: 'business', required: true }
+  //isActive: { type: Boolean, default: false }
 });
 
 /**
@@ -34,7 +34,6 @@ StaffSchema
       'phone': this.staffContact.phone,
       'mobile': this.staffContact.mobile,
       'imageProfileUrl': this.photoStaffURL,
-      'active': this.isActive,
       'businessId': this.businessId
     };
   });

@@ -68,7 +68,7 @@ var BusinessSchema = new Schema({
   street: { type: String, default: '' },
   canton: { type: String, default: '' },
   zip: { type: Number, required: true },
-  isActive: { type: Boolean, default: false },
+  //isActive: { type: Boolean, default: false },
 
   founder: { type: Schema.Types.ObjectId, ref: 'user', required: true },
   staffs: [

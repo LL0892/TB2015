@@ -38,7 +38,6 @@ exports.create = function (req, res, next) {
 				},
 				photoStaffURL: req.body.photoStaffURL,
 				businessId: req.body.businessId,
-				isActive: false
 			});
 
 			// Check business is existant
@@ -123,7 +122,6 @@ exports.update = function (req, res, next){
 		staffFound.staffContact.phone = String(req.body.phone);
 		staffFound.staffContact.mobile = String(req.body.mobile);
 		staffFound.businessId = staffFound.businessId;
-		staffFound.isActive = staffFound.isActive;
 
 		staffFound.save(function (err, staffUpdated){
 			if(err) return res.send(500, err);

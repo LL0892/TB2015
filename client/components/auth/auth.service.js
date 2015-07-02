@@ -144,7 +144,6 @@ angular.module('tbApp')
       isStaff: function(callback) {
         if (arguments.length === 0) {
           if (currentUser.roles === undefined) {
-            console.log('false');
             return false;
           }
 
