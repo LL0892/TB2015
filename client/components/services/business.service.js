@@ -1,29 +1,29 @@
 'use strict';
 
 angular.module('tbApp')
-	.factory('Business', ['$http', function($http){
+	.factory('Business', ['$http', 'Urls', function ($http, Urls){
 		return {
 			getBusinesses : function(callback, errorCallback){
 				$http({
 					method: 'GET',
-					url: 'api/businesses'
+					url: Urls.api + 'businesses/'
 				}).success(function (data){
 					callback(data);
 				}).error(function (data){
 					errorCallback(data);
 				});
 			},
-			getBusiness : function(businessId, callback, errorCallback){
+			showBusiness : function(businessId, callback, errorCallback){
 				$http({
 					method: 'GET',
-					url: 'api/businesses/' + businessId
+					url: Urls.api + 'businesses/' + businessId
 				}).success(function (data){
 					callback(data);
 				}).error(function (data){
 					errorCallback(data);
 				});
 			},
-			changeStatus: function(businessId, callback, errorCallback){
+			updateBusiness: function(businessId, callback, errorCallback){
 				$http({
 					method: 'PUT',
 					url: 'api/businesses/' + businessId + '/status'

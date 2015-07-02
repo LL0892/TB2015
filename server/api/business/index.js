@@ -45,11 +45,11 @@ router.delete('/:id/prestations/:prestationId/prices/:priceId', auth.hasAccess('
 router.get('/:id/rendezvous', auth.hasAccess('staff'), controller.getRendezvous);
 router.post('/:id/rendezvous', auth.hasAccess('staff'), controller.createRendezvous);
 router.get('/:id/rendezvous/:rdvId', auth.hasAccess('staff'), controller.showRendezvous);
-router.put('/:id/rendezvous/:rdvId/missed', auth.hasAccess('staff'), controller.rendezvousMissed);
-router.put('/:id/rendezvous/:rdvId/finished', auth.hasAccess('staff'), controller.rendezvousFinished);
-router.put('/:id/rendezvous/:rdvId/cancelled', auth.hasAccess('staff'), controller.rendezvousCancelled);
-router.put('/:id/rendezvous/:rdvId/move', auth.hasAccess('staff'), controller.moveRendezvous);
-router.delete('/:id/rendezvous/:rdvId', auth.hasAccess('staff'), controller.deleteRendevous);
+//router.put('/:id/rendezvous/:rdvId/missed', auth.hasAccess('staff'), controller.rendezvousMissed);
+//router.put('/:id/rendezvous/:rdvId/finished', auth.hasAccess('staff'), controller.rendezvousFinished);
+//router.put('/:id/rendezvous/:rdvId/cancelled', auth.hasAccess('staff'), controller.rendezvousCancelled);
+//router.put('/:id/rendezvous/:rdvId/move', auth.hasAccess('staff'), controller.moveRendezvous);
+//router.delete('/:id/rendezvous/:rdvId', auth.hasAccess('staff'), controller.deleteRendevous);
 
 // --- Notification routes ---
 router.get('/:id/notifications', auth.hasAccess('staff'), controller.getNotifications);

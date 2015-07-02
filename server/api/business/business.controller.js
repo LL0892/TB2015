@@ -333,7 +333,7 @@ exports.addSchedule = function(req, res, next){
 			description: req.body.description,
 			workingDay: req.body.workingDay
 		});
-		console.log(businessFound.schedules);
+		//console.log(businessFound.schedules);
 
 		businessFound.save(function (err, businessUpdated){
 			if(err) return res.send(500, err);
@@ -969,6 +969,7 @@ exports.showRendezvous = function(req, res, next){
 * PUT 	/businesses/:id/rendezvous/:rdvId/missed
 * Update the rendezvous status to 'manqué' for this business
 * restriction : 'staff'
+* REMOVED FROM UI
 */
 exports.rendezvousMissed = function(req, res, next){
 	var businessId = req.staff.businessId,
@@ -999,6 +1000,7 @@ exports.rendezvousMissed = function(req, res, next){
 * PUT 	/businesses/:id/rendezvous/:rdvId/finished
 * Update the rendezvous status to 'terminé' for this business
 * restriction : 'staff'
+* REMOVED FROM UI
 */
 exports.rendezvousFinished = function(req, res, next){
 	var businessId = req.staff.businessId,
@@ -1029,6 +1031,7 @@ exports.rendezvousFinished = function(req, res, next){
 * PUT 	/businesses/:id/rendezvous/:rdvId/cancelled
 * Update the rendezvous status to 'annulé' for this business
 * restriction : 'staff'
+* REMOVED FROM UI
 */
 exports.rendezvousCancelled = function(req, res, next){
 	var businessId = req.staff.businessId,
@@ -1052,6 +1055,7 @@ exports.rendezvousCancelled = function(req, res, next){
 * PUT 	/businesses/:id/rendezvous/:rdvId/move
 * Update the rendezvous date & status to 'déplacé' for this business
 * restriction : 'staff'
+* REMOVED FROM UI
 */
 exports.moveRendezvous = function(req, res, next){
 	return res.status(501).json({ message : 'Fonction non implémentée.'}).end();
@@ -1061,6 +1065,7 @@ exports.moveRendezvous = function(req, res, next){
 * DELETE 	/businesses/:id/rendezvous/:rdvId
 * Delete a rendezvous for this business
 * restriction : 'staff'
+* REMOVED FROM UI
 */
 exports.deleteRendevous = function(req, res, next){
 	return res.status(501).json({ message : 'Fonction non implémentée.'}).end();
