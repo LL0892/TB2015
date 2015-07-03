@@ -704,7 +704,7 @@ exports.createPrice = function(req, res, next){
 		if (!prestationFound) return res.status(404).json({ message : 'Prestation non existante.' });
 
 		prestationFound.prices.push({
-		  	categoryName: req.body.name,
+		  	categoryName: req.body.categoryName,
 		  	ageLowLimit: req.body.ageLowLimit,
 		  	ageHighLimit: req.body.ageHighLimit,
 		  	price: req.body.price,

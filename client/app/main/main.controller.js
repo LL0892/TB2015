@@ -38,7 +38,7 @@ angular.module('tbApp')
      }, {scope: 'email,user_likes,user_location, user_birthday'})
      .then(function (res) {
        // Executes 2
-     })
+     });
   };
 
   $scope.logout = function () {

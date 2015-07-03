@@ -157,7 +157,7 @@ angular.module('tbApp')
 			// Price prestation status
 			createPrice: function(businessId, prestationId, data, callback, errorCallback){
 				$http({
-					method: 'GET',
+					method: 'POST',
 					url: Urls.api + 'businesses/' + businessId + '/prestations/' + prestationId + '/prices', 
 					data: data
 				}).success(function (data){
@@ -198,7 +198,7 @@ angular.module('tbApp')
 				});
 			},
 			// Rendezvous functions
-			getRendezvous: function(businessId){
+			getRendezvous: function(businessId, callback, errorCallback){
 				$http({
 					method: 'GET',
 					url: Urls.api + 'businesses/' + businessId + '/rendezvous'
@@ -208,7 +208,7 @@ angular.module('tbApp')
 					errorCallback(data);
 				});
 			},
-			createRendezvous: function(businessId, data){
+			createRendezvous: function(businessId, data, callback, errorCallback){
 				$http({
 					method: 'POST',
 					url: Urls.api + 'businesses/' + businessId + '/rendezvous',
@@ -219,7 +219,7 @@ angular.module('tbApp')
 					errorCallback(data);
 				});
 			},
-			showRendezvous: function(businessId, rendezvousId){
+			showRendezvous: function(businessId, rendezvousId, callback, errorCallback){
 				$http({
 					method: 'GET',
 					url: Urls.api + 'businesses/' + businessId + '/rendezvous/' + rendezvousId
@@ -230,7 +230,7 @@ angular.module('tbApp')
 				});
 			},
 			// Notification functions
-			getNotification: function(businessId){
+			getNotification: function(businessId, callback, errorCallback){
 				$http({
 					method: 'GET',
 					url: Urls.api + 'businesses/' + businessId + '/notifications'
@@ -240,7 +240,7 @@ angular.module('tbApp')
 					errorCallback(data);
 				});
 			},
-			createNotification: function(businessId, data){
+			createNotification: function(businessId, data, callback, errorCallback){
 				$http({
 					method: 'POST',
 					url: Urls.api + 'businesses/' + businessId + '/notifications',
@@ -251,7 +251,7 @@ angular.module('tbApp')
 					errorCallback(data);
 				});
 			},
-			deleteNotification: function(businessId, notifId){
+			deleteNotification: function(businessId, notifId, callback, errorCallback){
 				$http({
 					method: 'DELETE',
 					url: Urls.api + 'businesses/' + businessId + '/notifications/' + notifId

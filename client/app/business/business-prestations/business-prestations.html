@@ -13,14 +13,17 @@
 			<p>{{prestation.description}}</p>
 			<hr>
 			<h4>Courte description :</h4>
-			<p>Courte description :</p>
+			<p>{{prestation.shortDescription}}</p>
+			<hr>
+			<h4>Durée :</h4>
+			<p>{{prestation.duration}} minutes</p>
 		</div>
 		<div class="col-sm-7">
 			<table class="table">
 				<thead>
 					<tr>
 						<th>Categorie</th>
-						<th>Description</th>
+						<th>Sexe </th>
 						<th>Age min</th>
 						<th>Age max</th>
 						<th>Prix</th>
@@ -30,18 +33,43 @@
 					<tbody>
 					<tr ng-repeat="price in prestation.prices">
 						<td>{{price.categoryName}}</td>
-						<td>{{price.description}}</td>
+						<td>{{price.gender}}</td>
 						<td>{{price.ageLowLimit}}</td>
 						<td>{{price.ageHighLimit}}</td>
 						<td>{{price.price}}</td>
 						<td>
 							<a href="#" class="btn btn-primary label"><i class="fa icon-tab fa-pencil-square-o"></i></a>
-							<div class="btn btn-danger label" ng-click="cancel(prestation._id, price._id)"><i class="fa icon-tab fa-trash-o"></i></div>
+							<div class="btn btn-danger label" ng-click="deletePrice(prestation._id, price._id)"><i class="fa icon-tab fa-trash-o"></i></div>
+						</td>
+					</tr>
+					<tr ng-show="hiddenForm === false">
+						<td>
+							<input class="input-form-big" type="text" ng-model="form.categoryName" ng-maxlength="20" />
+						</td>
+						<td>
+							<select class="input-form-select" ng-model="form.gender" required>
+								<option value="mixte" selected>mixte</option>
+							    <option value="homme">homme</option>
+							    <option value="femme">femme</option>
+							 </select>
+						</td>
+						<td>
+							<input class="input-form-small" type="number" ng-model="form.ageLowLimit" min="1" max="99" ngMaxlength="2" ngMinlength="1"/>
+						</td>
+						<td>
+							<input class="input-form-small" type="number" ng-model="form.ageHighLimit" min="1" max="99" ngMaxlength="2" ngMinlength="1" />
+						</td>
+						<td>
+							<input class="input-form-med" type="number" ng-model="form.price"  min="1" max="999" ngMaxlength="3" ngMinlength="1" />
+						</td>
+						<td>
+							<div class="btn btn-success label" ng-click="addPrice(prestation._id, form); hiddenForm=true"><i class="fa icon-tab fa-plus"></i></div>
+							<div class="btn btn-danger label" ng-click="hiddenForm=true"><i class="fa icon-tab fa-times"></i></div>
 						</td>
 					</tr>
 				</tbody>
 			</table> 
-			<a href="/business/prestations/add" class="btn btn-success btn-sm pull-right"><i class="fa icon-tab fa-plus"></i> Ajouter un nouveau prix</a>
+			<div class="btn btn-success btn-sm pull-right" ng-click="hiddenForm = false" ng-show="hiddenForm === true"><i class="fa icon-tab fa-plus"></i> Ajouter un nouveau prix</div>
 		</div>
 	</div>
 </div>

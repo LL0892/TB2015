@@ -5,7 +5,7 @@ angular.module('tbApp')
 
   	$scope.prestations = {};
   	$scope.user = {};
-
+  	$scope.hiddenForm = true;
 
     function getPrestations(data){
       Business.getPrestations(
@@ -24,33 +24,51 @@ angular.module('tbApp')
     }).then(getPrestations);
     
 
-    $scope.cancel= function(prestationId, priceId){
-    	//console.log(prestationId);
-    	//console.log(priceId);
+    $scope.deletePrice= function(prestationId, priceId){
+    	// loop sur $scope.prestations
+    	// trouver la prestation de prestationId
+    	// loop sur les prix
+    	// trouver le prix
+    	// remove le prix
+
     	Business.deletePrice(
     		$scope.user.businessId,
     		prestationId,
     		priceId,
     		function(data){
     			$scope.message = data.message;
-    			var data = data.prestation;
-    			// remove le prix de l'ui
-    			this.updateUI(data);
+    			//var data = data.prestation;
+    			//$scope.updateUI(data);
     		},
     		function(data){
     			$scope.message = data;
     		}
     	);
-    }
+    };
 
-    this.updateUI = function(data){
+    $scope.addPrice = function(prestationId, data){
+		$scope.hiddenForm = true;
+    	Business.createPrice($scope.user.businessId, prestationId, data,
+    		function(data){
+    			$scope.message = data.message;
+    			//var data = data.prestation;
+    			//$scope.updateUI(data);
+    			$scope.hiddenForm = true;
+    		},
+    		function(data){
+    			$scope.message = data;
+    		});
+    };
+
+    $scope.updateUI = function(data){
+    	console.log('update :'+ data);
     	var id = data._id;
     	var res = $scope.prestations._id.indexOf(id);
 
-    	if (!res === -1) {
+    	if (res !== -1) {
     		$scope.prestations[res] = data;
     	}
     	$scope.$apply();
-    }
+    };
 
   });

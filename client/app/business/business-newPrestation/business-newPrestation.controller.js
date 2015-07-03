@@ -3,7 +3,7 @@
 angular.module('tbApp')
   .controller('BusinessNewPrestationCtrl', function ($scope, Business, Auth) {
    	$scope.prestation = {},
-   	$scope.errors = {}
+   	$scope.errors = {};
 
    	Auth.getCurrentUser(function(data){
    		var user = data;

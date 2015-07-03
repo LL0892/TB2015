@@ -4,7 +4,7 @@ angular.module('tbApp')
   .controller('BusinessCtrl', function ($scope, $http, Auth, Business) {
 
     function getMyBusiness(data){
-      Business.getBusiness(
+      Business.showBusiness(
         data.businessId,
         function (data){
           $scope.business = data;
