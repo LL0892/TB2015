@@ -6,6 +6,7 @@ angular.module('tbApp', [
   'ngSanitize',
   'ui.router',
   'ui.bootstrap',
+  'ngAnimate',
   'ezfb'
 ])
   .constant('Urls', {

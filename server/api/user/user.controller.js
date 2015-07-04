@@ -67,8 +67,8 @@ exports.update = function(req, res, next) {
     if(!userFound) return res.status(401).json({ message : 'Vous n\'êtes pas connecté.' }).end();
 
     // Update datas
-    userFound.firstName = req.body.firstName;
-    userFound.lastName = req.body.lastName;
+    //userFound.firstName = req.body.firstName;
+    //userFound.lastName = req.body.lastName;
     //userFound.dateOfBirth = req.body.dateOfBirth;
     //userFound.gender = req.body.gender;
     userFound.phone = req.body.phone;
