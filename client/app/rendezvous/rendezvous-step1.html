@@ -9,9 +9,15 @@
     <input type="text" class="form-control" name="email" ng-model="formData.email">
 </div>
 
+<div class="form-group" ng-show="isStaff()">
+    <h4>Static arrays</h4>
+    <pre>Model: {{formData | json}}</pre>
+    <input type="text" ng-model="formData.user" typeahead="users as users.fullname for users in users | filter:$viewValue | limitTo:8" class="form-control">
+</div>
+
 <div class="form-group row">
 <div class="col-xs-6 col-xs-offset-3">
-    <a ui-sref="rendezvous.step3" class="btn btn-block btn-info">
+    <a ui-sref="rendezvous.step2" class="btn btn-block btn-info">
     Next Section <span class="glyphicon glyphicon-circle-arrow-right"></span>
     </a>
 </div>

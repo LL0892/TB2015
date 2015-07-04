@@ -1,13 +1,16 @@
 
 /* numbered buttons */
 #status-buttons                 {  }
-#status-buttons a               { display:inline-block; font-size:12px; margin-right:10px; text-align:center; text-transform:uppercase; }
-#status-buttons a:hover         { text-decoration:none; }
-#status-buttons span            { background:#080808; display:block; height:30px; margin:0 auto 10px; padding-top:5px; width:30px; 
+#status-buttons div { display:inline-block; font-size:12px; margin-right:20px; text-align:center; text-transform:uppercase; }
+#status-buttons div:hover { text-decoration:none; }
+#status-buttons span { background:#080808; display:block; height:40px; margin:0 auto 10px; padding-top:10px; width:40px; 
     border-radius:50%; }
+#status-buttons div>span {
+	color: white;
+}
 
 /* active buttons */
-#status-buttons a.active span   { background:#00BC8C; }
+#status-buttons div.active span   { background:#00BC8C; }
 
 /* ANIMATION STYLINGS
 ============================================================================= */
@@ -32,31 +35,4 @@
     -webkit-animation:slideOutLeft 0.5s both ease;
 	-moz-animation:slideOutLeft 0.5s both ease;
 	animation:slideOutLeft 0.5s both ease;   
-}
-
-/* ANIMATIONS
-============================================================================= */
-/* slide out to the left */
-@keyframes slideOutLeft {
-	to 		{ transform: translateX(-200%); }
-}
-@-moz-keyframes slideOutLeft {	
-	to 		{ -moz-transform: translateX(-200%); }
-}
-@-webkit-keyframes slideOutLeft {
-	to 		{ -webkit-transform: translateX(-200%); }
-}
-
-/* slide in from the right */
-@keyframes slideInRight {
-	from 	{ transform:translateX(200%); }
-	to 		{ transform: translateX(0); }
-}
-@-moz-keyframes slideInRight {
-	from 	{ -moz-transform:translateX(200%); }
-	to 		{ -moz-transform: translateX(0); }
-}
-@-webkit-keyframes slideInRight {
-	from 	{ -webkit-transform:translateX(200%); }
-	to 		{ -webkit-transform: translateX(0); }
 }

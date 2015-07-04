@@ -17,6 +17,12 @@ angular.module('tbApp')
         params: {
           id:'me'
         }
+      },
+      search:{
+        method: 'POST',
+        params: {
+          id: 'search'
+        }
       }
 	  });
   });

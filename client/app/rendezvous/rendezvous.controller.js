@@ -1,14 +1,14 @@
 'use strict';
 
 angular.module('tbApp')
-.controller('RendezvousCtrl', function($scope) {
-    
-    // we will store all of our form data in this object
+.controller('RendezvousCtrl', function($scope, $http, User, Auth) {
+
     $scope.formData = {};
-    
-    // function to process the form
-    $scope.processForm = function() {
-        alert('awesome!');  
-    };
-    
+    $scope.isStaff = Auth.isStaff;
+
+	$http.get('/api/users').then(function(datas){
+		$scope.users = datas.data;
+		return $scope.users;
+	});
+
 });

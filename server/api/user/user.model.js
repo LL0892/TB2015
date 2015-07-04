@@ -50,6 +50,10 @@ var UserSchema = new Schema({
   }*/
 });
 
+UserSchema.set('toJSON', {
+   virtuals: true
+});
+
 /**
  * Virtuals
  */
