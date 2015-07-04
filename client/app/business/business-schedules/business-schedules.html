@@ -7,9 +7,8 @@
 			<!-- visualisation mode -->
 			<div ng-show="modif===false">
 				<p>Jours : {{schedule.dayName}}</p>
-				<p>Description : {{schedule.description}}</p>
-				<p>Début : {{schedule.startHour}}</p>
-				<p>Fin : {{schedule.endHour}}</p>
+				<!--<p>Description : {{schedule.description}}</p>-->
+				<p>Heures : {{schedule.startHour}} - {{schedule.endHour}}</p>
 				<p>Jour Ouvrable : {{schedule.workingDay}}</p>
 			</div>
 			<div ng-show="modif===true">
@@ -20,13 +19,12 @@
 				<select type="text" ng-bind="schedule.endHour" ng-model="schedule.endHour">
 				<input type="text" ng-bind="schedule.workingDay" ng-model="schedule.workingDay">
 			</div>
-
 		</div>
 		<div class="col-sm-6">
 			<p>staffs affiliés :</p>
 			<!-- visualisation mode -->
-			<ul ng-repeat="staff in schedule.staffs" ng-show="modif===false">
-				<li>
+			<ul ng-show="modif===false">
+				<li ng-repeat="staff in schedule.staffs">
 					{{staff.name}}
 				</li>
 			</ul>
@@ -40,10 +38,10 @@
 			    ng-click="toggleSelection(staff._id, hover)"
 			  > {{staff.name}}
 			</label>
-
 		</div>
-		<button ng-click="modif=true; index($index)" ng-show="modif===false">Modifier</button>
-		<button ng-click="modif=false; confirm(checkbox)" ng-show="modif===true">Confirmer</button>
-		<button ng-click="modif=false" ng-show="modif===true">Annuler</button>
+		<button class="hidden-xs btn" ng-click="modif=true; index($index)" ng-show="modif===false">Modifier</button>
+		<button class="hidden-xs btn" ng-click="modif=false; confirm(checkbox)" ng-show="modif===true">Confirmer</button>
+		<button class="hidden-xs btn" ng-click="modif=false" ng-show="modif===true">Annuler</button>
+		<hr>
 	</div>
 </div>
