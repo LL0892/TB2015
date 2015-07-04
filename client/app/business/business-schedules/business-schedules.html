@@ -2,46 +2,131 @@
 <div ng-include="'components/navbar/navbar-secondary.html'"></div>
 
 <div class="container">
+
+	<div class="row">
+		<button class="btn btn-success pull-left" ng-click="add = true" ng-show="add === false">Ajouter une prestation</button>
+		<div class="col-sm-5" ng-show="add === true">
+			<div class="row">
+				<div class="col-sm-5">
+					<label> Jour </label>
+					<input class="form-control" type="text" ng-model="form.dayName" placeholder="jour" required>
+				</div>
+				<div class="col-sm-5">
+					<label> Description </label>
+					<input class="form-control" type="text" ng-model="form.description" placeholder="description" required>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-5">
+					<label> Débute à </label>
+					<select class="form-control" ng-model="form.startHour" ng-options="options as options for options in options" required></select>
+				</div>
+				<div class="col-sm-5">
+					<label> Fini à </label>
+					<select class="form-control" ng-model="form.endHour" ng-options="options as options for options in options" required></select>
+				</div>
+			</div>
+			<div class="row" ng-show="add === true">
+				<div class="col-sm-5">
+					<label> Jour ouvrable </label>
+					<select class="form-control" ng-model="form.workingDay" required>
+						<option value="true">Oui</option>
+						<option value="false">Non</option>
+					</select>
+					
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-5" ng-show="add === true">
+			<h4>staffs affiliés</h4>
+			<div class="checkbox" ng-repeat="staff in staffs">
+				<label>
+				  <input type="checkbox" ng-model="form.staffs[$index]" name="addStaffs[]" value="{{staff._id}}"> {{staff.name}}
+				</label>
+			</div>
+
+		</div>
+		<div class="row">
+			<div class="col-sm-12">
+			<button class="hidden-xs btn btn-sm btn-success" ng-click="add = false; addSchedule(form); form = null" ng-show="add === true">Envoyer</button>
+			<button class="hidden-xs btn btn-sm btn-danger" ng-click="add = false; form = null" ng-show="add === true">Annuler</button>
+			</div>
+		</div>
+	</div>
+
+	<hr>
+	
 	<div class="row" ng-repeat="schedule in schedules">
-		<div class="col-sm-6">
-			<!-- visualisation mode -->
-			<div ng-show="modif===false">
-				<p>Jours : {{schedule.dayName}}</p>
-				<!--<p>Description : {{schedule.description}}</p>-->
-				<p>Heures : {{schedule.startHour}} - {{schedule.endHour}}</p>
-				<p>Jour Ouvrable : {{schedule.workingDay}}</p>
+		<div class="row">
+			<div class="col-sm-5">
+				<!-- visualisation mode -->
+				<div ng-show="modif===false">
+					<h4>{{schedule.dayName}}</h4>
+					<!--<p>Description : {{schedule.description}}</p>-->
+					<p ng-show="schedule.workingDay === true">Heures : {{schedule.startHour}} - {{schedule.endHour}}</p>
+					<p ng-show="schedule.workingDay === true">Jour ouvrable : Oui</p>
+					<p ng-show="schedule.workingDay === false">Jour ouvrable : Non</p>
+				</div>
+				<!-- edit mode -->
+				<div ng-show="modif===true">
+					<div class="row">
+						<div class="col-sm-4">
+							<input class="form-control" type="text" ng-bind="schedule.dayName" ng-model="schedule.dayName">
+						</div>
+						<div class="col-sm-4">
+							<input class="form-control" type="text" ng-bind="schedule.description" ng-model="schedule.description">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-4">
+							<select class="form-control" ng-model="schedule.startHour" ng-options="options as options for options in options"></select>
+						</div>
+						<div class="col-sm-4">
+							<select class="form-control" ng-model="schedule.endHour" ng-options="options as options for options in options"></select>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-4">
+							<select class="form-control" ng-model="schedule.workingDay">
+								<option value="true">Oui</option>
+								<option value="false">Non</option>
+							</select>
+						</div>
+					</div>
+					
+				</div>
 			</div>
-			<div ng-show="modif===true">
-				<input type="text" ng-bind="schedule.dayName" ng-model="schedule.dayName">
-				<input type="text" ng-bind="schedule.description" ng-model="schedule.description">
-				<select type="text" ng-bind="schedule.startHour" ng-model="schedule.startHour">
-				<select ng-model="schedule.startHour" ng-options="o as o for o in options"></select>
-				<select type="text" ng-bind="schedule.endHour" ng-model="schedule.endHour">
-				<input type="text" ng-bind="schedule.workingDay" ng-model="schedule.workingDay">
+			<div class="col-sm-5">
+				<h4>staffs affiliés</h4>
+				<!-- visualisation mode -->
+				<ul ng-show="modif===false">
+					<li ng-repeat="staff in schedule.staffs">
+						{{staff.name}}
+					</li>
+				</ul>
+				<!-- edit mode -->
+				<div ng-repeat="staff in staffs" ng-show="modif===true">
+					<label>
+					  <input
+					  	ng-model="schedule.staffs"
+					    type="checkbox"
+					    name="selectedStaff[]"
+					    value="{{staff._id}}"
+					    ng-checked="selection.indexOf(staff._id) > -1"
+					    ng-click="toggleSelection(staff._id, $parent.$index, $index)"
+					  > {{staff.name}}
+					</label>
+				</div>
 			</div>
 		</div>
-		<div class="col-sm-6">
-			<p>staffs affiliés :</p>
-			<!-- visualisation mode -->
-			<ul ng-show="modif===false">
-				<li ng-repeat="staff in schedule.staffs">
-					{{staff.name}}
-				</li>
-			</ul>
-			<!-- edit mode -->
-			<label ng-repeat="staff in staffs" ng-show="modif===true">
-			  <input
-			    type="checkbox"
-			    name="selectedStaff[]"
-			    value="{{staff._id}}"
-			    ng-checked="selection.indexOf(staff._id) > -1"
-			    ng-click="toggleSelection(staff._id, hover)"
-			  > {{staff.name}}
-			</label>
+		<div class="row">
+			<button class="hidden-xs btn btn-sm btn-primary" ng-click="modif=true; index($index)" ng-show="modif===false">Modifier</button>
+			<button class="hidden-xs btn btn-sm btn-danger" ng-click="deleteSchedule(schedule._id)" ng-show="modif===false">Supprimer</button>
+			<button class="hidden-xs btn btn-sm  btn-primary" ng-click="modif=false; confirm(checkbox)" ng-show="modif===true">Confirmer</button>
+			<button class="hidden-xs btn btn-sm  btn-danger" ng-click="modif=false" ng-show="modif===true">Annuler</button>
+			<hr>
 		</div>
-		<button class="hidden-xs btn" ng-click="modif=true; index($index)" ng-show="modif===false">Modifier</button>
-		<button class="hidden-xs btn" ng-click="modif=false; confirm(checkbox)" ng-show="modif===true">Confirmer</button>
-		<button class="hidden-xs btn" ng-click="modif=false" ng-show="modif===true">Annuler</button>
-		<hr>
+
+
 	</div>
 </div>
