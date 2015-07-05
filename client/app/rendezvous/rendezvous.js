@@ -12,22 +12,18 @@ angular.module('tbApp')
       .state('rendezvous.step1', {
         url: '/step1',
         templateUrl: 'app/rendezvous/rendezvous-step1.html',
-        controller: 'RendezvousCtrl'
       })      
       .state('rendezvous.step2', {
         url: '/step2',
         templateUrl: 'app/rendezvous/rendezvous-step2.html',
-        controller: 'RendezvousCtrl'
       })
        .state('rendezvous.step3', {
         url: '/step3',
         templateUrl: 'app/rendezvous/rendezvous-step3.html',
-        controller: 'RendezvousCtrl'
       })
        .state('rendezvous.step4', {
         url: '/step4',
         templateUrl: 'app/rendezvous/rendezvous-step4.html',
-        controller: 'RendezvousCtrl'
       })
        // user rendezvous
       .state('rendezvousUser', {
@@ -38,21 +34,17 @@ angular.module('tbApp')
       .state('rendezvousUser.step1', {
         url: '/step1',
         templateUrl: 'app/rendezvous/rendezvous-step1.html',
-        controller: 'RendezvousUserCtrl'
       })      
       .state('rendezvousUser.step2', {
         url: '/step2',
         templateUrl: 'app/rendezvous/rendezvous-step2.html',
-        controller: 'RendezvousUserCtrl'
       })
        .state('rendezvousUser.step3', {
         url: '/step3',
         templateUrl: 'app/rendezvous/rendezvous-step3.html',
-        controller: 'RendezvousUserCtrl'
       })
        .state('rendezvousUser.step4', {
         url: '/step4',
         templateUrl: 'app/rendezvous/rendezvous-step4.html',
-        controller: 'RendezvousUserCtrl'
       })
   });

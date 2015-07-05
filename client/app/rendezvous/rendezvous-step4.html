@@ -1,7 +1,20 @@
 <!-- form-payment.html -->
 <div class="text-center">
-    <h3>Confirmation du rendez-vous</h3>
     
+    <div>
+    	<h4>Résumé du rendez-vous</h4>
+    	<p>{{formData.businessName}}</p>
+    	<p>{{formData.zip}} {{formData.city}} ({{formData.canton}})</p>
+    	<p>{{formData.street}}</p>
+    	<p>{{formData.user.fullname}}</p>
+    	<p>{{formData.staff.name}}</p>
+    	<p>{{formData.prestation.name}}</p>
+    	<p>{{formData.prestation.prices.price}}</p>
+    	<p>{{formData.prestation.duration}}</p>
+    	<p>{{formData.date.startHour}}</p>
+    	<p>{{formData.date.endHour}}</p>
+    </div>
+
     <button type="submit" class="btn btn-success">Réserver</button>
     <button type="submit" class="btn btn-danger">Annuler</button>
 </div>

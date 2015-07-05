@@ -1,28 +1,31 @@
-<!-- form-interests.html -->
-<label>What's Your Console of Choice?</label>
-<div class="form-group">
-    <div class="radio">
-        <label>
-           <input type="radio" ng-model="formData.type" value="xbox" checked>
-           I like XBOX
-        </label>
-    </div>
-    <div class="radio">
-        <label>
-            <input type="radio" ng-model="formData.type" value="ps">
-            I like PS4
-        </label>
-    </div>
-</div>
+<!-- Selection de la prestation -->
 
-<ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6" ng-repeat="business in businesses">
-    <li><a href="#" tooltip="{{business.city}}">{{business.name}}</a></li>
-</ul>
+ <accordion ng-repeat="prestation in prestations" class="col-xs-12 col-sm-8 col-md-6 col-lg-6 
+                                                        col-sm-offset-2 col-md-offset-3 col-lg-offset-3">
+    <h4>Prestations de {{formData.businessName}}</h4>
+    <accordion-group heading="{{prestation.name}} - {{prestation.duration}} mn" ng-click="getPrice(prestation, formData.user)">
+        <h4>Description</h4>
+        <p>{{prestation.description}}</p>
+        <hr>
+
+        <div class="col-xs-6 hr-right">
+            <h4>Prix</h4>
+            {{formData.prestation.prices.price}} CHF
+        </div>
+
+        <div class="col-xs-6">
+            <h4>Durée</h4>
+            {{prestation.duration}} minutes
+        </div>
+    </accordion-group>
+ </accordion>
+ <span ng-show="errorPrestation">Veillez sélectionner une prestation pour continuer.</span>
 
 <div class="form-group row">
-<div class="col-xs-6 col-xs-offset-3">
-    <a ui-sref="rendezvous.step3" class="btn btn-block btn-info">
-    Next Section <span class="glyphicon glyphicon-circle-arrow-right"></span>
-    </a>
+<div class="col-xs-8 col-sm-6 col-md-4 col-lg-2 
+            col-xs-offset-2 col-sm-offset-3 col-md-offset-4 col-lg-offset-5">
+    <button class="btn btn-block btn-info" ng-click="getCalendar(formData)">
+    Prochaine étape <span class="glyphicon glyphicon-circle-arrow-right"></span>
+    </button>
 </div>
 </div>
