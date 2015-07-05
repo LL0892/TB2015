@@ -32,6 +32,11 @@ var validationError = function(res, err) {
  */
 exports.index = function(req, res) {
   User.find({}, '-salt -hashedPassword -roles -createdOn -updatedOn', function (err, users) {
+
+    for (var i = users.length - 1; i >= 0; i--) {
+      users[i] = users[i].profilePublic;
+    };
+
     if(err) return res.send(500, err);
     return res.status(200).json(
       users
