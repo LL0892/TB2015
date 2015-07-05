@@ -15,6 +15,10 @@
     </div>
 </div>
 
+<ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6" ng-repeat="business in businesses">
+    <li><a href="#" tooltip="{{business.city}}">{{business.name}}</a></li>
+</ul>
+
 <div class="form-group row">
 <div class="col-xs-6 col-xs-offset-3">
     <a ui-sref="rendezvous.step3" class="btn btn-block btn-info">

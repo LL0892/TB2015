@@ -1,12 +1,29 @@
 'use strict';
 
 angular.module('tbApp')
-  .controller('MainCtrl', function ($scope, $http, ezfb, $q, $log) {
-    $scope.busiesses = [];
+  .controller('MainCtrl', function ($scope, $http, ezfb, $q, $log, Urls) {
+    $scope.businesses = [];
 
     $http.get('/api/businesses').success(function(businesses){
       $scope.businesses = businesses;
+
+      $log.debug(Urls.client);
+      for (var i = $scope.businesses.length - 1; i >= 0; i--) {
+        $scope.businesses[i].imageBusinessUrl = Urls.client + $scope.businesses[i].imageBusinessUrl;
+        console.log($scope.business[i].imageBusinessUrl);
+      };
     });
+
+
+
+    $scope.selectedIndex = -1;
+  
+    $scope.itemClicked = function ($index) {
+      console.log($index);
+      $scope.selectedIndex = $index;
+    }
+
+
 
   
   updateMe();

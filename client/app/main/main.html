@@ -9,31 +9,48 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-lg-12">
-      <h1 class="page-header">Salons de coiffures :</h1>
-      <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6" ng-repeat="business in businesses">
-        <li><a href="#" tooltip="{{business.city}}">{{business.name}}</a></li>
-      </ul>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+      
+      <!-- Desktop display -->
+      <h1 class="page-header hidden-sm hidden-xs">Salons disponibles :</h1>
+      <!-- Mobile display -->
+      <h3 class="page-header hidden-lg hidden-md">Salons disponibles :</h3>
+
+      <div class="col-md-3 col-lg-3 hidden-sm hidden-xs" ng-repeat="business in businesses">
+        
+        <!-- Desktop display -->
+        <div class="thumbnail no-border" ng-class="{ 'thumbnail-hover': $index == selectedIndex }"
+             ng-click="itemClicked($index)">
+          <img src="http://lorempixel.com/g/175/175/" class="img-rounded" />
+          <div class="caption" id="caption-half-down">
+            <h4>Réservez ou visualisez les infos de ce salon !</h4>
+          </div>
+          <div class="caption" id="caption-half-up">
+            <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-info"> Infos</i></a>
+            <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-book"> Rendez-vous</i></a>
+            <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-star"> Favori</i></a>
+          </div>
+        </div>
+        <h4 class="text-center">{{business.name}}</h4>
+        <p class="text-center">{{business.zip}} {{business.city}}</p>
     </div>
+
+    <!-- Mobile display -->
+    <div class="hidden-lg hidden-md col-sm-4 col-xs-12" ng-repeat="business in businesses">
+      <h4 class="text-center">{{business.name}}</h4>
+      <p class="text-center">{{business.zip}} {{business.city}}</p>
+      <div class="text-center">
+        <a href="#" class="btn btn-primary btn-sm btn-mgn-bottom"><i class="fa fa-info"> Infos</i></a>
+        <a href="#" class="btn btn-primary btn-sm btn-mgn-bottom"><i class="fa fa-book"> Rendez-vous</i></a>
+        <a href="#" class="btn btn-primary btn-sm btn-mgn-bottom"><i class="fa fa-star"> Favori</i></a>
+      </div>
+      <hr>
+    </div>
+
   </div>
 </div>
 
 
-<!--     <div class="container">
-      
-      <div>
-        <button class="btn btn-primary" ng-click="login()" ng-disabled="loginStatus.status == 'connected'">Connect with Facebook</button>
-         &nbsp; 
-        <button class="btn btn-danger" ng-click="logout()" ng-disabled="!loginStatus || loginStatus.status != 'connected'">Logout</button>
-      </div>
-      
-      <br>
-
-      <h4>
-        Bonjour, <span ng-show="me.name">{{ me.name }}</span><span ng-show="me.error">tu n'est pas connecté.</span>!
-      </h4>
-
-    </div> -->
 
 
 
