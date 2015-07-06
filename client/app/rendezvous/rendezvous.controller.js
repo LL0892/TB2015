@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('tbApp')
-.controller('RendezvousCtrl', function($scope, $http, $state, $log, $compile, uiCalendarConfig, User, Auth, Business, localStorageService) {
+.controller('RendezvousCtrl', function($scope, $timeout, $http, $state, $log, $compile, uiCalendarConfig, User, Auth, Business, localStorageService) {
 
     $scope.formData = {};
     $scope.isStaff = Auth.isStaff;
@@ -174,7 +174,17 @@ angular.module('tbApp')
 
 
 
+    /* Change View */
+    $scope.renderCalender = function (calendar) {
+        if (uiCalendarConfig.calendars[calendar]) {
+            console.log('.', uiCalendarConfig.calendars[calendar]);
+            uiCalendarConfig.calendars[calendar].fullCalendar('render');
+        }
+    };
 
+    $timeout(function () {
+        $scope.renderCalender('calendar');
+    }, 1000);
 
 
 

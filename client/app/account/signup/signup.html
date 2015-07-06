@@ -2,115 +2,158 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-sm-12">
+    <div class="col-sm-8 col-sm-offset-2">
       <h1>Sign up</h1>
     </div>
-    <div class="col-sm-12">
       <form class="form" name="form" ng-submit="register(form)" novalidate>
 
-        <!-- First name -->
-        <div class="form-group" ng-class="{ 'has-success': form.firstName.$valid && submitted,
-                                            'has-error': form.firstName.$invalid && submitted }">
-          <label>Prénom</label>
+        <div class="row">
+          <div class="col-sm-4 col-sm-offset-2">
+            <!-- First name -->
+            <div class="form-group" ng-class="{ 'has-success': form.firstName.$valid && submitted,
+                                                'has-error': form.firstName.$invalid && submitted }">
+              <label>Prénom <i class="fa fa-asterisk"></i></label>
 
-          <input type="text" name="firstName" class="form-control" ng-model="user.firstName"
-                 required/>
-          <p class="help-block" ng-show="form.firstName.$error.required && submitted">
-            Un prénom est requis.
-          </p>
+              <input type="text" name="firstName" class="form-control" ng-model="user.firstName"
+                     required/>
+              <p class="help-block" ng-show="form.firstName.$error.required && submitted">
+                Un prénom est requis.
+              </p>
+            </div>
+          </div>
+          <div class="col-sm-4">
+            <!-- Last name -->
+            <div class="form-group" ng-class="{ 'has-success': form.lastName.$valid && submitted,
+                                                'has-error': form.lastName.$invalid && submitted }">
+              <label>Nom <i class="fa fa-asterisk"></i></label>
+
+              <input type="text" name="lastName" class="form-control" ng-model="user.lastName"
+                     required/>
+              <p class="help-block" ng-show="form.lastName.$error.required && submitted">
+                Un nom est requis.
+              </p>
+            </div>
+          </div>
         </div>
 
-        <!-- Last name -->
-        <div class="form-group" ng-class="{ 'has-success': form.lastName.$valid && submitted,
-                                            'has-error': form.lastName.$invalid && submitted }">
-          <label>Nom</label>
 
-          <input type="text" name="lastName" class="form-control" ng-model="user.lastName"
-                 required/>
-          <p class="help-block" ng-show="form.lastName.$error.required && submitted">
-            Un nom est requis.
-          </p>
+
+
+        
+        <div class="row">
+          <!-- Email -->
+          <div class="col-sm-4 col-sm-offset-2">
+            <div class="form-group" ng-class="{ 'has-success': form.email.$valid && submitted,
+                                                'has-error': form.email.$invalid && submitted }">
+              <label>Email <i class="fa fa-asterisk"></i></label>
+
+              <input type="email" name="email" class="form-control" ng-model="user.email"
+                     required
+                     mongoose-error/>
+              <p class="help-block" ng-show="form.email.$error.email && submitted">
+                Ce n'est pas une adresse mail valide.
+              </p>
+              <p class="help-block" ng-show="form.email.$error.required && submitted">
+                Entrez une adresse mail.
+              </p>
+              <p class="help-block" ng-show="form.email.$error.mongoose">
+                {{ errors.email }}
+              </p>
+            </div>
+          </div>
+          <div class="col-sm-4">
+            <!-- Password -->
+            <div class="form-group" ng-class="{ 'has-success': form.password.$valid && submitted,
+                                                'has-error': form.password.$invalid && submitted }">
+              <label>Password <i class="fa fa-asterisk"></i></label>
+
+              <input type="password" name="password" class="form-control" ng-model="user.password"
+                     ng-minlength="3"
+                     required
+                     mongoose-error/>
+              <p class="help-block"
+                 ng-show="(form.password.$error.minlength || form.password.$error.required) && submitted">
+                Le mot de passe doit contenir au moins 3 charactères.
+              </p>
+              <p class="help-block" ng-show="form.password.$error.mongoose">
+                {{ errors.password }}
+              </p>
+            </div>
+          </div>
         </div>
 
-        <!-- Email -->
-        <div class="form-group" ng-class="{ 'has-success': form.email.$valid && submitted,
-                                            'has-error': form.email.$invalid && submitted }">
-          <label>Email</label>
 
-          <input type="email" name="email" class="form-control" ng-model="user.email"
-                 required
-                 mongoose-error/>
-          <p class="help-block" ng-show="form.email.$error.email && submitted">
-            Ce n'est pas une adresse mail valide.
-          </p>
-          <p class="help-block" ng-show="form.email.$error.required && submitted">
-            What's your email address?
-          </p>
-          <p class="help-block" ng-show="form.email.$error.mongoose">
-            {{ errors.email }}
-          </p>
-        </div>
-
-        <!-- Password -->
-        <div class="form-group" ng-class="{ 'has-success': form.password.$valid && submitted,
-                                            'has-error': form.password.$invalid && submitted }">
-          <label>Password</label>
-
-          <input type="password" name="password" class="form-control" ng-model="user.password"
-                 ng-minlength="3"
-                 required
-                 mongoose-error/>
-          <p class="help-block"
-             ng-show="(form.password.$error.minlength || form.password.$error.required) && submitted">
-            Password must be at least 3 characters.
-          </p>
-          <p class="help-block" ng-show="form.password.$error.mongoose">
-            {{ errors.password }}
-          </p>
-        </div>
+        
 
         <!-- Date of birth & gender -->
-        <div>
-            <div class="row">
-                <div class="col-sm-6">
-                    <label>Date de naissance</label>
-                    <div class="form-group" ng-class="{ 'has-success': form.dateOfBirth.$valid && submitted, 'has-error': form.dateOfBirth.$invalid && submitted }">
-                      <p class="input-group">
-                        <input type="text" class="form-control" datepicker-popup="{{format}}" name="dateOfBirth" ng-model="user.dateOfBirth" is-open="opened" max-date="maxDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" required mongoose-error close-text="Close" />
-                        <span class="input-group-btn">
-                          <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
-                        </span>
-                      </p>
-                      <p class="help-block" ng-show="form.dateOfBirth.$error.mongoose">
-                        {{ errors.dateOfBirth }}
-                      </p>
-                    </div>
+        <div class="row">
+            <div class="col-sm-4 col-sm-offset-2">
+                <label>Date de naissance <i class="fa fa-asterisk"></i></label>
+                
+                <div class="form-group" ng-class="{ 'has-success': form.dateOfBirth.$valid && submitted, 'has-error': form.dateOfBirth.$invalid && submitted }">
+                  <p class="input-group">
+                    <input type="text" class="form-control" datepicker-popup="{{format}}" name="dateOfBirth" ng-model="user.dateOfBirth" is-open="opened" max-date="maxDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" required mongoose-error close-text="Close" />
+                    <span class="input-group-btn">
+                      <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                  </p>
+                  <p class="help-block"
+                     ng-show="(form.password.$error.required) && submitted">
+                    Ce champ est obligatoire.
+                  </p>
+                  <p class="help-block" ng-show="form.dateOfBirth.$error.mongoose">
+                    {{ errors.dateOfBirth }}
+                  </p>
                 </div>
+            </div>
 
-                <div class="col-sm-6">
-                  <div class="form-group" ng-class="{ 'has-success': form.dateOfBirth.$valid && submitted, 'has-error': form.dateOfBirth.$invalid && submitted }">
-                    <label>Sexe</label>
+            <div class="col-sm-4">
+              <div class="form-group" ng-class="{ 'has-success': form.dateOfBirth.$valid && submitted, 'has-error': form.dateOfBirth.$invalid && submitted }">
+                <label>Sexe <i class="fa fa-asterisk"></i></label>
 
-                    <select class="form-control" name="gender" ng-model="user.gender" required mongoose-error>
-                      <option value="homme">Homme</option>
-                      <option value="femme">Femme</option>
-                    </select>
-                    <p class="help-block" ng-show="form.gender.$error.mongoose">
-                      {{ errors.gender }}
-                    </p>
-                  </div>
-                </div>
+                <select class="form-control" name="gender" ng-model="user.gender" required mongoose-error>
+                  <option value="homme">Homme</option>
+                  <option value="femme">Femme</option>
+                </select>
+                  <p class="help-block"
+                     ng-show="(form.password.$error.required) && submitted">
+                    Ce champ est obligatoire.
+                  </p>
+                <p class="help-block" ng-show="form.gender.$error.mongoose">
+                  {{ errors.gender }}
+                </p>
+              </div>
             </div>
         </div>
 
+        <div class="row">
+          <div class="col-sm-4 col-sm-offset-2"><label>Localité</label>
+            <input type="text" ng-model="user.loc" ng-bind="user.loc.Commune" typeahead-min-length="3" typehead-on-select(model) typeahead="geodata as geodata.Commune for geodata in geodatas | filter:$viewValue" class="form-control">
+          </div>
+          <div class="col-sm-2"><label>Numéro postal</label>
+            <input type="text" ng-model="user.loc" ng-bind="user.loc.NPA" typeahead-min-length="2" typehead-on-select(model) typeahead="geodata as geodata.NPA for geodata in geodatas | filter:$viewValue | limitTo:8" class="form-control">
+          </div>
+          <div class="col-sm-2"><label>Canton</label>
+            <input type="text" ng-model="user.loc" ng-bind="user.loc.Canton" typehead-on-select(model) typeahead="geodata as geodata.Canton for geodata in geodatas | filter:$viewValue | limitTo:8" class="form-control" disabled>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-2 col-sm-offset-4">
+
+          </div>
+        </div>
+
         <!-- Buttons -->
-        <div>
-          <button class="btn btn-inverse btn-lg btn-login" type="submit">
-            Sign up
-          </button>
-          <a class="btn btn-default btn-lg btn-register" href="/login">
-            Login
-          </a>
+        <div class="row">
+          <div class="col-sm-4 col-sm-offset-2">
+            <button class="btn btn-inverse btn-lg btn-login" type="submit">
+              Sign up
+            </button>
+            <a class="btn btn-default btn-lg btn-register" href="/login">
+              Login
+            </a>
+          </div>
         </div>
 
         <hr>
@@ -123,7 +166,6 @@
           </a>
         </div>
       </form>
-    </div>
   </div>
   <hr>
 </div>

@@ -10,14 +10,29 @@ angular.module('tbApp')
     $scope.isCollapsed = true;
     $scope.isLoggedIn = Auth.isLoggedIn;
     $scope.isStaff = Auth.isStaff;
+    $scope.isManager = Auth.isManager;
+    $scope.isBusinessCreated = Auth.isBusinessCreated;
+    $scope.isStaffCreated = Auth.isStaffCreated;
     $scope.getCurrentUser = Auth.getCurrentUser;
 
-    //Auth.getCurrentUser = function(user){
-    //  $scope.isStaff = user.roles.indexOf('staff');
-    //  console.log($scope.isStaff);
-    //  $scope.isLoggedIn = user.hasOwnPreperty('roles');
-    //  console.log($scope.isLoggedIn);
-    //}
+
+
+    $scope.canCreateBusiness = function(){
+      if ($scope.isManager === true && $scope.isBusinessCreated === false) {
+        return true;
+      } else{
+        return false;
+      }
+    };
+
+    $scope.canCreateStaff = function(){
+      if ($scope.isStaff === true && $scope.isStaffCreated === false) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
 
     $scope.logout = function() {
       Auth.logout();

@@ -1,21 +1,37 @@
 'use strict';
 
 var App = angular.module('tbApp');
-  App.controller('SignupCtrl', function ($scope, Auth, $location, $window) {
+  App.controller('SignupCtrl', function ($scope, Auth, $location, $window, $http, Urls) {
     $scope.user = {};
     $scope.errors = {};
 
+    $scope.localites = {};
+
+    $http.get(Urls.api + 'geodatas').then(
+      function (response){
+        $scope.geodatas = response.data.geodatas;
+        return $scope.geodatas;
+      }, 
+      function (error){
+
+      });
+
+
     $scope.register = function(form) {
       $scope.submitted = true;
-      console.log(form);
-      if(form.$valid) {
+      console.log($scope.user);
+      
+/*      if(form.$valid) {
         Auth.createUser({
           firstName: $scope.user.firstName,
           lastName: $scope.user.lastName,
           email: $scope.user.email,
           password: $scope.user.password,
           dateOfBirth: form.dateOfBirth.$$lastCommittedViewValue,
-          gender: form.gender.$$lastCommittedViewValue
+          gender: form.gender.$$lastCommittedViewValue,
+          city: $scope.user.loc.Commune,
+          zip: $scope.user.loc.NPA,
+          canton: $scope.user.loc.Canton
         })
         .then( function() {
           // Account created, redirect to home
@@ -31,7 +47,7 @@ var App = angular.module('tbApp');
             $scope.errors[field] = error.message;
           });
         });
-      }
+      }*/
     };
 
     $scope.loginOauth = function(provider) {
@@ -60,8 +76,6 @@ var App = angular.module('tbApp');
     formatYear: 'yyyy',
     startingDay: 1
   };
-
-  $scope.format = 'dd-MMMM-yyyy';
 
   var tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);

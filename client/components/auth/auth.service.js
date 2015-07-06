@@ -135,7 +135,7 @@ angular.module('tbApp')
       },
 
        /**
-        * Check if a user is an admin
+        * Check if a user is an staff
         *   (synchronous|asynchronous)
         *
         * @param  {Function|*} callback - optional, function(is)
@@ -169,8 +169,72 @@ angular.module('tbApp')
 
             return is;
           });
+      },
+
+       /**
+        * Check if a user is an manager
+        *   (synchronous|asynchronous)
+        *
+        * @param  {Function|*} callback - optional, function(is)
+        * @return {Bool|Promise}
+        */
+      isManager: function(callback) {
+        if (arguments.length === 0) {
+          if (currentUser.roles === undefined) {
+            return false;
+          }
+
+          var res = currentUser.roles.indexOf('manager');
+          if (res === -1) {
+            res = false;
+          }
+
+          return res;
+        }
+
+        return this.getCurrentUser(null)
+          .then(function(user) {
+            if (user.roles === undefined) {
+              return false;
+            }
+            var is = user.roles.indexOf('manager');
+            safeCb(callback)(is);
+            
+            if (is === -1) {
+              is = false;
+            }
+
+            return is;
+          });
+      },
+
+      /**
+      * Check if a user already created a business
+      *
+      */
+      isBusinessCreated: function(callback){
+        var res = currentUser.businessId;
+
+        if (res === undefined) {
+          return res = true;
+        }else{
+          return res = false;
+        }
+      },
 
 
+      /**
+      * Check if a user already created a business
+      *
+      */
+      isStaffCreated: function(callback){
+        var res = currentUser.staffId;
+
+        if (res === undefined) {
+          return res = true;
+        }else{
+          return res = false;
+        }
       },
 
       /**
