@@ -6,6 +6,7 @@ angular.module('tbApp')
   	$scope.prestations = {};
   	$scope.user = {};
   	$scope.hiddenForm = true;
+    $scope.editPrice = false;
 
     function getPrestations(data){
       Business.getPrestations(
@@ -60,7 +61,7 @@ angular.module('tbApp')
     		});
     };
 
-    $scope.updateUI = function(data){
+    function updateUI (data){
     	console.log('update :'+ data);
     	var id = data._id;
     	var res = $scope.prestations._id.indexOf(id);

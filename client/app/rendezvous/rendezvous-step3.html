@@ -1,13 +1,33 @@
-<!-- form-payment.html -->
-<div class="text-center">
-    <span class="glyphicon glyphicon-heart"></span>
-    <h3>Thanks For Your Money!</h3>
-    
-    <div class="form-group row">
-		<div class="col-xs-6 col-xs-offset-3">
-		    <a ui-sref="rendezvous.step4" class="btn btn-block btn-info">
-		    Next Section <span class="glyphicon glyphicon-circle-arrow-right"></span>
-		    </a>
+<!-- Selection staff/date -->
+
+<div class="row">
+
+	<!-- Selection staff -->
+	<div id="staffs" class="col-sm-2 col-sm-offset-3" >
+		<h4>Sélectionner un staff</h4>
+		<div ng-repeat="staff in staffs">
+			<span ng-click="selected($index, staff);" ng-class="{'selected-staff': $index == selectedIndex}">{{staff.name}}</span>
 		</div>
+
+	<!-- Selection date -->
+	</div>
+	<div class="col-sm-3 col-sm-offset-3">
+		
 	</div>
 </div>
+
+<!-- calendrier -->
+<div class="row">
+	<div ui-calendar ng-model="eventSources"></div>
+</div>
+
+<div class="form-group row">
+	<div class="col-xs-8 col-sm-6 col-md-4 col-lg-2 
+	            col-xs-offset-2 col-sm-offset-3 col-md-offset-4 col-lg-offset-5">
+	    <button class="btn btn-block btn-info" ng-click="getConfirm(formData)">
+	    Prochaine étape <span class="glyphicon glyphicon-circle-arrow-right"></span>
+	    </button>
+	</div>
+</div>
+
+

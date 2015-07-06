@@ -7,7 +7,9 @@ angular.module('tbApp', [
   'ui.router',
   'ui.bootstrap',
   'ngAnimate',
-  'ezfb'
+  'ezfb',
+  'LocalStorageModule',
+  'ui.calendar'
 ])
   .constant('Urls', {
     client: '/assets/images/',
@@ -22,12 +24,21 @@ angular.module('tbApp', [
     $httpProvider.interceptors.push('authInterceptor');
   })
 
+  // Facebook plugin config
   .config(function (ezfbProvider) {
     ezfbProvider.setInitParams({
       appId: '1451571261811947',
       version: 'v2.3'
     }); 
     ezfbProvider.setLocale('fr_CH'); 
+  })
+
+  // Local storage config
+  .config(function (localStorageServiceProvider) {
+    localStorageServiceProvider
+      .setPrefix('tb2015')
+      .setStorageType('localStorage')
+      .setNotify(true, true)
   })
 
 

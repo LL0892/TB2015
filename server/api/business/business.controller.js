@@ -389,6 +389,12 @@ exports.updateSchedule = function(req, res, next){
 		schedule.description = req.body.description;
 		schedule.workingDay = req.body.workingDay;
 
+		schedule.staffs.remove();
+
+		for (var i = req.body.staffs.length - 1; i >= 0; i--) {
+			schedule.staffs[i] = req.body.staffs[i];
+		};
+
 		// TODO affiliate staffs to schedule
 		//schedule.staffs.push({
 		//	staffId: req.staff._id,

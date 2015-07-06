@@ -1,12 +1,13 @@
-<!-- form-payment.html -->
+<!-- Confirmation du rendez-vous -->
+
 <div class="text-center">
-    
+
     <div>
     	<h4>Résumé du rendez-vous</h4>
     	<p>{{formData.businessName}}</p>
     	<p>{{formData.zip}} {{formData.city}} ({{formData.canton}})</p>
     	<p>{{formData.street}}</p>
-    	<p>{{formData.user.fullname}}</p>
+    	<p>{{formData.user.name}}</p>
     	<p>{{formData.staff.name}}</p>
     	<p>{{formData.prestation.name}}</p>
     	<p>{{formData.prestation.prices.price}}</p>
@@ -15,6 +16,6 @@
     	<p>{{formData.date.endHour}}</p>
     </div>
 
-    <button type="submit" class="btn btn-success">Réserver</button>
-    <button type="submit" class="btn btn-danger">Annuler</button>
+    <button type="submit" class="btn btn-success" ng-click="bookRendezvous(formData)">Réserver</button>
+    <button type="submit" class="btn btn-danger" ng-click="cancelRendezvous()">Annuler</button>
 </div>
