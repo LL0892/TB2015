@@ -6,14 +6,19 @@
 		<!-- colonne gauche -->
 		<div class="col-sm-4">
 			
-			<img class="img-rounded" ng-src="{{business.imageBusinessUrl}}" style="max-height:200px" />
+			<img class="img-rounded hidden-xs" ng-src="{{business.imageBusinessUrl}}" style="max-height:200px" />
 		</div>
 		
 		<!-- colonne centrale -->
 		<div class="col-sm-4">
-			<h3>Adresse géographique</h3>
-			<hr class="divider">
-			<h4>{{business.name}}</h4>
+			<!-- title for destop/tablet -->
+			<h3 class="hidden-xs">Adresse géographique</h3>
+			<hr class="divider hidden-xs">
+			<h4 class="hidden-xs">{{business.name}}</h4>
+			<!-- title for mobile -->
+			<h3 class="hidden-sm hidden-md hidden-lg">{{business.name}}</h3>
+			<hr class="divider hidden-sm hidden-md hidden-lg">
+
 			<p><i class="fa icon-infos fa-building"></i> {{business.zip}} {{business.city}} ({{business.canton}})</p>
 			<p><i class="fa icon-infos fa-road"></i> {{business.street}}</p>
 		</div>
@@ -30,14 +35,14 @@
 	</div>
 	<div class= "row">
 		<!-- colonne horaires pleine largeur -->
-		<div class="col-sm-7 col-schedule">
+		<div class="col-sm-7 col-sm-offset-4 col-schedule">
 			<h3>Horaires</h3>
 			<hr class="divider">
 			<table class="table">
 				<thead>
 					<tr>
 						<th>Jour</th>
-						<th>Description</th>
+						<th class="hidden-xs">Description</th>
 						<th>Débute</th>
 						<th>Termine</th>
 					</tr>
@@ -45,7 +50,7 @@
 					<tbody>
 					<tr ng-repeat="schedule in business.schedules">
 						<td>{{schedule.dayName}}</td>
-						<td>{{schedule.description}}</td>
+						<td class="hidden-xs">{{schedule.description}}</td>
 						<td>{{schedule.startHour}}</td>
 						<td>{{schedule.endHour}}</td>
 					</tr>
