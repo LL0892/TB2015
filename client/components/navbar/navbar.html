@@ -14,8 +14,51 @@
         <li ng-repeat="item in menu" ng-class="{active: isActive(item.link)}">
             <a ng-href="{{item.link}}">{{item.title}}</a>
         </li>
-        <li ng-show="isStaff()" ng-class="{active: isActive('/business')}"><a href="/business">Gestion du salon</a></li>
-        <li ng-class="{active: isActive('/rendezvous')}"><a href="/business/rendezvous/step1">Rendez-vous</a></li>
+
+        <!-- staff menu -->
+        <li class="dropdown">
+          <a href="#" ng-show="isStaff()" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Gestion du salon<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            
+            <li><a href="/business/show">Voir les infos du salon</a></li>
+            <li><a href="/business/rendezvous">Voir les rendez-vous</a></li>
+            <li><a href="/business/prestations">Voir les prestations</a></li>
+            <li><a href="/business/schedules">Voir les tranches horaires</a></li>
+            <li><a href="/business/staffs">Voir le personnel du salon</a></li>
+            <li role="separator" class="divider"></li>
+
+            <li>
+              <a href="/business/rendezvous/step1">
+                <i class="glyphicon glyphicon glyphicon-book" aria-hidden="true"></i>
+                Prendre un rendez-vous
+              </a>
+            </li>
+            <li>
+              <a href="/business/update">
+                <i class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></i>
+                Modifier les infos du salon
+              </a>
+            </li>
+            <li>
+              <a href="/business/newPrestation">
+                <i class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></i>
+                Ajouter une prestation
+              </a>
+            </li>
+            <li>
+              <a href="/business/newSchedule">
+                <i class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></i>
+                Ajouter une tranche horaire
+              </a>
+            </li>
+            <li>
+              <a href="/business/newStaff">
+                <i class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></i>
+                Ajouter un membre au personnel
+              </a>
+            </li>
+          </ul>
+        </li>
       </ul>
 
       <ul class="nav navbar-nav navbar-right">
