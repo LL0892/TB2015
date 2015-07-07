@@ -17,7 +17,7 @@
 
         <!-- staff menu -->
         <li class="dropdown">
-          <a href="#" ng-show="isStaff()" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Gestion du salon<span class="caret"></span></a>
+          <a href="#" ng-hide="isStaffCreated()" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Gestion du salon<span class="caret"></span></a>
           <ul class="dropdown-menu">
             
             <li><a href="/business/show">Voir les infos du salon</a></li>
@@ -64,9 +64,9 @@
       <ul class="nav navbar-nav navbar-right">
         <li ng-hide="isLoggedIn()" ng-class="{active: isActive('/signup')}"><a href="/signup">Créer un compte</a></li>
         <li ng-hide="isLoggedIn()" ng-class="{active: isActive('/login')}"><a href="/login">Se connecter</a></li>
-        <li ng-show="canCreateBusiness()" ng-class="{active: isActive('/createBusiness')}"><a href="/createBusiness">Créer salon</a></li>
-        <li ng-show="canCreateStaff()" ng-class="{active: isActive('/createStaff')}"><a href="/createStaff">Créer staff</a></li>
-        <li ng-show="isLoggedIn()" ng-class="{active: isActive('/mesRendezvous')}"><a href="/mesRendezvous">Mes rendez-vous</a></li>
+        <li ng-show="isBusinessCreated()" ng-class="{active: isActive('/createBusiness')}"><a href="/createBusiness">Créer salon</a></li>
+        <li ng-show="isStaffCreated()" ng-class="{active: isActive('/createStaff')}"><a href="/createStaff">Créer staff</a></li>
+        <li ng-show="isLoggedIn()" ng-class="{active: isActive('/myRendezvous')}"><a href="/myRendezvous">Mes rendez-vous</a></li>
         <li ng-show="isLoggedIn()" ng-class="{active: isActive('/settings')}"><a href="/settings"><span class="glyphicon glyphicon-cog"></span></a></li>
         <li ng-show="isLoggedIn()" ng-class="{active: isActive('/logout')}"><a href="" ng-click="logout()">Se déconnecter</a></li>
       </ul>

@@ -15,25 +15,6 @@ angular.module('tbApp')
     $scope.isStaffCreated = Auth.isStaffCreated;
     $scope.getCurrentUser = Auth.getCurrentUser;
 
-
-
-    $scope.canCreateBusiness = function(){
-      if ($scope.isManager === true && $scope.isBusinessCreated === false) {
-        return true;
-      } else{
-        return false;
-      }
-    };
-
-    $scope.canCreateStaff = function(){
-      if ($scope.isStaff === true && $scope.isStaffCreated === false) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-
-
     $scope.logout = function() {
       Auth.logout();
       $location.path('/');

@@ -230,31 +230,57 @@ angular.module('tbApp')
 
       /**
       * Check if a user already created a business
-      *
       */
       isBusinessCreated: function(callback){
-        var res = currentUser.businessId;
-
-        if (res === undefined) {
-          return res = true;
-        }else{
-          return res = false;
+        
+        if (currentUser.roles === undefined) {
+          return false;
         }
+
+        var res = currentUser.roles.indexOf('manager');
+        if (res === -1) {
+          return false;
+        }
+
+        if (res) {
+        var business = currentUser.staffId;
+          if (business === undefined) {
+            return true;
+          }else{
+            return false;
+          }
+        } else {
+          return false;
+        }
+
       },
 
 
       /**
       * Check if a user already created a business
-      *
       */
       isStaffCreated: function(callback){
-        var res = currentUser.staffId;
 
-        if (res === undefined) {
-          return res = true;
-        }else{
-          return res = false;
+        if (currentUser.roles === undefined) {
+          return false;
         }
+
+        var res = currentUser.roles.indexOf('staff');
+        if (res === -1) {
+          return false;
+        }
+
+        if (res) {
+        var staffProfile = currentUser.staffId;
+          if (staffProfile === undefined) {
+            return true;
+          }else{
+            return false;
+          }
+        } else {
+          return false;
+        }
+
       },
 
       /**
