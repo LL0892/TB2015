@@ -64,7 +64,8 @@ NotificationSchema
       'emitterId': this.sentBy.emitterId,
       'receptorName': this.sentTo.receptorName,
       'receptorId': this.sentTo.receptorId,
-      'status': this.status
+      'status': this.status,
+      'createdOn': this.createdOn
     };
   });
 

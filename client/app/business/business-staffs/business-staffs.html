@@ -1,3 +1,43 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
-voir la liste du personnel
+<div class="col-sm-6 col-sm-offset-3">
+			<h3>Liste du personnel</h3>
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Nom</th>
+						<th>Email</th>
+						<th>Mobile</th>
+						<th>Téléphone</th>
+						<th>Photo</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="staff in staffs">
+						<td>{{staff.name}}</td>
+						<td>{{staff.staffContact.email}}</td>
+						<td>{{staff.staffContact.mobile}}</td>
+						<td>{{staff.staffContact.phone}}</td>
+						<td><img ng-scr="{{staff.photoStaffURL}}"></img></td>
+					</tr>
+				</tbody>
+			</table>
+			<hr>
+			<h3>Notifications envoyées</h3>
+			<table class="table">
+				<tr>
+					<th>Destinataire</th>
+					<th>Emetteur</th>
+					<th>Envoyé le</th>
+					<th>Status</th>
+					<th>Actions</th>
+				</tr>
+				<tr ng-repeat="notif in notifs">
+					<td>{{notif.receptorName}}</td>
+					<td>{{notif.emitterName}}</td>
+					<td>{{notif.createdOn}}</td>
+					<td>{{notif.status}}</td>
+					<td><button class="btn btn-danger" ng-click="deleteNotification(notif._id, $index)"><i class="fa icon-tab fa-trash-o"></i></button></td>
+				</tr>
+			</table>
+</div>

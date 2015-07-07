@@ -230,7 +230,7 @@ angular.module('tbApp')
 				});
 			},
 			// Notification functions
-			getNotification: function(businessId, callback, errorCallback){
+			getNotifications: function(businessId, callback, errorCallback){
 				$http({
 					method: 'GET',
 					url: Urls.api + 'businesses/' + businessId + '/notifications'

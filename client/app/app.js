@@ -13,7 +13,8 @@ angular.module('tbApp', [
 ])
   .constant('Urls', {
     client: '/assets/images/',
-    api: 'http://localhost:9000/api/'
+    api: 'http://localhost:9000/api/',
+    img: 'http://localhost:9000/server/img/'
   })
 
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
