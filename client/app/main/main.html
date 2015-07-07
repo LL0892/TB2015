@@ -26,9 +26,9 @@
             <h4>Réservez ou visualisez les infos de ce salon !</h4>
           </div>
           <div class="caption" id="caption-half-up">
-            <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-info"> Infos</i></a>
-            <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-book"> Rendez-vous</i></a>
-            <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-star"> Favori</i></a>
+            <a ng-href="/business/{{business._id}}" class="btn btn-primary btn-sm"><i class="fa fa-info"> Infos</i></a>
+            <a ng-href="/business/{{business._id}}/rendezvous" class="btn btn-primary btn-sm"><i class="fa fa-book"> Rendez-vous</i></a>
+            <a ng-click="fav(business._id)" class="btn btn-primary btn-sm"><i class="fa fa-star"> Favori</i></a>
           </div>
         </div>
         <h4 class="text-center">{{business.name}}</h4>

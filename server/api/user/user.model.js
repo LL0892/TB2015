@@ -44,10 +44,10 @@ var UserSchema = new Schema({
     lastRdv: { type: Date }
   },*/
 
-/*  preferences: {
+  preferences: {
     homeDisplay: { type: String, enum: ['list', 'fav', 'dual'], default: 'list' },
     favorite : { type: Schema.Types.ObjectId, ref: 'business' }
-  }*/
+  }
 });
 
 /**

@@ -249,6 +249,7 @@ exports.changeEmail = function(req, res, next) {
 
 /**
 * Update my home display preferences
+* PUT     /users/:id/prefDisplay   ->  preferenceDisplay
 * UNUSED IN UI
 */
 exports.preferenceDisplay = function(req, res, next) {
@@ -268,8 +269,8 @@ exports.preferenceDisplay = function(req, res, next) {
 };
 
 /**
-* Update my home display preferences
-* UNUSED IN UI
+* Update my home favorite business preferences
+* PUT     /users/:id/prefFavorite  ->  preferenceFavorite
 */
 exports.preferenceFavorite = function(req, res, next){
   var userId = req.user._id;
