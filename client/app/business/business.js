@@ -3,11 +3,6 @@
 angular.module('tbApp')
   .config(function ($stateProvider) {
     $stateProvider
-      .state('business', {
-        url: '/business',
-        templateUrl: 'app/business/business.html',
-        controller: 'BusinessCtrl'
-      })
       .state('business-newPrestation', {
         url: '/business/newPrestation',
         templateUrl: 'app/business/business-newPrestation/business-newPrestation.html',

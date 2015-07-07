@@ -18,5 +18,23 @@ angular.module('tbApp')
         templateUrl: 'app/account/settings/settings.html',
         controller: 'SettingsCtrl',
         authenticate: true
+      })
+      .state('notifs', {
+        url: '/notifs',
+        templateUrl: 'app/account/notifs/notifs.html',
+        controller: 'NotifsCtrl',
+        authenticate: true
+      })
+      .state('createBusiness', {
+        url: '/createBusiness',
+        templateUrl: 'app/account/business/business.html',
+        controller: 'BusinessCtrl',
+        authenticate: true
+      })
+      .state('createStaff', {
+        url: '/createStaff',
+        templateUrl: 'app/account/staff/staff.html',
+        controller: 'NotifsCtrl',
+        authenticate: true
       });
   });
