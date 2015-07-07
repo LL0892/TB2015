@@ -1131,8 +1131,8 @@ exports.createNotification = function(req, res, next){
  			});
 
  			var newNotification = new Notification({
-			title: req.body.title,
-			text: req.body.text,
+			title: 'Ajout du rôle staff',
+			text: 'Acceptes ou refuses cette demande.',
 			sentBy : {
 				emitterId : staffId,
 				emitterName: staffName
@@ -1152,7 +1152,8 @@ exports.createNotification = function(req, res, next){
 	 	newNotification.save(function (err, notificationSaved){
 	 		if(err) return res.send(500, err);
 	 		return res.status(201).json({
-	 			message: 'La notification fut envoyée avec succès pour le salon : '+ notificationSaved.business.businessName
+	 			message: 'La notification fut envoyée avec succès pour le salon : '+ notificationSaved.business.businessName,
+	 			notification: notificationSaved
 	 		}).end();
 	 	});
  		});

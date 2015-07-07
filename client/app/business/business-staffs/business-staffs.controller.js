@@ -1,7 +1,9 @@
 'use strict';
 
 angular.module('tbApp')
-  .controller('BusinessStaffsCtrl', function ($scope, $log, Auth, Business, Urls) {
+  .controller('BusinessStaffsCtrl', function ($scope, $log, $http, Auth, Business, Urls) {
+
+  	$scope.edit = false;
 
   	// parse un tableau de notifications
   	function parseResponse(array){
@@ -70,15 +72,38 @@ angular.module('tbApp')
     }).then(getStaffsandNotifs);
 
 
+    // Obtenir la liste des utilisateurs
+	$http.get('/api/users').then(function(datas){
+		$scope.users = datas.data;
+		return $scope.users;
+	});
+
+
     $scope.deleteNotification = function(notifId, index){
-    	$log.debug(notifId);
-    	// Supprimer de l'interface
-    	$scope.notifs.splice(index, 1);
-    	// Supprimer de la db
     	Business.deleteNotification($scope.businessId, notifId,
     		function(data){
+    			$scope.notifs.splice(index, 1);
     			return data;
     		});
+    };
+
+
+    $scope.createNotification = function(userId){
+    	console.log(userId);
+    	Business.createNotification(
+    	$scope.businessId,
+    	{receptorId: userId}, 
+    	function(data){
+    		console.log(data.notification);
+    		var notif = $scope.notifs;
+    		$scope.notifs.push(notif);
+    		console.log($scope.notifs);
+    	}, 
+    	function(error){
+
+    	});
+
+    	$scope.$apply;
     };
 
   });

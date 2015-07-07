@@ -1,30 +1,37 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
-<div class="col-sm-6 col-sm-offset-3">
-			<h3>Liste du personnel</h3>
-			<table class="table">
-				<thead>
-					<tr>
-						<th>Nom</th>
-						<th>Email</th>
-						<th>Mobile</th>
-						<th>Téléphone</th>
-						<th>Photo</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr ng-repeat="staff in staffs">
-						<td>{{staff.name}}</td>
-						<td>{{staff.staffContact.email}}</td>
-						<td>{{staff.staffContact.mobile}}</td>
-						<td>{{staff.staffContact.phone}}</td>
-						<td><img ng-scr="{{staff.photoStaffURL}}"></img></td>
-					</tr>
-				</tbody>
-			</table>
-			<hr>
-			<h3>Notifications envoyées</h3>
-			<table class="table">
+<div class="row">
+	<div class="col-sm-6 col-sm-offset-3">
+		<h3>Liste du personnel</h3>
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Nom</th>
+					<th>Email</th>
+					<th>Mobile</th>
+					<th>Téléphone</th>
+					<th>Photo</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="staff in staffs">
+					<td>{{staff.name}}</td>
+					<td>{{staff.staffContact.email}}</td>
+					<td>{{staff.staffContact.mobile}}</td>
+					<td>{{staff.staffContact.phone}}</td>
+					<td><img ng-scr="{{staff.photoStaffURL}}"></img></td>
+				</tr>
+			</tbody>
+		</table>
+		<hr>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-sm-6 col-sm-offset-3">
+		<h3>Notifications envoyées</h3>
+		<table class="table">
+			<thead>
 				<tr>
 					<th>Destinataire</th>
 					<th>Emetteur</th>
@@ -32,6 +39,8 @@
 					<th>Status</th>
 					<th>Actions</th>
 				</tr>
+			</thead>
+			<tbody>
 				<tr ng-repeat="notif in notifs">
 					<td>{{notif.receptorName}}</td>
 					<td>{{notif.emitterName}}</td>
@@ -39,5 +48,28 @@
 					<td>{{notif.status}}</td>
 					<td><button class="btn btn-danger" ng-click="deleteNotification(notif._id, $index)"><i class="fa icon-tab fa-trash-o"></i></button></td>
 				</tr>
-			</table>
+			</tbody>
+		</table>
+		<hr>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-sm-6 col-sm-offset-3">
+		<h3>Ajout d'un staff</h3>
+		<button ng-click="edit = true" ng-show="edit === false" class="btn btn-success">Envoyer une notif</button>
+		
+		<div ng-show="edit === true">
+			<form name="selectUser">
+			    <div class="form-group col-xs-10 col-sm-8 col-md-6 col-lg-4 
+			                col-xs-offset-1 col-sm-offset-2 col-md-offset-3 col-lg-offset-4">
+			        <h4>Sélectionner un utilisateur existant</h4>
+			        <input type="text" ng-model="form" typeahead-min-length="2" typeahead="user as user.name for user in users | filter:$viewValue | limitTo:8" class="form-control" required>
+			        <span ng-show="errorUser">Veillez sélectionner un client existant.</span>
+			        <button ng-click="edit = false; createNotification(form._id)" ng-show="edit === true" class="btn btn-success">Envoyer</button>
+			    </div>
+			</form>
+		</div>
+		<hr>
+	</div>
 </div>

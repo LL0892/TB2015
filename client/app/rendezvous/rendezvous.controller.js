@@ -56,16 +56,16 @@ angular.module('tbApp')
 
     // Stocker les infos du salon
     $scope.currentUser = Auth.getCurrentUser(function(user){
-		$http.get('/api/businesses/'+user.businessId).then(function(data){
-			$scope.formData.businessId = data.data._id;
-			$scope.formData.businessName = data.data.name;
-			$scope.formData.city = data.data.city;
-			$scope.formData.canton = data.data.canton;
-			$scope.formData.street = data.data.street;
-			$scope.formData.zip = data.data.zip;
-			$scope.formData.staffs = data.data.schedules;
-			return $scope.formData;
-		});
+  		$http.get('/api/businesses/'+user.businessId).then(function(data){
+  			$scope.formData.businessId = data.data._id;
+  			$scope.formData.businessName = data.data.name;
+  			$scope.formData.city = data.data.city;
+  			$scope.formData.canton = data.data.canton;
+  			$scope.formData.street = data.data.street;
+  			$scope.formData.zip = data.data.zip;
+  			$scope.formData.staffs = data.data.schedules;
+  			return $scope.formData;
+  		});
     });
 
     // Obtenir la liste des utilisateurs
