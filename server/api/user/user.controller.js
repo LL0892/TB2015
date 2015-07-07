@@ -151,8 +151,6 @@ exports.create = function (req, res, next) {
 * Create a new user with manager roles
 */
 exports.createManager = function (req, res, next){
-  var token = '';
-
   var newUser = new User({
     firstName: req.body.firstName,
     lastName: req.body.lastName,
@@ -173,11 +171,9 @@ exports.createManager = function (req, res, next){
     provider: 'local',
     roles: ['user', 'staff', 'manager']
   });
-  //newUser.provider = 'local';
-  //newUser.roles = ['user', 'staff', 'manager'];
   newUser.save(function(err, user) {
     if (err) return validationError(res, err);
-    token = jwt.sign({_id: user._id }, config.secrets.session, { expiresInMinutes: 60*15 });
+    var token = jwt.sign({_id: user._id }, config.secrets.session, { expiresInMinutes: 60*15 });
     return res.status(201).json({ token: token }).end();
   });
 };

@@ -18,10 +18,10 @@ angular.module('tbApp')
           id:'me'
         }
       },
-      search:{
+      createManager:{
         method: 'POST',
         params: {
-          id: 'search'
+          id: 'manager'
         }
       }
 	  });

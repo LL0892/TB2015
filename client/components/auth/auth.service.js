@@ -73,6 +73,26 @@ angular.module('tbApp')
       },
 
       /**
+       * Create a new user manager
+       *
+       * @param  {Object}   user     - user info
+       * @param  {Function} callback - optional, function(error, user)
+       * @return {Promise}
+       */
+      createManager: function(user, callback) {
+        return User.createManager(user,
+          function(data) {
+            $cookieStore.put('token', data.token);
+            currentUser = User.get();
+            return safeCb(callback)(null, user);
+          },
+          function(err) {
+            this.logout();
+            return safeCb(callback)(err);
+          }.bind(this)).$promise;
+      },
+
+      /**
        * Change password
        *
        * @param  {String}   oldPassword

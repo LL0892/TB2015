@@ -1,7 +1,7 @@
 'use strict';
 
 var App = angular.module('tbApp');
-  App.controller('SignupCtrl', function ($scope, Auth, $location, $window, $http, Urls) {
+  App.controller('SignupCtrl', function ($scope, Auth, $state, $window, $http, Urls) {
     $scope.user = {};
     $scope.errors = {};
 
@@ -20,34 +20,69 @@ var App = angular.module('tbApp');
     $scope.register = function(form) {
       $scope.submitted = true;
       console.log($scope.user);
-      
-/*      if(form.$valid) {
-        Auth.createUser({
-          firstName: $scope.user.firstName,
-          lastName: $scope.user.lastName,
-          email: $scope.user.email,
-          password: $scope.user.password,
-          dateOfBirth: form.dateOfBirth.$$lastCommittedViewValue,
-          gender: form.gender.$$lastCommittedViewValue,
-          city: $scope.user.loc.Commune,
-          zip: $scope.user.loc.NPA,
-          canton: $scope.user.loc.Canton
-        })
-        .then( function() {
-          // Account created, redirect to home
-          $location.path('/');
-        })
-        .catch( function(err) {
-          err = err.data;
-          $scope.errors = {};
+      if(form.$valid) {
+        console.log(form.$valid);
 
-          //Update validity of form fields that match the mongoose errors
-          angular.forEach(err.errors, function(error, field) {
-            form[field].$setValidity('mongoose', false);
-            $scope.errors[field] = error.message;
+        if ($scope.user.manager) {
+          // Créer un compte manager
+          Auth.createManager({
+            firstName: $scope.user.firstName,
+            lastName: $scope.user.lastName,
+            email: $scope.user.email,
+            password: $scope.user.password,
+            dateOfBirth: $scope.user.dateOfBirth,
+            gender: $scope.user.gender,
+            city: $scope.user.loc.Commune,
+            zip: $scope.user.loc.NPA,
+            canton: $scope.user.loc.Canton
+          })
+          .then( function() {
+            // Account created, redirect to home
+            $state.go('main');
+          })
+          .catch( function(err) {
+            err = err.data;
+            $scope.errors = {};
+
+            //Update validity of form fields that match the mongoose errors
+            angular.forEach(err.errors, function(error, field) {
+              form[field].$setValidity('mongoose', false);
+              $scope.errors[field] = error.message;
+            });
           });
-        });
-      }*/
+
+        } else{
+          // Créer un compte utilisateur
+          Auth.createUser({
+            firstName: $scope.user.firstName,
+            lastName: $scope.user.lastName,
+            email: $scope.user.email,
+            password: $scope.user.password,
+            dateOfBirth: $scope.user.dateOfBirth,
+            gender: $scope.user.gender,
+            city: $scope.user.loc.Commune,
+            zip: $scope.user.loc.NPA,
+            canton: $scope.user.loc.Canton
+          })
+          .then( function() {
+            // Account created, redirect to home
+            $state.go('main');
+          })
+          .catch( function(err) {
+            err = err.data;
+            $scope.errors = {};
+
+            //Update validity of form fields that match the mongoose errors
+            angular.forEach(err.errors, function(error, field) {
+              form[field].$setValidity('mongoose', false);
+              $scope.errors[field] = error.message;
+            });
+          });
+
+        }
+
+
+      }
     };
 
     $scope.loginOauth = function(provider) {
