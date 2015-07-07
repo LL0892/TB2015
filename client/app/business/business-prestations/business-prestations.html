@@ -64,11 +64,12 @@
 
 						<td class="hidden-xs">
 							<!-- bouton update -->
-							<a href="#" class="btn btn-primary label" ng-click="editPrice = true" ng-show="editPrice === false"><i class="fa icon-tab fa-pencil-square-o"></i></a>
 							<a href="#" class="btn btn-success label" ng-click="editPrice = false" ng-show="editPrice === true"><i class="fa icon-tab fa-check"></i></a>
+							<div class="btn btn-danger label" ng-click="editPrice = false" ng-show="editPrice === true"><i class="fa icon-tab fa-close"></i></div>
 
-							<!-- bouton delete -->
-							<div class="btn btn-danger label" ng-click="deletePrice(prestation._id, price._id)"><i class="fa icon-tab fa-trash-o"></i></div>
+							<!-- bouton visu -->
+							<a href="#" class="btn btn-primary label" ng-click="editPrice = true" ng-show="editPrice === false"><i class="fa icon-tab fa-pencil-square-o"></i></a>
+							<div class="btn btn-danger label" ng-click="deletePrice(prestation._id, price._id)" ng-show="editPrice === false"><i class="fa icon-tab fa-trash-o"></i></div>
 						</td>
 					</tr>
 
