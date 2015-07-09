@@ -34,7 +34,7 @@ var UserSchema = new Schema({
   street: { type : String, default: '' },
   canton: { type : String, default: '' },
   zip: { type : Number, default: '' },
-  imageProfileURL: { type : String, default : 'userProfile.png' },
+  imageProfileURL: { type : String, default : 'userPlaceholder.png' },
   
 /*  stats: {
     nbRdvDone: { type: Number, default: '0' },
