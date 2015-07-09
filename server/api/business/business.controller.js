@@ -122,7 +122,7 @@ var Business = require('./business.model'),
 			      email: req.body.email,
 			      phone: req.body.phone,
 			      mobile: req.body.mobile,
-			      siteURL: req.body.site,
+			      siteURL: req.body.siteURL,
 			      facebookURL: req.body.facebookURL
 			    },
 			    imageBusinessURL: req.body.imageBusinessURL
@@ -186,6 +186,16 @@ var Business = require('./business.model'),
 		  		}
 		  	);
 			
+			User.findOne({'_id': req.user._id}, function (err, userFound){
+				if (!userFound) return res.status(404).end();
+				if(err) return res.send(500, err);
+
+				userFound.businessId = newBusiness._id;
+				userFound.save(function (err, userSaved){
+					
+				});
+			});
+
 			// Save the business
 		  	newBusiness.save(function (err, businessSaved){
 		    	if(err) return res.send(500, err);

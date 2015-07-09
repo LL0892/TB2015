@@ -21,6 +21,9 @@ var mongoose = require('mongoose');
 */
 exports.create = function (req, res, next) {
 	var userId = req.user._id;
+	var businessId = req.user.businessId;
+	console.log(userId);
+	console.log(businessId);
 
 	User.findById(userId, function(err, userFound){
 		if(err) return res.send(500, err);
@@ -28,7 +31,7 @@ exports.create = function (req, res, next) {
 
 		// If no staff profile already created
 		if(userFound.staffId === undefined){
-			
+
 			var newStaff = new Staff({
 				name: req.body.name,
 				staffContact: {
@@ -37,21 +40,22 @@ exports.create = function (req, res, next) {
 					email: req.body.email
 				},
 				photoStaffURL: req.body.photoStaffURL,
-				businessId: req.body.businessId,
+				businessId: businessId
 			});
 
 			// Check business is existant
-			Business.findById(req.body.businessId, function (err, businessFound){
+			Business.findOne({'_id': businessId}, function (err, businessFound){
+				
 				if(err) return res.send(500, err);
 				if (!businessFound) { 
 					return res.status(404).json({
 						message: 'Le salon de coiffure demandé est introuvable.'
 					}).end(); 
 				} else {
+					
 					businessFound.staffs.push({
 						staffName : newStaff.name,
-						staffId : newStaff._id,
-						staffVisibility : newStaff.isActive
+						staffId : newStaff._id
 					});
 
 					businessFound.save(function (err, businessUpdated){
@@ -66,7 +70,7 @@ exports.create = function (req, res, next) {
 				
 				// Update User
 				userFound.staffId = staffSaved._id;
-				userFound.businessId = req.body.businessId;
+				userFound.businessId = businessId;
 
 				userFound.save(function (err, userUpdated){
 					if(err) return res.send(500, err);

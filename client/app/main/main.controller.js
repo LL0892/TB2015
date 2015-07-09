@@ -5,6 +5,8 @@ angular.module('tbApp')
     $scope.businesses = [];
     $scope.currentUser = Auth.getCurrentUser();
 
+    $scope.isLoggedIn = Auth.isLoggedIn();
+
     $http.get('/api/businesses').success(function(businesses){
       $scope.businesses = businesses;
 

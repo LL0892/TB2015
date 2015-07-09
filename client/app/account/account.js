@@ -34,7 +34,7 @@ angular.module('tbApp')
       .state('createStaff', {
         url: '/createStaff',
         templateUrl: 'app/account/staff/staff.html',
-        controller: 'NotifsCtrl',
+        controller: 'StaffCtrl',
         authenticate: true
       });
   });

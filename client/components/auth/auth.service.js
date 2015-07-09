@@ -243,7 +243,7 @@ angular.module('tbApp')
         }
 
         if (res) {
-        var business = currentUser.staffId;
+        var business = currentUser.businessId;
           if (business === undefined) {
             return true;
           }else{

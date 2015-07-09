@@ -14,6 +14,17 @@ angular.module('tbApp')
 					errorCallback(data);
 				});
 			},
+			createBusiness : function(data, callback, errorCallback){
+				$http({
+					method: 'POST',
+					url: Urls.api + 'businesses/',
+					data: data
+				}).success(function (data){
+					callback(data);
+				}).error(function (data){
+					errorCallback(data);
+				});
+			},
 			showBusiness : function(businessId, callback, errorCallback){
 				$http({
 					method: 'GET',
