@@ -10,11 +10,7 @@ angular.module('tbApp')
     $http.get('/api/businesses').success(function(businesses){
       $scope.businesses = businesses;
 
-      //$log.debug(Urls.client);
-      for (var i = $scope.businesses.length - 1; i >= 0; i--) {
-        $scope.businesses[i].imageBusinessUrl = Urls.client + $scope.businesses[i].imageBusinessUrl;
-        console.log($scope.business[i].imageBusinessUrl);
-      };
+      $log.debug($scope.businesses);
     });
 
     // Selection par defaut sur l'animation de click sur un salon

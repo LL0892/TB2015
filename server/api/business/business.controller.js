@@ -78,7 +78,7 @@ var Business = require('./business.model'),
  		if(businessesFound.length <= 0) return res.status(404).json({ message : 'Il n\'y a pas de salons à afficher.' });
  		
  		// Loop through the businesses - apply profile virtual for each businesses
- 		var i = 0;
+/* 		var i = 0;
  		do{
  			
  			// Loop through the schedules - apply profile virtual for each schedules
@@ -91,9 +91,9 @@ var Business = require('./business.model'),
  			businessesFound = businessesFound[i].profile
 
  			i++;
- 		}while(i <= businessesFound.length-1)
+ 		}while(i <= businessesFound.length-1)*/
 
- 		res.status(200).json({ businesses: businessesFound }).end();
+ 		res.status(200).json(businessesFound).end();
  	});
  };
 
@@ -224,14 +224,15 @@ var Business = require('./business.model'),
  		if(err) return res.send(500, err);
 
 		// Loop through the schedules - apply profile virtual for each schedules
-		var i = 0;
+/*		var i = 0;
 		do{
 			businessFound.schedules[i] = businessFound.schedules[i].profile
 			i++;
-		}while(i <= businessFound.schedules.length-1)
+		}while(i <= businessFound.schedules.length-1)*/
 
  		//res.status(200).json({ salon : businessFound.profile }).end();
- 		res.status(200).json(businessFound.profile).end();
+ 		//res.status(200).json(businessFound.profile).end();
+ 		res.status(200).json(businessFound).end();
  	});
  };
 

@@ -31,7 +31,7 @@ var ScheduleSchema = new Schema({
  */
 
 // Public schedule information
-ScheduleSchema
+/*ScheduleSchema
   .virtual('profile')
   .get(function() {
     return {
@@ -43,7 +43,7 @@ ScheduleSchema
       'description': this.description,
       'staffs': this.staffs
     };
-  });
+  });*/
 
 /*
 * Schema Business
@@ -86,15 +86,15 @@ var BusinessSchema = new Schema({
   } */
 });
 
-BusinessSchema.set('toJSON', { getters: true });
-BusinessSchema.set('toObject', { getters: true });
+//BusinessSchema.set('toJSON', { getters: true });
+//BusinessSchema.set('toObject', { getters: true });
 
 /**
  * Virtuals for business
  */
 
 // Public business information
-BusinessSchema
+/*BusinessSchema
   .virtual('profile')
   .get(function() {
     return {
@@ -112,7 +112,7 @@ BusinessSchema
       'imageBusinessUrl': this.imageBusinessURL,
       'schedules': this.schedules
     };
-  });
+  });*/
 
 /*
 * Pre-save hook
