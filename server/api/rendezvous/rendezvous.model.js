@@ -36,13 +36,13 @@ var RendezvousSchema = new Schema({
 		prestationRdvName: { type: String, required: true }
 	},
 	
-	status: { type: String, default: 'reservé', enum: ['reservé', 'annulé', 'terminé', 'déplacé', 'manqué'] },
+	//status: { type: String, default: 'reservé', enum: ['reservé', 'annulé', 'terminé', 'déplacé', 'manqué'] },
 
-	recurance: {
+	/*recurance: {
 		loopStatus: { type: Boolean, default: false },
 		loopFrequency: { type: Number, default: '0' },
 		loopDuration: { type: String, default: '-', enum: ['-', 'd', 'w', 'm'] }
-	}
+	}*/
 });
 
 /*

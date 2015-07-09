@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('tbApp')
-  .factory('Staff', function ($resource, $http, Urls) {
+  .service('Staff', function ($resource, $http, Urls) {
   	return {
 		createStaff : function(data, callback, errorCallback){
 			$http({
@@ -15,6 +15,16 @@ angular.module('tbApp')
 				errorCallback = data;
 				return errorCallback;
 			});
+		},
+		getRendezvous : function(staffId, callback, errorCallback){
+			$http({
+				method: 'GET',
+				url: Urls.api + 'staffs/' + staffId + '/rendezvous'
+			}).success(function (data){
+				callback(data);
+			}).error(function (data){
+				errorCallback(data);
+			})
 		}
   	}
 });

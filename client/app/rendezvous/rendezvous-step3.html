@@ -6,7 +6,7 @@
 	<div id="staffs" class="col-sm-2 col-sm-offset-3" >
 		<h4>Sélectionner un staff</h4>
 		<div ng-repeat="staff in staffs">
-			<span ng-click="selected($index, staff);" ng-class="{'selected-staff': $index == selectedIndex}">{{staff.name}}</span>
+			<span ng-click="selected($index, staff)" class="cursor" ng-class="{'selected-staff': $index == selectedIndex}">{{staff.name}}</span>
 		</div>
 
 	<!-- Selection date -->
@@ -18,7 +18,7 @@
 
 <!-- calendrier -->
 <div class="row">
-	<div ui-calendar ng-model="eventSources"></div>
+	<div ui-calendar="uiConfig.calendar" class="span8 calendar" ng-model="eventSources"></div> 
 </div>
 
 <div class="form-group row">
