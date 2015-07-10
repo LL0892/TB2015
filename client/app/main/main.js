@@ -7,5 +7,10 @@ angular.module('tbApp')
         url: '/',
         templateUrl: 'app/main/main.html',
         controller: 'MainCtrl'
+      })
+      .state('businessProfile', {
+      	url: '/business/:id',
+      	templateUrl: 'app/business/business-show/business-show.html',
+      	controller: 'BusinessProfileCtrl'
       });
   });

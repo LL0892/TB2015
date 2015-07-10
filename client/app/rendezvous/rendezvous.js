@@ -28,7 +28,7 @@ angular.module('tbApp')
        // user rendezvous
       .state('rendezvousUser', {
         url: '/business/:id/rendezvous',
-        templateUrl: 'app/rendezvous/rendezvous.html',
+        templateUrl: 'app/rendezvous/rendezvous-user.html',
         controller: 'RendezvousUserCtrl'
       })
       .state('rendezvousUser.step1', {

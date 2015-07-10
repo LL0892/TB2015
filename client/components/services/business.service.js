@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('tbApp')
-	.factory('Business', ['$http', 'Urls', function ($http, Urls){
+	.service('Business', ['$http', 'Urls', function ($http, Urls){
 		return {
 			// business functions
 			getBusinesses : function(callback, errorCallback){
