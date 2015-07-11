@@ -128,13 +128,13 @@
 
         <div class="row">
           <div class="col-sm-4 col-sm-offset-2"><label>Localité</label>
-            <input type="text" ng-model="user.loc" ng-bind="user.loc.Commune" typeahead-min-length="3" typehead-on-select(model) typeahead="geodata as geodata.Commune for geodata in geodatas | filter:$viewValue" class="form-control">
+            <input type="text" ng-model="user.loc" ng-bind="user.loc.Commune" typeahead-min-length="3" typeahead-editable="false" typehead-on-select(model) typeahead="geodata as geodata.Commune for geodata in geodatas | filter:$viewValue" class="form-control">
           </div>
           <div class="col-sm-2"><label>NPA</label>
-            <input type="text" ng-model="user.loc" ng-bind="user.loc.NPA" typeahead-min-length="2" typehead-on-select(model) typeahead="geodata as geodata.NPA for geodata in geodatas | filter:$viewValue | limitTo:8" class="form-control">
+            <input type="text" ng-model="user.loc" ng-bind="user.loc.NPA" typeahead-min-length="2" typeahead-editable="false" typehead-on-select(model) typeahead="geodata as geodata.NPA for geodata in geodatas | filter:$viewValue | limitTo:8" class="form-control">
           </div>
           <div class="col-sm-2"><label>Canton</label>
-            <input type="text" ng-model="user.loc" ng-bind="user.loc.Canton" typehead-on-select(model) typeahead="geodata as geodata.Canton for geodata in geodatas | filter:$viewValue | limitTo:8" class="form-control" disabled>
+            <input type="text" ng-model="user.loc" ng-bind="user.loc.Canton" typehead-on-select(model) typeahead-editable="false" typeahead="geodata as geodata.Canton for geodata in geodatas | filter:$viewValue | limitTo:8" class="form-control" disabled>
           </div>
         </div>
 

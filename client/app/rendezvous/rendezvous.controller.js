@@ -3,75 +3,90 @@
 angular.module('tbApp')
 .controller('RendezvousCtrl', function($scope, $timeout, $http, $state, $log, $compile, Auth, User, Business, Staff, localStorageService, uiCalendarConfig) {
 
-    $scope.formData = {};
-    $scope.isStaff = Auth.isStaff;
-    $scope.prestations = {};
-    $scope.is = false;
-    $scope.selectedIndex = -1;
-    $scope.eventSources = [];
-    $scope.events = [];
-    $scope.schedules = [];
-    $scope.minDate = Date.now();
+  $scope.isStaff = Auth.isStaff;
+  $scope.is = false;
+  $scope.selectedIndex = -1;
+  $scope.minDate = Date.now();
 
-    // Si l'utilisateur reload la page
-    if (!getItem('rendezvous')) {
-    	$state.go('rendezvous.step1');
-    } 
-    else {
-    	// si l'étape 1 n'est pas finie
-    	if (!getItem('step1')) {
-    		$state.go('rendezvous.step1');
-    	} 
-    	else {
-    		$scope.prestations = getItem('step1');
-    		$scope.formData = getItem('rendezvous');
-    		$scope.$apply;
+  // Données de formulaires
+  $scope.formData = {};
+  $scope.prestations = {};
+  $scope.schedules = {};
 
-    		// si l'étape 2 n'est pas finie
-    		if (!getItem('step2')) {
-    			$state.go('rendezvous.step2');
-    		} else {
-    			$scope.staffs = getItem('step2');
-    			$scope.formData = getItem('rendezvous');
-    			$scope.$apply;
-    		}
-    	}
-    }
+  // Données de calendriers
+  $scope.eventSources = [];
+  $scope.events = [];
+  $scope.myRendezvous = [];
+  $scope.businessHours = [];
 
+  // Variables de semaine
+  $scope.currentWeek = {};
+  $scope.currentWeek.firstDay = '';
+  $scope.currentWeek.lastDay = '';
 
-	/*if ($scope.formData = {}) {
-    	$state.go('rendezvous.step1');
-    };*/
+/* if ($state.is('rendezvous.step1')) {
+    // clear local storage
+  };*/
 
-    // Actions local storage
-    function setItem(key, val) {
-   		return localStorageService.set(key, val);
+  // Si l'utilisateur reload la page
+  if (!getItem('rendezvous')) {
+  	$state.go('rendezvous.step1');
+  } 
+  else {
+  	// Si l'étape 1 n'est pas finie
+  	if (!getItem('step1')) {
+  		$state.go('rendezvous.step1');
+  	} 
+  	else {
+  		$scope.prestations = getItem('step1');
+  		$scope.formData = getItem('rendezvous');
+  		$scope.$apply;
+
+  		// Si l'étape 2 n'est pas finie
+  		if (!getItem('step2')) {
+  			$state.go('rendezvous.step2');
+  		} else {
+  			$scope.staffs = getItem('step2');
+  			$scope.formData = getItem('rendezvous');
+  			$scope.$apply;
+  		}
   	}
+  }
 
-  	function getItem(key) {
-  		return localStorageService.get(key);
-  	}
+
+/*if ($scope.formData = {}) {
+  	$state.go('rendezvous.step1');
+  };*/
+
+  // Actions local storage
+  function setItem(key, val) {
+ 		return localStorageService.set(key, val);
+	}
+
+	function getItem(key) {
+		return localStorageService.get(key);
+	}
 
 	function clearItems() {
 		return localStorageService.clearAll();
 	}
 
-    // Stocker les infos du salon
-    Auth.getCurrentUser(function(user){
-  		$http.get('/api/businesses/'+user.businessId).then(function(data){
-  			$scope.formData.businessId = data.data._id;
-  			$scope.formData.businessName = data.data.name;
-  			$scope.formData.city = data.data.city;
-  			$scope.formData.canton = data.data.canton;
-  			$scope.formData.street = data.data.street;
-  			$scope.formData.zip = data.data.zip;
-  			$scope.formData.staffs = data.data.schedules;
-        $scope.schedules = data.data.schedules;
-  			return $scope.formData;
-  		});
-    });
+  // Stocker les infos du salon
+  Auth.getCurrentUser(function(user){
+		$http.get('/api/businesses/'+user.businessId).then(function(data){
+			$scope.formData.businessId = data.data._id;
+			$scope.formData.businessName = data.data.name;
+			$scope.formData.city = data.data.city;
+			$scope.formData.canton = data.data.canton;
+			$scope.formData.street = data.data.street;
+			$scope.formData.zip = data.data.zip;
+			$scope.formData.staffs = data.data.schedules;
+      $scope.schedules = data.data.schedules;
+			return $scope.formData;
+		});
+  });
 
-    // Obtenir la liste des utilisateurs
+  // Obtenir la liste des utilisateurs
 	$http.get('/api/users').then(function(datas){
 		$scope.users = datas.data;
 		return $scope.users;
@@ -79,11 +94,9 @@ angular.module('tbApp')
 
 
 
-
-
-
-
-
+/* ----------------------
+* Page étape 1 (client)
+* ----------------------*/
 
 	// Submit page 1
 	$scope.getPrestations = function(form){
@@ -101,7 +114,7 @@ angular.module('tbApp')
 				function(error){
 
 				});
-			// sauvegarde le formulaire dans le local storage
+			// Sauvegarde le formulaire dans le local storage
 			setItem('rendezvous', form);
 
 			$state.go('rendezvous.step2');
@@ -114,15 +127,11 @@ angular.module('tbApp')
 
 
 
+/* ----------------------
+* Page étape 2 (prestation)
+* ----------------------*/
 
-
-
-
-
-
-
-
-	// inclu le bon prix à formData et render la variable pour afficher ce prix.
+	// Inclu le bon prix à formData et render la variable pour afficher ce prix.
 	$scope.getPrice = function(prestation, user){
 
 		$scope.formData.prestation = prestation;
@@ -173,12 +182,9 @@ angular.module('tbApp')
 
 
 
-
-
-
-
-
-
+/* ----------------------
+* Page étape 3 (calendrier)
+* ----------------------*/
 
 	// quand on clique sur le staff, change la classe et charge ses rendez-vous
 	$scope.selected = function (index, staff) {
@@ -196,11 +202,13 @@ angular.module('tbApp')
         var startHour = '';
         var endHour = '';
         for (var i = data.length - 1; i >= 0; i--) {
+          // Converstion pour des dates compatibles avec le calendrier
           startHour = data[i].startHour;
-          startHour = moment(startHour).format('YYYY[-]MM[-]DD[T]HH[:]mm[:]ss');
+          startHour = parseDate(startHour);
           endHour = data[i].endHour;
-          endHour = moment(endHour).format('YYYY[-]MM[-]DD[T]HH[:]mm[:]ss');
+          endHour = parseDate(endHour);
 
+          // Création de l'event background
           rendezvous = {
             id:    'blocked',
             start: startHour,
@@ -209,28 +217,228 @@ angular.module('tbApp')
             rendering: 'background',
             color: 'red'
           } 
-          
           $scope.events.push(rendezvous);
         };
-        console.log($scope.events);
+        $log.debug($scope.events);
+        getFirstAndLastDayWeek(0);
+        createBusinessHoursCustomEvents($scope.currentWeek.firstDay);
+        $log.debug($scope.businessHours);
       },
+
       function(error){
 
       });
 	}
 
-  	// Submit page 3
-	$scope.getConfirm = function(form){
 
-		console.log(form);
-		$state.go('rendezvous.step4');
 
-	}
+  // Reformate la date pour rendre compatible par FullCalendar
+  function parseDate (date){
+    var parsedDate = moment(date).format('YYYY[-]MM[-]DD[T]HH[:]mm[:]ss');
+    return parsedDate;
+  }
+
+
+
+  // Calcul dynamique de la date de début de semaine et de fin
+  // weekProgression : un nombre indiquant si on avance ou recule dans le calendrier
+  function getFirstAndLastDayWeek (weekProgression){
+    var currentWeekFirstDay = $scope.currentWeek.firstDay;
+    var currentWeekLastDay = $scope.currentWeek.lastDay;
+
+    // appel initial
+    if (weekProgression === 0 || weekProgression === undefined) {
+      currentWeekFirstDay = moment().startOf('isoWeek')._d;
+      currentWeekLastDay = moment().endOf('isoWeek')._d;
+    };
+
+    // On avance d'une semaine
+    if (weekProgression > 0) {
+      currentWeekFirstDay = moment().add(weekProgression, 'weeks').startOf('isoWeek')._d;
+      currentWeekLastDay = moment().add(weekProgression, 'weeks').endOf('isoWeek')._d;
+    }
+
+    // On recule d'une semaine
+    if (weekProgression < 0) {
+      currentWeekFirstDay = moment().subtract(1, 'weeks').startOf('isoWeek')._d;
+      currentWeekLastDay = moment().subtract(1, 'weeks').endOf('isoWeek')._d;
+    }
+
+    //$log.debug(currentWeekFirstDay._d);
+    //$log.debug(currentWeekLastDay._d);
+    $scope.currentWeek.firstDay = currentWeekFirstDay;
+    $scope.currentWeek.lastDay = currentWeekLastDay;
+    return $scope.currentWeek;
+  }
+
+
+
+  // Genère les evènements de background pour les heures d'ouvertures
+  // firstDayDate : une date qui correspond à la première date de la semaine
+  function createBusinessHoursCustomEvents (firstDayDate){
+    var day = firstDayDate;
+    var businessHour = {};
+    var startHour = '';
+    var endHour = '';
+
+    for (var i = 0; i <= $scope.schedules.length - 1; i++) {
+
+      // On créer uniquement l'évènement les jours d'ouverture
+      if ($scope.schedules[i].workingDay === true) {
+
+        // Première boucle, on créé l'event directement
+        if (i === 0) {
+          // de minuit à l'ouverture
+          var hoursToStart = 0;
+          var hourToFinish = parseScheduleHours($scope.schedules[i].startHour);
+          startHour = day;
+          endHour = moment(day).add(hourToFinish, 'hours')._d;
+          startHour = parseDate(startHour);
+          endHour = parseDate(endHour);
+
+          businessHour = {
+            id:    'closed',
+            start: startHour,
+            end: endHour,
+            overlap: false,
+            rendering: 'background',
+            color: 'grey'
+          };
+          $scope.businessHours.push(businessHour);
+
+          // de la fermeture au jour suivant (ouverture)
+          var dayAfter = moment(day).add(1, 'days')._d;
+          hoursToStart = parseScheduleHours($scope.schedules[i].endHour);
+          hourToFinish = parseScheduleHours($scope.schedules[i+1].startHour);
+          startHour = moment(day).add(hoursToStart, 'hours')._d;
+          endHour = moment(dayAfter).add(hourToFinish, 'hours')._d;
+          startHour = parseDate(startHour);
+          endHour = parseDate(endHour);
+
+          businessHour = {
+            id:    'closed',
+            start: startHour,
+            end: endHour,
+            overlap: false,
+            rendering: 'background',
+            color: 'grey'
+          };
+          $scope.businessHours.push(businessHour);
+        }
+
+        // Boucles suivantes, on créé l'event après avoir ajouté un jour
+        else {
+          day = moment(day).add(1, 'days')._d;
+
+          // de la fermeture au jour suivant (ouverture)
+          var dayAfter = moment(day).add(1, 'days')._d;
+          hoursToStart = parseScheduleHours($scope.schedules[i].endHour);
+          hourToFinish = parseScheduleHours($scope.schedules[i+1].startHour);
+          startHour = moment(day).add(hoursToStart, 'hours')._d;
+          endHour = moment(dayAfter).add(hourToFinish, 'hours')._d;
+          startHour = parseDate(startHour);
+          endHour = parseDate(endHour);
+
+          businessHour = {
+            id:    'closed',
+            start: startHour,
+            end: endHour,
+            overlap: false,
+            rendering: 'background',
+            color: 'grey'
+          };
+          $scope.businessHours.push(businessHour);
+        }
+
+        if (i === ($scope.schedules.length-1)) {
+          // de la fermeture à miniut
+          hoursToStart = parseScheduleHours($scope.schedules[i].endHour);
+          hourToFinish = 0;
+          startHour = moment(day).add(hourToFinish, 'hours')._d;
+          endHour = moment(day).endOf('day')._d;
+          startHour = parseDate(startHour);
+          endHour = parseDate(endHour);
+
+          businessHour = {
+            id:    'closed',
+            start: startHour,
+            end: endHour,
+            overlap: false,
+            rendering: 'background',
+            color: 'grey'
+          };
+          $scope.businessHours.push(businessHour);
+        }
+
+      } 
+      // les jours fermé, créer des events full-day
+      else {
+        day = moment(day).add(1, 'days')._d;
+
+        startHour = day;
+        endHour = moment(day).endOf('day')._d;
+        startHour = parseDate(startHour);
+        endHour = parseDate(endHour);
+
+        businessHour = {
+          id:    'closed',
+          start: startHour,
+          end: endHour,
+          overlap: false,
+          rendering: 'background',
+          color: 'grey'
+        };
+        $scope.businessHours.push(businessHour);
+      }
+    }
+
+  };
+
+
+  function parseScheduleHours (string){
+    var hour = String(string);
+    hour = hour.substring(0, 2);
+    if (hour.charAt(0) === '0') {
+      hour = hour.substring(1);
+    }
+    hour = Number(hour);
+    //$log.debug(hour);
+    return hour;
+  };
+
+
+
+  /* config object */
+  $scope.uiConfig = {
+    calendar:{
+      height: 550,
+      editable: true,
+      lang: 'fr',
+      header:{
+        left: 'title',
+        center: '',
+        right: 'today prev,next'
+      },
+      defaultView: 'agendaWeek',
+      firstDay: 1,
+      timezone: 'local',
+      timeFormat: 'h:mm',
+      allDaySlot: false,
+      slotDuration: '00:15:00',
+      scrollTime : h,
+      eventStartEditable: true,
+      eventDurationEditable: false,
+      eventRender: $scope.eventRender,
+      eventOverlap : function(){
+
+      }
+    }
+  };
 
   // Change View
   $scope.renderCalender = function (calendar) {
       if (uiCalendarConfig.calendars[calendar]) {
-          console.log('.', uiCalendarConfig.calendars[calendar]);
+          $log.debug('.', uiCalendarConfig.calendars[calendar]);
           uiCalendarConfig.calendars[calendar].fullCalendar('render');
       }
   };
@@ -246,7 +454,8 @@ angular.module('tbApp')
   var y = date.getFullYear();
   var h = date.getHours() + ":00:00";
 
-  $scope.myRendevous = [
+// my rendez-vous
+  $scope.myRendezvous = [
     {
       title : 'Votre rendez-vous',
       start : '2015-07-09T16:30:00',
@@ -255,37 +464,19 @@ angular.module('tbApp')
     }
   ];
 
-
-  /* config object */
-  $scope.uiConfig = {
-    calendar:{
-      height: 550,
-      editable: true,
-      lang: 'fr',
-      header:{
-        left: 'agendaWeek,agendaDay',
-        center: 'title',
-        right: 'today prev,next'
-      },
-      defaultView: 'agendaWeek',
-      timezone: 'local',
-      timeFormat: 'h:mm',
-      allDaySlot: false,
-      scrollTime : h,
-      eventStartEditable: true,
-      eventDurationEditable: false,
-      eventRender: $scope.eventRender,
-      eventOverlap : function(){
-
-      }
-    }
-  };
-
   /* event sources array*/
-  $scope.eventSources = [$scope.events, $scope.myRendevous];
+  $scope.eventSources = [$scope.events, $scope.myRendezvous, $scope.businessHours];
 
+  // Submit page 3
+  $scope.getConfirm = function(form){
 
+    $log.debug(form);
+    $state.go('rendezvous.step4');
+  }
 
+/* ----------------------
+* Page étape 4 (confirmation)
+* ----------------------*/
 
 	// Submit page 4
 	$scope.bookRendezvous = function(form){
