@@ -25,10 +25,11 @@
 		                                            'has-error': form.description.$invalid && submitted }">
 		          <label>Description</label>
 
-		          <textarea name="description" class="form-control" ng-model="prestation.description" placeholder="une description de moins de 200 charactères"  required/>
+		          <textarea name="description" class="form-control" ng-model="prestation.description" ng-minlength="1" ng-maxlength="200" placeholder="une description de moins de 200 charactères"  required/>
 		          <p class="help-block" ng-show="form.description.$error.required && submitted">
 		            Une description est requise.
 		          </p>
+			      <p class="help-block" ng-show="form.description.$error.maxlength">Trop long! 200 charactères maximum.</p>
 		        </div>
 
 		        <!-- duration -->

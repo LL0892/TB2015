@@ -11,7 +11,7 @@
 		<!-- colonne centrale -->
 		<div class="col-sm-4">
 			<!-- title for destop/tablet -->
-			<h3 class="hidden-xs">Adresse géographique</h3>
+			<h3 class="hidden-xs">Lieu géographique</h3>
 			<hr class="divider hidden-xs">
 			<h4 class="hidden-xs">{{business.name}}</h4>
 			<!-- title for mobile -->
@@ -24,18 +24,18 @@
 
 		<!-- colonne droite -->
 		<div class="col-sm-4">
-			<h3>Adresse de infos</h3>
+			<h3>Contact</h3>
 			<hr class="divider">
-			<p><i class="fa icon-infos fa-phone"></i> {{business.phone}}</p>
-			<p><i class="fa icon-infos fa-mobile"></i> {{business.mobile}}</p>
-			<p><i class="fa icon-infos fa-external-link-square"></i> {{business.site}}</p>
-			<p><i class="fa icon-infos fa-facebook-official"></i> {{business.facebook}}</p>
+			<p ng-hide="business.phone === empty"><i class="fa icon-infos fa-phone"></i> {{business.phone}}</p>
+			<p ng-hide="business.phone === empty"><i class="fa icon-infos fa-mobile"></i> {{business.mobile}}</p>
+			<p ng-hide="business.phone === empty"><i class="fa icon-infos fa-external-link-square"></i> {{business.site}}</p>
+			<p ng-hide="business.phone === empty"><i class="fa icon-infos fa-facebook-official"></i> {{business.facebook}}</p>
 		</div>
 	</div>
 	<div class= "row">
 		<!-- colonne horaires pleine largeur -->
 		<div class="col-sm-7 col-sm-offset-4 col-schedule">
-			<h3>Horaires</h3>
+			<h3>Horaires du salon</h3>
 			<hr class="divider">
 			<table class="table">
 				<thead>
