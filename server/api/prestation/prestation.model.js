@@ -23,7 +23,7 @@ var PrestationSchema = new Schema({
 	updatedOn: { type: Date, default: Date.now },
 
 	name: { type: String, required: true },
-	shortDescription : { type: String },
+	//shortDescription : { type: String },
 	description: { type: String },
 	duration: { type: Number, required: true, default: '5' },
 
