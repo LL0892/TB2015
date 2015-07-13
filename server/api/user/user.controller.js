@@ -2,7 +2,6 @@
  * Using Rails-like standard naming convention for endpoints.
  * GET     /users                   ->  index
  * GET     /users/me                ->  me
- * POST    /users/search            ->  search
  * PUT     /users/me                ->  update
  * POST    /users                   ->  create
  * POST    /users/manager           ->  createManager
@@ -59,24 +58,6 @@ exports.me = function(req, res, next) {
       userFound.profilePrivate
       //staff: req.staff.profilePrivate
     ).end();
-  });
-};
-
-/**
-* restriction : 'staff'
-* Search a existing user
-*/
-exports.search = function(req, res, next) {
-  var user = req.body;
-  User.find({
-    'fullname': { "$regex": user, "$options": "i"}
-  }, '-salt -hashedPassword', function (err, usersFound) { // don't ever give out the password or salt
-    if(err) return res.send(500, err);
-    if (usersFound.length <= 0) return res.status(404).json({ message : 'Il n\'y a pas de résultat trouvée.' });
-
-    return res.status(200).json({
-      users : usersFound.profilePublic
-    }).end();
   });
 };
 
