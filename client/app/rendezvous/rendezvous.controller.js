@@ -24,6 +24,17 @@ angular.module('tbApp')
   $scope.currentWeek.firstDay = '';
   $scope.currentWeek.lastDay = '';
 
+  // Actions local storage
+  function setItem(key, val) {
+    return localStorageService.set(key, val);
+  }
+
+  function getItem(key) {
+    return localStorageService.get(key);
+  }
+
+
+
 /* if ($state.is('rendezvous.step1')) {
     // clear local storage
   };*/
@@ -40,7 +51,7 @@ angular.module('tbApp')
   	else {
   		$scope.prestations = getItem('step1');
   		$scope.formData = getItem('rendezvous');
-  		$scope.$apply;
+  		//$scope.$apply;
 
   		// Si l'étape 2 n'est pas finie
   		if (!getItem('step2')) {
@@ -48,7 +59,7 @@ angular.module('tbApp')
   		} else {
   			$scope.staffs = getItem('step2');
   			$scope.formData = getItem('rendezvous');
-  			$scope.$apply;
+  			//$scope.$apply;
   		}
   	}
   }
@@ -58,18 +69,6 @@ angular.module('tbApp')
   	$state.go('rendezvous.step1');
   };*/
 
-  // Actions local storage
-  function setItem(key, val) {
- 		return localStorageService.set(key, val);
-	}
-
-	function getItem(key) {
-		return localStorageService.get(key);
-	}
-
-	function clearItems() {
-		return localStorageService.clearAll();
-	}
 
   // Stocker les infos du salon
   Auth.getCurrentUser(function(user){
@@ -112,7 +111,7 @@ angular.module('tbApp')
 					return $scope.prestations;
 				},
 				function(error){
-
+          $scope.error = error;
 				});
 			// Sauvegarde le formulaire dans le local storage
 			setItem('rendezvous', form);
@@ -149,10 +148,10 @@ angular.module('tbApp')
 			}else{
 				$log.debug('nope1');
 			}
-		};
+		}
 		$log.debug($scope.formData);
 		return $scope.formData;
-	}
+	};
 
 	// Submit page 2
 	$scope.getCalendar = function(form){
@@ -169,8 +168,8 @@ angular.module('tbApp')
 					return $scope.staffs;
 				},
 				function(error){
-
-				})
+          $scope.error = error;
+				});
 			
 			$state.go('rendezvous.step3');
 
@@ -178,7 +177,7 @@ angular.module('tbApp')
 			$scope.errorPrestation = true;
 		}
 
-	}
+	};
 
 
 
@@ -195,8 +194,8 @@ angular.module('tbApp')
     
     Staff.getRendezvous(
       staff._id,
-      function(data){
-        var data = data;
+      function (res){
+        var data = res;
 
         var rendezvous = [];
         var startHour = '';
@@ -216,9 +215,9 @@ angular.module('tbApp')
             overlap: false,
             rendering: 'background',
             color: 'red'
-          } 
+          }; 
           $scope.events.push(rendezvous);
-        };
+        }
         $log.debug($scope.events);
         getFirstAndLastDayWeek(0);
         createBusinessHoursCustomEvents($scope.currentWeek.firstDay);
@@ -226,9 +225,9 @@ angular.module('tbApp')
       },
 
       function(error){
-
+        $scope.error = error;
       });
-	}
+	};
 
 
   // Reformate la date pour rendre compatible par FullCalendar
@@ -249,7 +248,7 @@ angular.module('tbApp')
     if (weekProgression === 0 || weekProgression === undefined) {
       currentWeekFirstDay = moment().startOf('isoWeek')._d;
       currentWeekLastDay = moment().endOf('isoWeek')._d;
-    };
+    }
 
     // On avance d'une semaine
     if (weekProgression > 0) {
@@ -330,7 +329,7 @@ angular.module('tbApp')
           day = moment(day).add(1, 'days')._d;
 
           // de la fermeture au jour suivant (ouverture)
-          var dayAfter = moment(day).add(1, 'days')._d;
+          dayAfter = moment(day).add(1, 'days')._d;
           hoursToStart = parseScheduleHours($scope.schedules[i].endHour);
           hourToFinish = parseScheduleHours($scope.schedules[i+1].startHour);
           startHour = moment(day).add(hoursToStart, 'hours')._d;
@@ -391,7 +390,7 @@ angular.module('tbApp')
       }
     }
 
-  };
+  }
 
 
   function parseScheduleHours (string){
@@ -403,7 +402,28 @@ angular.module('tbApp')
     hour = Number(hour);
     //$log.debug(hour);
     return hour;
-  };
+  }
+
+// Current date variables
+  var date = new Date();
+  var d = date.getDate();
+  var m = date.getMonth();
+  var y = date.getFullYear();
+  var h = date.getHours() + ':00:00';
+
+  var prestationDuration = getItem('step1')[0].duration;
+  var defaultHour = 8;
+  var finalHour = 8;
+  var finalMinutes = '';
+
+  for (var i = prestationDuration; i >= 0; i -= 60) {
+    if (i >= 60) {
+      finalHour++;
+    }
+    if (i < 60) {
+      finalMinutes = i;
+    }
+  }
 
 
 
@@ -447,26 +467,6 @@ angular.module('tbApp')
   }, 1000);
 
 
-  var date = new Date();
-  var d = date.getDate();
-  var m = date.getMonth();
-  var y = date.getFullYear();
-  var h = date.getHours() + ":00:00";
-
-  var prestationDuration = getItem('step1')[0].duration;
-  var defaultHour = 8;
-  var finalHour = 8;
-  var finalMinutes = '';
-
-  for (var i = prestationDuration; i >= 0; i -= 60) {
-    if (i >= 60) {
-      finalHour++;
-    }
-    if (i < 60) {
-      finalMinutes = i;
-    }
-  };
-
 // my rendez-vous
   $scope.myRendezvous = [
     {
@@ -487,7 +487,7 @@ angular.module('tbApp')
     $log.debug(form);
     $log.debug(rendezvous);
     //$state.go('rendezvous.step4');
-  }
+  };
 
 /* ----------------------
 * Page étape 4 (confirmation)
@@ -499,11 +499,11 @@ angular.module('tbApp')
 		// save le rendezvous
 		localStorageService.remove('step1', 'step2', 'rendezvous');
 		$state.go('main');
-	}
+	};
 
 	$scope.cancelRendezvous = function(){
 		localStorageService.remove('step1', 'step2', 'rendezvous');
 		$state.go('main');
-	}
+	};
 
 });

@@ -15,17 +15,18 @@ var App = angular.module('tbApp');
   				phone: $scope.staff.phone
   			}), 
   			function (data) {
+              $scope.message = data.message;
             	// Staff created, redirect to home
             	$state.go('main');
           	},
-          	function (err) {
-	            err = err.data;
+        function (err) {
+          err = err.data;
 
-	            //Update validity of form fields that match the mongoose errors
-	            angular.forEach(err.errors, function(error, field) {
-	              form[field].$setValidity('mongoose', false);
-	              $scope.errors[field] = error.message;
-	            });
+          //Update validity of form fields that match the mongoose errors
+          angular.forEach(err.errors, function(error, field) {
+            form[field].$setValidity('mongoose', false);
+            $scope.errors[field] = error.message;
+          });
   			};
   		}
   	};

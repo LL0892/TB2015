@@ -34,7 +34,7 @@ exports.index = function(req, res) {
 
     for (var i = users.length - 1; i >= 0; i--) {
       users[i] = users[i].profilePublic;
-    };
+    }
 
     if(err) return res.send(500, err);
     return res.status(200).json(

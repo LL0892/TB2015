@@ -13,7 +13,7 @@ var App = angular.module('tbApp');
         return $scope.geodatas;
       }, 
       function (error){
-
+        $scope.error = error;
       });
 
 

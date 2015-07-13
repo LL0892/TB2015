@@ -231,7 +231,7 @@ angular.module('tbApp')
       /**
       * Check if a user already created a business
       */
-      isBusinessCreated: function(callback){
+      isBusinessCreated: function(){
         
         if (currentUser.roles === undefined) {
           return false;
@@ -259,7 +259,7 @@ angular.module('tbApp')
       /**
       * Check if a user already created a staff profile
       */
-      isStaffCreated: function(callback){
+      isStaffCreated: function(){
 
         if (currentUser.roles === undefined) {
           return false;

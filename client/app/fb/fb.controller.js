@@ -1,6 +1,6 @@
 'use strict';
 
 angular.module('tbApp')
-.controller('FbCtrl', function($scope) {
+.controller('FbCtrl', function() {
 
 });

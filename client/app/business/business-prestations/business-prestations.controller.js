@@ -65,9 +65,9 @@ angular.module('tbApp')
       }
     };
 
-    $scope.cancelAddForm = function (form){
-        $scope.addForm = false
-    }
+    $scope.cancelAddForm = function (){
+        $scope.addForm = false;
+    };
 
     $scope.deletePrestation = function(prestation, index){
         Business.deletePrestation(
@@ -81,7 +81,7 @@ angular.module('tbApp')
                 $scope.message = data;
             }
         );
-    }
+    };
 
 
     $scope.deletePrice= function(prestationId, priceId){
@@ -120,7 +120,7 @@ angular.module('tbApp')
     		});
     };
 
-    function updateUI (data){
+/*    function updateUI (data){
     	console.log('update :'+ data);
     	var id = data._id;
     	var res = $scope.prestations._id.indexOf(id);
@@ -129,6 +129,6 @@ angular.module('tbApp')
     		$scope.prestations[res] = data;
     	}
     	$scope.$apply();
-    };
+    }*/
 
   });

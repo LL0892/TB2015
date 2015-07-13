@@ -1,6 +1,6 @@
 'use strict';
 
-var app = angular.module('tbApp')
+var app = angular.module('tbApp');
   app.controller('NavbarCtrl', function ($scope, $location, Auth) {
     $scope.menu = [{
       'title': 'Home',

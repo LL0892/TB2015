@@ -1,6 +1,6 @@
 'use strict';
 
 angular.module('tbApp')
-.controller('RendezvousUserCtrl', function($scope) {
+.controller('RendezvousUserCtrl', function() {
 
 });

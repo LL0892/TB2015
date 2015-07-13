@@ -39,7 +39,7 @@ angular.module('tbApp', [
     localStorageServiceProvider
       .setPrefix('tb2015')
       .setStorageType('localStorage')
-      .setNotify(true, true)
+      .setNotify(true, true);
   })
 
 

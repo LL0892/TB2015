@@ -27,5 +27,5 @@ angular.module('tbApp')
        .state('fb.step4', {
         url: '/step4',
         templateUrl: 'app/rendezvous/rendezvous-step4.html'
-      })
+      });
   });

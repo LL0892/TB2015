@@ -10,20 +10,11 @@ angular.module('tbApp')
   	$scope.hover = '';
   	$scope.selection = '';
 
-
-  	var staff = {'name': 'Test staff', '_id': '5591b95eaa39a54415a53bfb'};
-  	var staff2 = {'name': 'Admin Staff', '_id': '558d5010a91e997c16c3c457'};
-
     function getSchedulesAndStaff(data){
       Business.getSchedules(
         data.businessId,
         function (data){
           $scope.schedules = data.horaires;
-          for (var i = $scope.schedules.length - 1; i >= 0; i--) {
-          	//$scope.schedules[i].staffs.push(staff);
-          	//$scope.schedules[i].staffs.push(staff2);
-          };
-          //console.log($scope.schedules);
         },
         function (error){
           $scope.error = error;
@@ -52,16 +43,16 @@ angular.module('tbApp')
    	var ids = [];
    	for (var i = $scope.schedules[index].staffs.length - 1; i >= 0; i--) {
    		ids.push($scope.schedules[index].staffs[i]._id);
-   	};
+   	}
 
    	$scope.selection = ids;
    	console.log($scope.selection);
     return $scope.selection;
-   }
+   };
 
 
   // toggle selection for a given staffs by id
-  $scope.toggleSelection = function toggleSelection(id, parentIndex, index) {
+  $scope.toggleSelection = function toggleSelection(id) {
 
     var idx = $scope.selection.indexOf(id);
 
@@ -79,12 +70,8 @@ angular.module('tbApp')
 
   };
 
-  $scope.options = createHourString();
-
   // Créer un tableau avec les heures possibles du formulaire de modification
   function createHourString (){
-    var mn = 0;
-    var hr = 0;
     var strMn = [
       '00', '15', '30', '45'
     ];
@@ -96,12 +83,14 @@ angular.module('tbApp')
 
     for (var i = strHr.length; i > 0; i--) {
       for (var j = strMn.length; j > 0; j--) {
-        str.push(String(strHr[strHr.length - i] + ":" + strMn[strMn.length - j]));
-      };
-    };
+        str.push(String(strHr[strHr.length - i] + ':' + strMn[strMn.length - j]));
+      }
+    }
 
     return str;
-  };
+  }
+
+  $scope.options = createHourString();
 
   // Add a schedule
   $scope.addSchedule = function(data){
@@ -134,6 +123,6 @@ angular.module('tbApp')
 
   $scope.updateSchedule = function(schedule){
     console.log(schedule);
-  }
+  };
 
 });

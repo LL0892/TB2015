@@ -8,29 +8,28 @@ angular.module('tbApp')
   	// parse un tableau de notifications
   	function parseResponse(array){
 	    for (var i = array.length - 1; i >= 0; i--) {
-			var date = parseDate(array[i].createdOn);
-			array[i].createdOn = date;
+  			var date = parseDate(array[i].createdOn);
+  			array[i].createdOn = date;
 
-			if (array[i].status === 'not processed') {
-				array[i].status = 'non traitée';
-			}
+  			if (array[i].status === 'not processed') {
+  				array[i].status = 'non traitée';
+  			}
 
-			if (array[i].status === 'refused') {
-				array[i].status = 'refusée';
-			}
+  			if (array[i].status === 'refused') {
+  				array[i].status = 'refusée';
+  			}
 
-			if (array[i].status === 'accepted') {
-				array[i].status = 'acceptée';
-			}
-		};
+  			if (array[i].status === 'accepted') {
+  				array[i].status = 'acceptée';
+  			}
+		  } 
   	}
 
   	// parse les dates dans un format lisible
   	function parseDate(date){
-  		var date = date;
-  		date = new Date(date);
-  		date  = date.getDate() + "/" + (date.getMonth()+1) + "/" + date.getFullYear();
-  		return date;
+  		var dateParsed = new Date(date);
+  		dateParsed  = dateParsed.getDate() + '/' + (dateParsed.getMonth()+1) + '/' + dateParsed.getFullYear();
+  		return dateParsed;
   	}
 
 
@@ -38,16 +37,16 @@ angular.module('tbApp')
      	Business.getStaffs(
 	        res.businessId,
 	        function (data){
-	          	$scope.staffs = data.staffs;
+          	$scope.staffs = data.staffs;
 
-				for (var i = $scope.staffs.length - 1; i >= 0; i--) {
-					$scope.staffs[i].photoStaffURL = Urls.img + $scope.staffs[i].photoStaffURL;
-				}
+    				for (var i = $scope.staffs.length - 1; i >= 0; i--) {
+    					$scope.staffs[i].photoStaffURL = Urls.img + $scope.staffs[i].photoStaffURL;
+    				}
 
-				return $scope.staffs;
+				    return $scope.staffs;
 	        },
 	        function (error){
-	         	return $scope.error = error;
+	         	$scope.error = error;
 	        });
 
       	Business.getNotifications(
@@ -60,7 +59,7 @@ angular.module('tbApp')
 	      		return $scope.notifs;
 	      	},
 	      	function (error){
-	    		return $scope.error = error;
+	    		  $scope.error = error;
 	      	});
 
       	$scope.businessId = res.businessId;
@@ -73,10 +72,10 @@ angular.module('tbApp')
 
 
     // Obtenir la liste des utilisateurs
-	$http.get('/api/users').then(function(datas){
-		$scope.users = datas.data;
-		return $scope.users;
-	});
+  	$http.get('/api/users').then(function(datas){
+  		$scope.users = datas.data;
+  		return $scope.users;
+  	});
 
 
     $scope.deleteNotification = function(notifId, index){
@@ -100,10 +99,8 @@ angular.module('tbApp')
     		console.log($scope.notifs);
     	}, 
     	function(error){
-
+        $scope.error = error;
     	});
-
-    	$scope.$apply;
     };
 
   });
