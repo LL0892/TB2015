@@ -231,7 +231,6 @@ angular.module('tbApp')
 	}
 
 
-
   // Reformate la date pour rendre compatible par FullCalendar
   function parseDate (date){
     var parsedDate = moment(date).format('YYYY[-]MM[-]DD[T]HH[:]mm[:]ss');
@@ -424,7 +423,7 @@ angular.module('tbApp')
       timezone: 'local',
       timeFormat: 'h:mm',
       allDaySlot: false,
-      slotDuration: '00:15:00',
+      slotDuration: '00:10:00',
       scrollTime : h,
       eventStartEditable: true,
       eventDurationEditable: false,
@@ -454,24 +453,40 @@ angular.module('tbApp')
   var y = date.getFullYear();
   var h = date.getHours() + ":00:00";
 
+  var prestationDuration = getItem('step1')[0].duration;
+  var defaultHour = 8;
+  var finalHour = 8;
+  var finalMinutes = '';
+
+  for (var i = prestationDuration; i >= 0; i -= 60) {
+    if (i >= 60) {
+      finalHour++;
+    }
+    if (i < 60) {
+      finalMinutes = i;
+    }
+  };
+
 // my rendez-vous
   $scope.myRendezvous = [
     {
       title : 'Votre rendez-vous',
-      start : '2015-07-09T16:30:00',
-      end    : '2015-07-09T17:30:00',
+      start : new Date(y, m, d, defaultHour, 0),
+      end    : new Date(y, m, d, finalHour, finalMinutes),
       color: 'green'
     }
   ];
+
+  $log.debug($scope.myRendezvous);
 
   /* event sources array*/
   $scope.eventSources = [$scope.events, $scope.myRendezvous, $scope.businessHours];
 
   // Submit page 3
-  $scope.getConfirm = function(form){
-
+  $scope.getConfirm = function(form, rendezvous){
     $log.debug(form);
-    $state.go('rendezvous.step4');
+    $log.debug(rendezvous);
+    //$state.go('rendezvous.step4');
   }
 
 /* ----------------------
