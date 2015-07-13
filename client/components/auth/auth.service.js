@@ -257,7 +257,7 @@ angular.module('tbApp')
 
 
       /**
-      * Check if a user already created a business
+      * Check if a user already created a staff profile
       */
       isStaffCreated: function(callback){
 
