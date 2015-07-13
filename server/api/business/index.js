@@ -10,7 +10,7 @@ var router = express.Router();
 // --- Business routes ---
 router.get('/', controller.getBusinesses);
 router.post('/', auth.hasRole('manager'), controller.createBusiness);
-router.get('/:id', auth.isAuthenticated(), controller.showBusiness);
+router.get('/:id', controller.showBusiness);
 router.put('/:id', auth.hasAccess('staff'), controller.updateBusiness);
 
 // --- Schedules subdocument routes ---
