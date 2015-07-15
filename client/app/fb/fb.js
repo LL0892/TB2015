@@ -4,7 +4,7 @@ angular.module('tbApp')
   .config(function ($stateProvider) {
     $stateProvider
       .state('fb', {
-        url: '/fb/rendezvous',
+        url: '/fb',
         templateUrl: 'app/fb/fb.html',
         controller: 'FbCtrl'
       })

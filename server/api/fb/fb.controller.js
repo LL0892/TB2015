@@ -8,5 +8,8 @@
  * Get the facebook POST request
  */
 exports.index = function(req, res) {
-	console.log(req.body);
+	console.log(req);
+	return res.status(200).json(
+      'all ok'
+    ).end();
 };
