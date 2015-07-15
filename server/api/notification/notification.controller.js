@@ -14,6 +14,7 @@ var Notification = require('./notification.model'),
 	User = require('../user/user.model');
 
  /**
+ * GET     /notifications   ->  index
  * Get a list of my notifications received
  */
  exports.index = function(req, res, next){
@@ -44,6 +45,7 @@ var Notification = require('./notification.model'),
  };
 
  /**
+ * GET	   /notifications/:id   ->  show
  * Get a notification, change viewed boolean if false, or just show the notif.
  */
  exports.show = function(req, res, next){
@@ -71,6 +73,7 @@ var Notification = require('./notification.model'),
  };
 
  /**
+ * PUT	   /notifications/:id/accepted ->  accepted
  * Change the status to accepted
  */
  exports.accepted = function(req, res, next){
@@ -86,12 +89,13 @@ var Notification = require('./notification.model'),
 	 		notificationFound.save(function (err, notificationSaved){
 		 		if(err) return res.send(500, err);
 
-		 		// Add staff role for this user
+		 		// Add staff role for this user and businessId
 		 		User.findById(userId, function (err, userFound){
 		 			if(err) return res.send(500, err);
 		 			if (!userFound) return res.status(404).json({ message : 'Vous n\'êtes pas connecté.' }).end();
 
 		 			userFound.roles.push('staff');
+		 			userFound.businessId = notificationFound.business.businessId;
 		 			userFound.save(function (err, userSaved){
 		 				if(err) return res.send(500, err);
 		 			});
@@ -110,6 +114,7 @@ var Notification = require('./notification.model'),
  };
 
  /**
+ * PUT	   /notifications/:id/refused  ->  refused
  * Change the status to refused
  */
  exports.refused = function(req, res, next){
@@ -136,6 +141,7 @@ var Notification = require('./notification.model'),
  };
 
  /**
+ * DELETE  /notifications/:id  ->  destroy
  * Remove a notification
  */
  exports.destroy = function(req, res, next){

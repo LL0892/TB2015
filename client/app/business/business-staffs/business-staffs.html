@@ -66,10 +66,11 @@
 			        <h4>Sélectionner un utilisateur existant</h4>
 			        <input type="text" ng-model="form" typeahead-min-length="2" typeahead="user as user.name for user in users | filter:$viewValue | limitTo:8" class="form-control" required>
 			        <span ng-show="errorUser">Veillez sélectionner un client existant.</span>
+			        <hr>
 			        <button ng-click="edit = false; createNotification(form._id)" ng-show="edit === true" class="btn btn-success">Envoyer</button>
 			    </div>
 			</form>
 		</div>
-		<hr>
+		
 	</div>
 </div>

@@ -1,1 +1,19 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
+
+<div>
+	<div ng-repeat="notif in notifications">
+
+		<h3>{{notif.title}}</h3>
+		<p>{{notif.text}}</p>
+		
+		<hr>
+
+		<p>Demande de : {{notif.emitterName}}</p>
+		<p>Provient de : {{notif.businessName}}</p>
+		<p>Status de la requête : {{notif.statusParsed}}</p>
+
+		<button ng-show="notif.status === 'not processed'" ng-click="accept(notif)" class="btn btn-success">Accepter</button>
+		<button ng-show="notif.status === 'not processed'" ng-click="refuse(notif)" class="btn btn-danger">Refuser</button>
+	</div>
+	<p ng-show="message">{{message}}</p>
+</div>

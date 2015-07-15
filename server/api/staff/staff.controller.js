@@ -24,8 +24,8 @@ var mongoose = require('mongoose');
 exports.create = function (req, res, next) {
 	var userId = req.user._id;
 	var businessId = req.user.businessId;
-	console.log(userId);
-	console.log(businessId);
+	//console.log(userId);
+	//console.log(businessId);
 
 	User.findById(userId, function(err, userFound){
 		if(err) return res.send(500, err);
