@@ -21,35 +21,44 @@ var App = angular.module('tbApp');
   		}
 
   		if (status === 'accepted') {
-  			return status = 'accepté';
+  			return status = 'acceptée';
   		}
 
   		if (status === 'refused') {
-  			return statut = 'refusé';
+  			return status = 'refusée';
   		}
   	}
 
-  	$scope.accept = function (notif){
+  	$scope.accept = function (notif, index){
   		Notification.acceptNotification(
   			notif._id,
   			function(data){
-  				
+  				$scope.message = data.message;
+  				$scope.notifications[index].statusParsed = 'acceptée';
+  				$scope.notifications[index].status = 'accepted';
   			},
   			function(error){
 
   			}
   		);
+
+
+  		
   	};
 
-  	$scope.refuse = function (notif){
+  	$scope.refuse = function (notif, index){
   		Notification.refuseNotification(
   			notif._id,
   			function(data){
-
+  				$scope.message = data.message;
+  				$scope.notifications[index].statusParsed = 'refusée';
+  				$scope.notifications[index].status = 'refused';
+  				$log.debug($scope.notifications);
   			},
   			function(error){
 
   			}
   		);
+  		
   	};
   });
