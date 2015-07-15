@@ -1,6 +1,6 @@
 'use strict';
 
 var App = angular.module('tbApp');
-  App.controller('NotifsCtrl', function () {
-
+  App.controller('NotifsCtrl', function ($scope) {
+  	$scope.message = 'hello';
   });

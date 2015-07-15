@@ -23,10 +23,10 @@ var App = angular.module('tbApp');
           err = err.data;
 
           //Update validity of form fields that match the mongoose errors
-          angular.forEach(err.errors, function(error, field) {
+/*          angular.forEach(err.errors, function(error, field) {
             form[field].$setValidity('mongoose', false);
             $scope.errors[field] = error.message;
-          });
+          });*/
   			};
   		}
   	};
