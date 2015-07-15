@@ -127,12 +127,20 @@
             </div>
         </div>
 
+        <!-- localite custom template -->
+        <script type="text/ng-template" id="localiteTemplate.html">
+          <a>
+            <span bind-html-unsafe="match.model.Commune | typeaheadHighlight:query"></span>
+            (<span bind-html-unsafe="match.model.NPA | typeaheadHighlight:query"></span>)
+          </a>
+        </script>
+
         <div class="row">
           <div class="col-sm-4 col-sm-offset-2 col-xs-4 col-xs-offset-2"><label>Localité</label>
-            <input type="text" ng-model="user.loc" ng-bind="user.loc.Commune" typeahead-min-length="3" typeahead-editable="false" typehead-on-select(model) typeahead="geodata as geodata.Commune for geodata in geodatas | filter:$viewValue" class="form-control">
+            <input type="text" ng-model="user.loc" ng-bind="user.loc.Commune" typeahead-min-length="3" typeahead-editable="false" typehead-on-select(model) typeahead="geodata as geodata.Commune for geodata in geodatas | filter:$viewValue" typeahead-template-url="localiteTemplate.html" class="form-control">
           </div>
           <div class="col-sm-2 col-xs-2"><label>NPA</label>
-            <input type="text" ng-model="user.loc" ng-bind="user.loc.NPA" typeahead-min-length="2" typeahead-editable="false" typehead-on-select(model) typeahead="geodata as geodata.NPA for geodata in geodatas | filter:$viewValue | limitTo:8" class="form-control">
+            <input type="text" ng-model="user.loc" ng-bind="user.loc.NPA" typeahead-min-length="2" typeahead-editable="false" typehead-on-select(model) typeahead="geodata as geodata.NPA for geodata in geodatas | filter:$viewValue | limitTo:8" class="form-control" disabled>
           </div>
           <div class="col-sm-2 col-xs-2"><label>Canton</label>
             <input type="text" ng-model="user.loc" ng-bind="user.loc.Canton" typehead-on-select(model) typeahead-editable="false" typeahead="geodata as geodata.Canton for geodata in geodatas | filter:$viewValue | limitTo:8" class="form-control" disabled>
