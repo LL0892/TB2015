@@ -37,7 +37,7 @@
 					<th>Emetteur</th>
 					<th>Envoyé le</th>
 					<th>Status</th>
-					<th>Actions</th>
+					<th class="hidden-xs">Actions</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -46,7 +46,7 @@
 					<td>{{notif.emitterName}}</td>
 					<td>{{notif.createdOn}}</td>
 					<td>{{notif.status}}</td>
-					<td><button class="btn btn-danger" ng-click="deleteNotification(notif._id, $index)"><i class="fa icon-tab fa-trash-o"></i></button></td>
+					<td class="hidden-xs"><button class="btn btn-danger" ng-click="deleteNotification(notif._id, $index)"><i class="fa icon-tab fa-trash-o"></i></button></td>
 				</tr>
 			</tbody>
 		</table>
@@ -54,7 +54,7 @@
 	</div>
 </div>
 
-<div class="row">
+<div class="row hidden-xs">
 	<div class="col-sm-6 col-sm-offset-3">
 		<h3>Ajout d'un staff</h3>
 		<button ng-click="edit = true" ng-show="edit === false" class="btn btn-success">Envoyer une notif</button>

@@ -2,32 +2,32 @@
 
 <div class="container">
 
-	<div class="row">
+	<div class="row hidden-xs">
 		<!-- Formulaire d'ajout -->
 		<button class="btn btn-success pull-left" ng-click="add = true" ng-show="add === false">Ajouter une prestation</button>
 		<div class="col-sm-5" ng-show="add === true">
 			<div class="row">
-				<div class="col-sm-5">
+				<div class="col-sm-6">
 					<label> Jour </label>
 					<input class="form-control" type="text" ng-model="form.dayName" placeholder="jour" required>
 				</div>
-				<div class="col-sm-5">
+				<div class="col-sm-6">
 					<label> Description </label>
 					<input class="form-control" type="text" ng-model="form.description" placeholder="description" required>
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-sm-5">
+				<div class="col-sm-6">
 					<label> Débute à </label>
 					<select class="form-control" ng-model="form.startHour" ng-options="options as options for options in options" required></select>
 				</div>
-				<div class="col-sm-5">
+				<div class="col-sm-6">
 					<label> Fini à </label>
 					<select class="form-control" ng-model="form.endHour" ng-options="options as options for options in options" required></select>
 				</div>
 			</div>
 			<div class="row" ng-show="add === true">
-				<div class="col-sm-5">
+				<div class="col-sm-6">
 					<label> Jour ouvrable </label>
 					<select class="form-control" ng-model="form.workingDay" required>
 						<option value="true">Oui</option>
@@ -59,7 +59,7 @@
 	<!-- Liste des horaires -->
 	<div class="row" ng-repeat="schedule in schedules">
 		<div class="row">
-			<div class="col-sm-5">
+			<div class="col-sm-4 col-sm-offset-3">
 				<!-- visualisation mode -->
 				<div ng-show="modif===false">
 					<h4>{{schedule.dayName}}</h4>
@@ -97,7 +97,7 @@
 					
 				</div>
 			</div>
-			<div class="col-sm-5">
+			<div class="col-sm-5 hidden-xs">
 				<h4>staffs affiliés</h4>
 				<!-- visualisation mode -->
 				<ul ng-show="modif===false">
@@ -119,15 +119,18 @@
 					</label>
 				</div>
 			</div>
+			<hr class="show-xs">
 		</div>
 		<div class="row">
-			<!-- bouton liste -->
-			<button class="hidden-xs btn btn-sm btn-primary" ng-click="modif=true; index($index)" ng-show="modif===false">Modifier</button>
-			<button class="hidden-xs btn btn-sm btn-danger" ng-click="deleteSchedule(schedule._id)" ng-show="modif===false">Supprimer</button>
-			<!-- bouton modif -->
-			<button class="hidden-xs btn btn-sm  btn-primary" ng-click="modif=false; updateSchedule(schedule)" ng-show="modif===true">Confirmer</button>
-			<button class="hidden-xs btn btn-sm  btn-danger" ng-click="modif=false" ng-show="modif===true">Annuler</button>
-			<hr>
+			<div class="hidden-xs col-sm-6 col-sm-offset-3">
+				<!-- bouton liste -->
+				<button class="btn btn-xs btn-primary" ng-click="modif=true; index($index)" ng-show="modif===false">Modifier</button>
+				<button class="btn btn-xs btn-danger" ng-click="deleteSchedule(schedule._id)" ng-show="modif===false">Supprimer</button>
+				<!-- bouton modif -->
+				<button class="btn btn-xs  btn-primary" ng-click="modif=false; updateSchedule(schedule)" ng-show="modif===true">Confirmer</button>
+				<button class="btn btn-xs  btn-danger" ng-click="modif=false" ng-show="modif===true">Annuler</button>
+				<hr>
+			</div>
 		</div>
 
 

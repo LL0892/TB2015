@@ -3,17 +3,17 @@
 <div id="container">
 	<div class="row">
 		<form class="form" name="form" ng-submit="search(defaultWeek, defaultStaff)" novalidate>
-			<div class="col-sm-3 col-sm-offset-4">
+			<div class="col-sm-3 col-sm-offset-4 col-xs-6 col-xs-offset-3">
 
 				<div class="form-group">
-				  <label>Choissisez la semaine de recherche :</label>
+				  <label>Choissisez la semaine de recherches</label>
 				  <select class="form-control" ng-model="defaultWeek" ng-options="week.label for week in weeks">
 				    <option value=""> --- Choisir une semaine --- </option>
 				  </select>
 				</div>
 
 				<div class="form-group">
-				  <label>Choissisez un membre du staff :</label>
+				  <label>Choissisez un membre du staff</label>
 				  <select class="form-control" ng-model="defaultStaff" ng-options="staff.name for staff in staffs">
 				    <option value=""> --- Choisir un staff --- </option>
 				  </select>
@@ -28,7 +28,7 @@
 	<p>{{message}}</p>
 
 	<div class="row">
-		<div class="col-sm-3 col-sm-offset-4">
+		<div class="col-sm-3 col-sm-offset-4  col-xs-6 col-xs-offset-3">
 			<div ng-repeat="rdv in rendezvous">
 
 			</div>
