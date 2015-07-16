@@ -51,10 +51,10 @@ angular.module('tbApp')
           startDay : addSevenDays(array[week-1].startDay),
           endDay : addSevenDays(array[week-1].endDay),
           label : 'semaine '+ (week+1)
-        }
+        };
         array.push(aWeek);
       }      
-  	};
+  	}
 
     // Appliquer le tableau de semaine dans le $scope
     $scope.weeks = array;
@@ -90,7 +90,7 @@ angular.module('tbApp')
           $scope.message = data.message;
         },
         function(error){
-
+          $scope.error = error;
         });
     };
 

@@ -9,7 +9,7 @@ var App = angular.module('tbApp');
 
   		for (var i = $scope.notifications.length - 1; i >= 0; i--) {
   			$scope.notifications[i].statusParsed = parseResponse($scope.notifications[i].status);
-  		};
+  		}
 
   		$log.debug($scope.notifications);
   	});
@@ -38,7 +38,7 @@ var App = angular.module('tbApp');
   				$scope.notifications[index].status = 'accepted';
   			},
   			function(error){
-
+          $scope.error = error;
   			}
   		);
 
@@ -56,7 +56,7 @@ var App = angular.module('tbApp');
   				$log.debug($scope.notifications);
   			},
   			function(error){
-
+          $scope.error = error;
   			}
   		);
   		
