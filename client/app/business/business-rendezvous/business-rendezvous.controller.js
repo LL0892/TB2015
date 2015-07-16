@@ -12,6 +12,8 @@ angular.module('tbApp')
     }).then(getStaffs);
 
     function getStaffs(user){
+      $scope.currentUser = user;
+
       Business.getStaffs(
         user.businessId,
         function (res){
@@ -22,6 +24,8 @@ angular.module('tbApp')
           $scope.error = error;
         });
     }
+
+
 
     /*********************
     * Semaines de l'année
@@ -70,9 +74,24 @@ angular.module('tbApp')
 
     // Faire la requête de recherche des rendez-vous
     $scope.search = function(week, staff){
-      $log.debug(week.startDay);
-      $log.debug(week.endDay);
-      $log.debug(staff._id);
+      var request = {
+        staffId: staff._id,
+        startDay: week.startDay,
+        endDay: week.endDay
+      };
+
+      $log.debug(request);
+
+      Business.searchRendezvous(
+        $scope.currentUser.businessId,
+        request,
+        function(data){
+          $scope.rendezvous = data.rendezvous;
+          $scope.message = data.message;
+        },
+        function(error){
+
+        });
     };
 
   });

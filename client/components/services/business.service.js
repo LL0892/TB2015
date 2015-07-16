@@ -229,6 +229,17 @@ angular.module('tbApp')
 					errorCallback(data);
 				});
 			},
+			searchRendezvous: function(businessId, data, callback, errorCallback){
+				$http({
+					method: 'POST',
+					url: Urls.api + 'businesses/' + businessId + '/rendezvous/search',
+					data: data
+				}).success(function (data){
+					callback(data);
+				}).error(function (data){
+					errorCallback(data);
+				});
+			},
 			createRendezvous: function(businessId, data, callback, errorCallback){
 				$http({
 					method: 'POST',

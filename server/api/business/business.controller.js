@@ -32,6 +32,7 @@
 
  --- Rendezvous routes ---
  * GET 		/businesses/:id/rendezvous 						->  getRendezvous
+ * POST 	/businesses/:id/rendezvous/search 				->  searchRendezvous
  * POST 	/businesses/:id/rendezvous 						->  createRendezvous
  * GET 		/businesses/:id/rendezvous/:rdvId 				->  showRendezvous
  * PUT 		/businesses/:id/rendezvous/:rdvId/missed		->  rendezvousMissed
@@ -721,7 +722,32 @@ exports.getRendezvous = function(req, res, next){
 	var businessId = req.staff.businessId;
 
 	Rendezvous.find({'business.businessId': businessId}, 
-		'-recurance -__v -createdOn -updatedOn', function (err, rendezvousFound){
+		'-__v -createdOn -updatedOn', function (err, rendezvousFound){
+		if(err) return res.send(500, err);
+		if (rendezvousFound.length <= 0) return res.status(404).json({ message : 'Il n\'y a pas de rendez-vous à afficher.' });
+
+		return res.status(200).json({ 
+			rendezvous: rendezvousFound
+		}).end();
+	});
+};
+
+/**
+* POST 	/businesses/:id/rendezvous/search
+* Get a list of rendezvous for a staff member within a timeframe
+* restriction : 'staff'
+*/
+exports.searchRendezvous = function(req, res, next){
+	var businessId = req.staff.businessId,
+		staffId = req.body.staffId,
+		start = req.body.startDay,
+		end = req.body.endDay;
+
+	Rendezvous.find({
+		'business.businessId': businessId, 
+		'staff.staffId': staffId,
+		'startHour': {$gte: start, $lt: end}
+	}, '-__v -createdOn -updatedOn', function (err, rendezvousFound){
 		if(err) return res.send(500, err);
 		if (rendezvousFound.length <= 0) return res.status(404).json({ message : 'Il n\'y a pas de rendez-vous à afficher.' });
 
@@ -856,7 +882,7 @@ exports.showRendezvous = function(req, res, next){
 		rendezvousId = req.params.rdvId;
 
 	Rendezvous.findOne({_id: rendezvousId, 'business.businessId': businessId}, 
-		'-recurance -__v -createdOn -updatedOn',  function (err, rendezvousFound){
+		'-__v -createdOn -updatedOn',  function (err, rendezvousFound){
 		if(err) return res.send(500, err);
 		if (!rendezvousFound) return res.status(404).json({ message : 'Il n\'y a pas de rendez-vous à afficher.' });
 
