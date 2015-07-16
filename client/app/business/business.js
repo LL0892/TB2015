@@ -39,10 +39,10 @@ angular.module('tbApp')
         controller: 'BusinessStaffsCtrl',
         authenticate: true
       })
-      .state('business-update', {
-        url: '/business/update',
-        templateUrl: 'app/business/business-update/business-update.html',
-        controller: 'BusinessUpdateCtrl',
+      .state('business-fb-page', {
+        url: '/business/fb-page',
+        templateUrl: 'app/business/business-fb-page/business-fb-page.html',
+        controller: 'BusinessFbPageCtrl',
         authenticate: true
       });
   });

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('tbApp')
-  .controller('BusinessUpdateCtrl', function ($scope, ezfb, $q, $log) {
+  .controller('BusinessFbPageCtrl', function ($scope, ezfb, $q, $log) {
         /**
      * Subscribe to 'auth.statusChange' event to response to login/logout
      */

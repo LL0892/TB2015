@@ -103,8 +103,8 @@ UserSchema
       'imageProfileUrl': this.imageProfileURL,
       'roles': this.roles,
       'businessId': this.businessId,
-      'staffId': this.staffId
-      //'preferences': this.preferences
+      'staffId': this.staffId,
+      'preferences': this.preferences
     };
   });
 

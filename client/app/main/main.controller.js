@@ -3,13 +3,11 @@
 angular.module('tbApp')
   .controller('MainCtrl', function ($scope, $http, $log, Urls, Auth) {
     $scope.businesses = [];
-    $scope.currentUser = Auth.getCurrentUser();
-
-    $scope.isLoggedIn = Auth.isLoggedIn();
+    $scope.currentUser = Auth.getCurrentUser;
+    $scope.isLoggedIn = Auth.isLoggedIn;
 
     $http.get('/api/businesses').success(function(businesses){
       $scope.businesses = businesses;
-
       $log.debug($scope.businesses);
     });
 
@@ -21,7 +19,6 @@ angular.module('tbApp')
       //console.log($index);
       $scope.selectedIndex = $index;
     };
-
 
     $scope.fav = function(businessId){
       $http.put(

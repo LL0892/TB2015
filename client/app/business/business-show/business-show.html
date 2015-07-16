@@ -26,10 +26,10 @@
 		<div class="col-sm-4">
 			<h3>Contact</h3>
 			<hr class="divider">
-			<p ng-hide="business.phone === empty"><i class="fa icon-infos fa-phone"></i> {{business.phone}}</p>
-			<p ng-hide="business.phone === empty"><i class="fa icon-infos fa-mobile"></i> {{business.mobile}}</p>
-			<p ng-hide="business.phone === empty"><i class="fa icon-infos fa-external-link-square"></i> {{business.site}}</p>
-			<p ng-hide="business.phone === empty"><i class="fa icon-infos fa-facebook-official"></i> {{business.facebook}}</p>
+			<p><i class="fa icon-infos fa-phone"></i> {{business.businessContact.phone}}</p>
+			<p><i class="fa icon-infos fa-mobile"></i> {{business.businessContact.mobile}}</p>
+			<p><i class="fa icon-infos fa-external-link-square"></i> {{business.businessContact.siteURL}}</p>
+			<p><i class="fa icon-infos fa-facebook-official"></i> {{business.businessContact.facebookURL}}</p>
 		</div>
 	</div>
 	<div class= "row">
