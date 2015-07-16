@@ -11,7 +11,7 @@ SignedRequest.secret = '1435864036716003';
  * Get the facebook POST request
  */
 exports.index = function(req, res) {
-	var request = req.signed_request;
+	var request = req.body.signed_request;
 	var signedRequest = new SignedRequest( request );
 
 	signedRequest.parse(function (errors, request){
