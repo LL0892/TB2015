@@ -1,15 +1,33 @@
 'use strict';
 
 angular.module('tbApp')
-  .controller('MainCtrl', function ($scope, $http, $log, Urls, Auth) {
+  .controller('MainCtrl', function ($scope, $http, $log, Urls, Auth, Business) {
     $scope.businesses = [];
-    $scope.currentUser = Auth.getCurrentUser;
+    //$scope.currentUser = Auth.getCurrentUser;
     $scope.isLoggedIn = Auth.isLoggedIn;
 
     $http.get('/api/businesses').success(function(businesses){
       $scope.businesses = businesses;
-      $log.debug($scope.businesses);
     });
+
+
+    Auth.getCurrentUser(function (data){
+      return data;
+    }).then(getFavorite);
+
+    function getFavorite(user){
+      $scope.currentUser = user;
+
+      Business.showBusiness(
+        $scope.currentUser.preferences.favorite,
+        function (res){
+          $scope.favoriteBusiness = res;
+        },
+        function (error){
+          $scope.error = error;
+        });
+    }
+
 
     // Selection par defaut sur l'animation de click sur un salon
     $scope.selectedIndex = -1;

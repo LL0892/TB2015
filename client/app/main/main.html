@@ -1,11 +1,17 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
-<header class="hero-unit" id="banner">
+<!-- Salon favori -->
+<header class="hero-unit" id="banner" ng-if="isLoggedIn()">
   <div class="container">
-    le salon favori
+    <h2>Votre salon favori</h2>
+    <hr>
+    <p ng-show="currentUser.preferences.favorite === undefined">Il n'y a pas de salon favori trouvé.</p>
+    <p>{{favoriteBusiness.name}}</p>
+    <p>{{favoriteBusiness.zip}} {{favoriteBusiness.city}}</p>
   </div>
 </header>
 
+<!-- Liste des salons -->
 <div class="container">
   <div class="row">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
