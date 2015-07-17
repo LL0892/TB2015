@@ -35,7 +35,12 @@ exports.index = function(req, res) {
 
 	  	if (pageId) {
 		Business.findOne({'fbPageId': pageId}, function(err, businessFound){
-	 		if(!businessFound) return console.log('lier la page');
+	 		if(!businessFound){
+	 			return console.log('lier la page');
+	 			var string = encodeURIComponent(pageId);
+	 			res.status(301).redirect('https://directhaircut.ch/fb/login?pageId='+ string).end();
+	 		}
+
 	 		if(err) return res.send(500, err);
 
 	 		console.log('réserver pour ce salon');
