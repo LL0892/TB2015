@@ -79,7 +79,8 @@ var BusinessSchema = new Schema({
     }
    ],
 
-  schedules: [ ScheduleSchema ]
+  schedules: [ ScheduleSchema ],
+  fbPageId: { type: String }
 /*  ratting: {
     nbVotes: { type: Number, default: '0' },
     nbStars: { type: Number, default: '0' }

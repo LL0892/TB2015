@@ -5,7 +5,7 @@
 'use strict';
 
 var errors = require('./components/errors');
-cors = require('cors');
+var cors = require('cors');
 
 module.exports = function(app) {
 
