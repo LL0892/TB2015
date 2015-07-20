@@ -404,27 +404,41 @@ angular.module('tbApp')
     return hour;
   }
 
-// Current date variables
+  // Current date variables
   var date = new Date();
   var d = date.getDate();
   var m = date.getMonth();
   var y = date.getFullYear();
   var h = date.getHours() + ':00:00';
 
-  var prestationDuration = getItem('step1')[0].duration;
-  var defaultHour = 8;
-  var finalHour = 8;
-  var finalMinutes = '';
+  // Generate an event with the prestation duration and the default hour
+  function generateMyRendezvous(){
+    var prestationDuration = getItem('step1')[0].duration;
+    var defaultHour = 8;
+    var finalHour = 8;
+    var finalMinutes = '';
+  
+    for (var i = prestationDuration; i >= 0; i -= 60) {
+      if (i >= 60) {
+        finalHour++;
+      }
+      if (i < 60) {
+        finalMinutes = i;
+      }
+    }
 
-  for (var i = prestationDuration; i >= 0; i -= 60) {
-    if (i >= 60) {
-      finalHour++;
-    }
-    if (i < 60) {
-      finalMinutes = i;
-    }
+  // my rendez-vous
+    $scope.myRendezvous = [
+      {
+        title : 'Votre rendez-vous',
+        start : new Date(y, m, d, defaultHour, 0),
+        end    : new Date(y, m, d, finalHour, finalMinutes),
+        color: 'green'
+      }
+    ];
+
+    return $scope.myRendezvous;
   }
-
 
 
   /* config object */
@@ -467,17 +481,9 @@ angular.module('tbApp')
   }, 1000);
 
 
-// my rendez-vous
-  $scope.myRendezvous = [
-    {
-      title : 'Votre rendez-vous',
-      start : new Date(y, m, d, defaultHour, 0),
-      end    : new Date(y, m, d, finalHour, finalMinutes),
-      color: 'green'
-    }
-  ];
 
-  $log.debug($scope.myRendezvous);
+
+  //$log.debug($scope.myRendezvous);
 
   /* event sources array*/
   $scope.eventSources = [$scope.events, $scope.myRendezvous, $scope.businessHours];
