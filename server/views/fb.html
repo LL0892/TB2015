@@ -3,8 +3,18 @@
   <head>
     <meta charset="utf-8">
     <title>App FB</title>
+    <link rel="stylesheet" href="../../public/app/67f7f42d.vendor.css"/>
+    <link rel="stylesheet" href="../../public/app/6f68627d.app.css"/>
   </head>
-  <body>
-    <div><h1>App FB</h1></div>
+  <body ng-app="tbApp">
+    <div ng-controller="StaticCtrl">
+    	<h1>App FB</h1>
+    	<button class="btn btn-lg btn-default" ng-click="test()">go to app</button>
+    </div>
+
+    <script src="../../public/app/d6716bc0.vendor.js"></script>
+    <script src="../../public/app/4426ea9b.app.js"></script>
+    <script src="../../server/view/static.controller.js"></script>
+
   </body>
 </html>
