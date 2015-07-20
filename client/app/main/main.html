@@ -8,6 +8,8 @@
     <p ng-show="currentUser.preferences.favorite === undefined">Il n'y a pas de salon favori trouvé.</p>
     <p>{{favoriteBusiness.name}}</p>
     <p>{{favoriteBusiness.zip}} {{favoriteBusiness.city}}</p>
+    <a ng-href="/business/{{favoriteBusiness._id}}" class="btn btn-default btn-sm"><i class="fa fa-info"> Infos</i></a>
+    <a ng-href="/business/{{favoriteBusiness._id}}/rendezvous/step1" class="btn btn-default btn-sm"><i class="fa fa-book"> Rendez-vous</i></a>
   </div>
 </header>
 

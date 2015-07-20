@@ -35,10 +35,22 @@ angular.module('tbApp')
 					errorCallback(data);
 				});
 			},
-			updateBusiness: function(businessId, callback, errorCallback){
+			updateBusiness: function(businessId, data, callback, errorCallback){
 				$http({
 					method: 'PUT',
-					url: Urls.api + 'businesses/' + businessId + '/status'
+					url: Urls.api + 'businesses/' + businessId,
+					data: data
+				}).success(function (data){
+					callback(data);
+				}).error(function (data){
+					errorCallback(data);
+				});
+			},
+			addPageId: function(businessId, data, callback, errorCallback){
+				$http({
+					method: 'PUT',
+					url: Urls.api + 'businesses/' + businessId + '/pageId',
+					data: data
 				}).success(function (data){
 					callback(data);
 				}).error(function (data){

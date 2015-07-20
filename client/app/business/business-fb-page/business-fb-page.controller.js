@@ -1,8 +1,28 @@
 'use strict';
 
 angular.module('tbApp')
-  .controller('BusinessFbPageCtrl', function ($scope, ezfb, $q, $log) {
-        /**
+  .controller('BusinessFbPageCtrl', function ($scope, ezfb, $q, $log, Auth, Business) {
+    $scope.business = {};
+    $scope.message = {};
+    $scope.error = {};
+
+    function getMyBusiness(data){
+      Business.showBusiness(
+        data.businessId,
+        function (data){
+          $scope.business = data;
+        },
+        function (error){
+          $scope.error = error;
+        });
+    }
+    
+    Auth.getCurrentUser(function (data){
+      return data;
+    }).then(getMyBusiness);
+
+
+    /**
      * Subscribe to 'auth.statusChange' event to response to login/logout
      */
     ezfb.Event.subscribe('auth.statusChange', function (statusRes) {
@@ -23,9 +43,9 @@ angular.module('tbApp')
        In the case you need to use the callback
       */
        ezfb.login(function () {
-       }, {scope: 'email,user_likes'})
-       .then(function () {
-         // Executes 2
+       }, {scope: 'email,user_likes,manage_pages,publish_pages'})
+       .then(function (res) {
+         $log.debug(res);
        });
     };
 
@@ -46,6 +66,58 @@ angular.module('tbApp')
        *   // Executes 2
        * })
        */
+    };
+
+    /**
+     * Send to the server the page id for further requests
+     */
+    $scope.sendPageId = function(pageId){
+      var data = {
+        fbPageId: pageId
+      };
+
+      Business.addPageId($scope.business._id,
+        data,
+        function(data){
+          $scope.business = data.business;
+          $scope.message = data.message;
+        },
+        function(error){
+          $scope.error = error;
+        });
+    };
+
+    /**
+     * Add the page tab app to my business page
+     * https://developers.facebook.com/docs/appsonfacebook/pagetabs
+     */
+    $scope.addApp = function(){
+      ezfb.ui({
+        method: 'pagetab',
+        redirect_uri: 'https://directhaircut.ch/fb/rendezvous'
+      }, 
+      function(res){
+        $log.debug(res);
+      });
+    };
+
+    /**
+     * Publish a link to my business page for mobile users
+     * 
+     */
+    $scope.publishLink = function(pageId){
+      var data = {
+        message: 'test message',
+        link: 'https://directhaircut.ch/'+$scope.business._id,
+
+      }
+
+      ezfb.api('/' + pageId + '/feed',
+        'POST',
+        data,
+        function(res){
+          $log.debug(res);
+        });
     };
 
     /**

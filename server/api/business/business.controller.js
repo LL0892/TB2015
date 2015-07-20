@@ -6,6 +6,7 @@
  * POST    /businesses              				->  createBusiness
  * GET     /businesses/:id          				->  showBusiness
  * PUT     /businesses/:id          				->  updateBusiness
+ * PUT     /businesses/:id/pageId      				->  addPageId
  --- Schedules subdocument routes ---
  * GET  	/businesses/:id/schedules 				->  getSchedules
  * POST     /businesses/:id/Schedules  				->  addSchedule
@@ -268,6 +269,29 @@ var Business = require('./business.model'),
  	});
  };
 
+ /**
+ * PUT	/businesses/:id/pageId
+ * Add the page id reference for this business
+ * restriction: 'staff'
+ */
+ exports.addPageId = function(req, res, next){
+ 	var businessId = req.user.businessId;
+
+ 	Business.findById(businessId, function (err, businessFound){
+ 		if(!businessFound) return res.status(404).json({ message : 'Ce salon n\'existe pas.' });
+ 		if(err) return res.send(500, err);
+
+ 		businessFound.fbPageId = req.body.fbPageId;
+ 		
+ 		businessFound.save(function (err, businessUpdated){
+ 			if(err) return res.send(500, err);
+ 			res.status(200).json({ 
+ 				message: 'Votre page Facebook a été réferencée avec succès.', 
+ 				business: businessUpdated 
+ 			}).end();
+ 		})
+ 	});
+ };
 
 // --- Schedules subdocument routes ------------
 

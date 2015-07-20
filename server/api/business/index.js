@@ -12,6 +12,7 @@ router.get('/', controller.getBusinesses);
 router.post('/', auth.hasRole('manager'), controller.createBusiness);
 router.get('/:id', controller.showBusiness);
 router.put('/:id', auth.hasAccess('staff'), controller.updateBusiness);
+router.put('/:id/pageId', auth.hasAccess('staff'), controller.addPageId);
 
 // --- Schedules subdocument routes ---
 router.get('/:id/schedules', auth.hasAccess('staff'), controller.getSchedules);

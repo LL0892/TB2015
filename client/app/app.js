@@ -28,7 +28,7 @@ angular.module('tbApp', [
   // Facebook plugin config
   .config(function (ezfbProvider) {
     ezfbProvider.setInitParams({
-      appId: '1451571261811947',
+      appId: '1435864036716003',
       version: 'v2.3'
     }); 
     ezfbProvider.setLocale('fr_CH'); 

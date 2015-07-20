@@ -1,3 +1,45 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
-Gérer la page Facebook
+<div class="container">
+	<div class="row">
+		<div class="col-sm-12">
+			<h1>Gérer la page Facebook du salon</h1>
+			<hr>
+
+			<h3>Se connecter à votre compte Facebook</h3>
+			<button class="btn btn-info" ng-click="login(form)">Se connecter à Facebook</button>
+			<hr>
+			
+			<!-- Infos et référencement de l'ID de page -->
+			<h3>Référencer l'identifiant de page</h3>
+			<p>Afin de pouvoir intéragir avec votre page, vous devez référencer son identifiant dans notre système.</p>
+			<p>Pour se faire, veillez réaliser les étapes suivantes :</p>
+			<ul>
+				<li>Aller sur la page Facebook de votre salon</li>
+				<li>Rendez-vous dans "Paramètres"</li>
+				<li>Cliquez sur l'onglet "Informations sur la Page"</li>
+				<li>Référencer dans le champs ci-dessous la valeur de l'attribut "Identifiant de Page Facebook"</li>
+			</ul>
+
+			<form name="form" class="form" ng-show="business.fbPageId === undefined">
+				<div class="form-group">
+					<label>Identifiant de la page Facebook</label>
+					<input class="form-control" type="text" name="pageId" ng-model="pageId" ng-minlenght="15" ng-maxlength="16" placeholder="<votre identifiant de page>" required>
+				</div>
+				<button type="submit" class="btn btn-default" ng-click="sendPageId(pageId)">Envoyer</button>
+			</form>
+			<p ng-hide="business.fbPageId === undefined"><i class="fa fa-check-circle"></i>
+ Votre identifiant de page est réferencé : <b>{{business.fbPageId}}<b></p>
+
+			<hr>
+
+			<!-- Boutons d'interation avec la page -->
+			<h3>Ajouter l'app et publier un lien sur la page du salon</h3>
+			<p ng-show="business.fbPageId === undefined"><i class="fa fa-times-circle"></i>
+Veillez réferencer l'identifiant de votre page afin de déverouiller les interactions avec votre page<b></p>
+			<button class="btn btn-default" ng-click="addApp()" ng-disabled="business.fbPageId === undefined">Ajouter l'app à ma page</button>
+			<button class="btn btn-default" ng-click="publishLink(business.fbPageId)" ng-disabled="business.fbPageId === undefined">Publier le lien sur ma page</button>
+		</div>
+		
+	</div>
+</div>
