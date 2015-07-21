@@ -7,6 +7,11 @@
 var errors = require('./components/errors');
 var cors = require('cors');
 
+var Business = require('./api/business/business.model'),
+  User = require('./api/user/user.model'),
+  SignedRequest = require('facebook-signed-request');
+  SignedRequest.secret = '1435864036716003';
+
 module.exports = function(app) {
 
   // Insert routes below
@@ -20,15 +25,40 @@ module.exports = function(app) {
 
   app.use('/auth', require('./auth'));
   
-  app.use('/fb/rendezvous', require('./api/fb'));
+  //app.use('/fb/rendezvous', require('./api/fb'));
+  app.route('/api/fb/rendezvous')
+    .post(function(req, res) {
+      var pageId = '';
+
+      //console.log(req.body.signed_request);
+      var request = req.body.signed_request;
+      var signedRequest = new SignedRequest( request );
+
+      signedRequest.parse(function (errors, request){
+        pageId = request.data.page.id;
+        console.log('rdv dans ce salon - page id :' + pageId);
+      });
+
+      var options = {
+        root: app.get('appPath'),
+        headers: {
+            //'x-timestamp': Date.now(),
+            //'x-sent': true,
+            'x-page-id': pageId
+        }
+      };
+
+      return res.sendFile('/index.html', options);
+    });
+
 
   // All undefined asset or api routes should return a 404
-  app.route('/:url(api|auth|components|app|bower_components|assets|img|fb)/*')
+  app.route('/:url(api|auth|components|app|bower_components|assets|img)/*')
    .get(errors[404]);
 
   // All other routes should redirect to the index.html
   app.route('/*')
     .get(function(req, res) {
-      res.sendfile(app.get('appPath') + '/index.html');
+      res.sendFile(app.get('appPath') + '/index.html');
     });
 };

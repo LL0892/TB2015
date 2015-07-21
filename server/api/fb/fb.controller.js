@@ -5,12 +5,9 @@
 
 'use strict';
 
-//var path = require('path');
-
 var Business = require('../business/business.model'),
-	User = require('../user/user.model');
-
-var SignedRequest = require('facebook-signed-request');
+	User = require('../user/user.model'),
+	SignedRequest = require('facebook-signed-request');
 	SignedRequest.secret = '1435864036716003';
 
 /**
@@ -37,21 +34,34 @@ exports.index = function(req, res) {
 
 	  	if (pageId) {
 			Business.findOne({'fbPageId': pageId}, function(err, businessFound){
-				// No page Id found
+		 		if(err) return res.send(500, err);
 		 		if(!businessFound){
 		 			return console.log('lier la page');
 		 		}
 
-		 		// Error
-		 		if(err) return res.send(500, err);
-
 		 		// Otherwise render first app page
 		 		console.log('rdv dans ce salon');
-		 		res.render('fb', { business: businessFound }, function (err, html) {
+/*		 		res.render('fb', { business: businessFound }, function (err, html) {
 		 			//console.log(html);
 				  	return res.send(html);
-				});
-				
+				});*/
+
+				var fileName = 'index.html';
+				var options = {
+				    root: '../../../public/',
+				    dotfiles: 'deny',
+				    headers: {
+				        //'x-timestamp': Date.now(),
+				        //'x-sent': true
+				        'x-page-id': pageId
+				    }
+				};
+				res.sendFile(fileName, options);
+/*
+				return res.status(200).json(
+			      'all ok'
+			    ).end();
+				*/
 			});
 		} 
 		else{
