@@ -79,7 +79,7 @@ angular.module('tbApp')
 			$scope.formData.canton = data.data.canton;
 			$scope.formData.street = data.data.street;
 			$scope.formData.zip = data.data.zip;
-			$scope.formData.staffs = data.data.schedules;
+			//$scope.formData.staffs = data.data.schedules;
       $scope.schedules = data.data.schedules;
 			return $scope.formData;
 		});
@@ -188,6 +188,8 @@ angular.module('tbApp')
 	$scope.selected = function (index, staff) {
 	  $scope.selectedIndex = index;
     //$scope.selectedStaff = staff._id;
+
+    $scope.formData.staff = staff;
 
     getFirstAndLastDayWeek(0);
     var request = {
@@ -493,18 +495,17 @@ angular.module('tbApp')
   }, 1000);
 
 
-
-
-  //$log.debug($scope.myRendezvous);
-
   /* event sources array*/
   $scope.eventSources = [$scope.events, $scope.myRendezvous, $scope.businessHours];
 
   // Submit page 3
   $scope.getConfirm = function(form, rendezvous){
+    form.myRendezvous = rendezvous;
+    $scope.formData = form;
+    setItem('rendezvous', form);
+
     $log.debug(form);
-    $log.debug(rendezvous);
-    //$state.go('rendezvous.step4');
+    $state.go('rendezvous.step4');
   };
 
 /* ----------------------
