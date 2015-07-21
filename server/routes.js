@@ -48,7 +48,7 @@ module.exports = function(app) {
         }
       };
 
-      return res.sendFile('/index.html', options);
+      return res.sendfile('/index.html', options);
     });
 
 
@@ -59,6 +59,6 @@ module.exports = function(app) {
   // All other routes should redirect to the index.html
   app.route('/*')
     .get(function(req, res) {
-      res.sendFile(app.get('appPath') + '/index.html');
+      res.sendfile(app.get('appPath') + '/index.html');
     });
 };
