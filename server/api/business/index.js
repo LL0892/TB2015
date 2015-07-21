@@ -41,7 +41,7 @@ router.delete('/:id/prestations/:prestationId/prices/:priceId', auth.hasAccess('
 
 // --- Rendezvous routes ---
 router.get('/:id/rendezvous', auth.hasAccess('staff'), controller.getRendezvous);
-router.post('/:id/rendezvous/search', auth.hasAccess('staff'), controller.searchRendezvous);
+router.post('/:id/rendezvous/search', auth.isAuthenticated(), controller.searchRendezvous);
 router.post('/:id/rendezvous', auth.hasAccess('staff'), controller.createRendezvous);
 router.get('/:id/rendezvous/:rdvId', auth.hasAccess('staff'), controller.showRendezvous);
 //router.put('/:id/rendezvous/:rdvId/missed', auth.hasAccess('staff'), controller.rendezvousMissed);
@@ -57,8 +57,5 @@ router.delete('/:id/notifications/:notifId', auth.hasAccess('staff'), controller
 
 // --- Test auth.hasAccess ---
 router.get('/:id/test', auth.hasAccess('staff'), controller.test);
-
-// --- Business Applicative Services ---
-router.post('/overview', auth.isAuthenticated(), controller.overview);
 
 module.exports = router;

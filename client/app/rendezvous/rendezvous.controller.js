@@ -107,6 +107,10 @@ angular.module('tbApp')
 				form.businessId,
 				function(data){
 					$scope.prestations = data.prestations;
+          for (var i = $scope.prestations.length - 1; i >= 0; i--) {
+            $scope.prestations[i].open = false;
+          };
+
 					setItem('step1', $scope.prestations);
 					return $scope.prestations;
 				},
@@ -139,14 +143,9 @@ angular.module('tbApp')
 		for (var i = tab.length - 1; i >= 0; i--) {
 			if (user.age < tab[i].ageHighLimit && user.age > tab[i].ageLowLimit) {
 				if (user.gender === tab[i].gender || tab[i].gender === 'mixte') {
-					$log.debug('le juste prix');
 					$scope.formData.prestation.prices = tab[i];
 					$scope.$apply;
-				}else{
-					$log.debug('nope2');
 				}
-			}else{
-				$log.debug('nope1');
 			}
 		}
 		$log.debug($scope.formData);
@@ -188,13 +187,20 @@ angular.module('tbApp')
 	// quand on clique sur le staff, change la classe et charge ses rendez-vous
 	$scope.selected = function (index, staff) {
 	  $scope.selectedIndex = index;
-    $scope.selectedStaff = staff._id;
+    //$scope.selectedStaff = staff._id;
 
-	  //var business = $scope.formData.business
-    
-    Staff.getRendezvous(
-      staff._id,
+    getFirstAndLastDayWeek(0);
+    var request = {
+      staffId: staff._id,
+      startDay: $scope.currentWeek.firstDay,
+      endDay: $scope.currentWeek.lastDay
+    };
+
+    Business.searchRendezvous(
+        $scope.formData.businessId,
+        request,
       function (res){
+        $log.debug(res);
         var data = res;
 
         var rendezvous = [];
@@ -218,10 +224,13 @@ angular.module('tbApp')
           }; 
           $scope.events.push(rendezvous);
         }
-        $log.debug($scope.events);
-        getFirstAndLastDayWeek(0);
+
+        //$log.debug($scope.events);
+        
         createBusinessHoursCustomEvents($scope.currentWeek.firstDay);
-        $log.debug($scope.businessHours);
+        generateMyRendezvous();
+
+        $log.debug($scope.myRendezvous);
       },
 
       function(error){
@@ -230,16 +239,19 @@ angular.module('tbApp')
 	};
 
 
+
+
+
   // Reformate la date pour rendre compatible par FullCalendar
   function parseDate (date){
     var parsedDate = moment(date).format('YYYY[-]MM[-]DD[T]HH[:]mm[:]ss');
     return parsedDate;
   }
 
-
-
-  // Calcul dynamique de la date de début de semaine et de fin
-  // weekProgression : un nombre indiquant si on avance ou recule dans le calendrier
+  /* Calcul dynamique de la date de début de semaine et de fin
+   * weekProgression : un nombre indiquant si on avance ou recule dans le calendrier
+   * return $scope.currentweek -> le jour de début, et de fin, de la semaine voulue
+  */
   function getFirstAndLastDayWeek (weekProgression){
     var currentWeekFirstDay = $scope.currentWeek.firstDay;
     var currentWeekLastDay = $scope.currentWeek.lastDay;
@@ -268,8 +280,6 @@ angular.module('tbApp')
     $scope.currentWeek.lastDay = currentWeekLastDay;
     return $scope.currentWeek;
   }
-
-
 
   // Genère les evènements de background pour les heures d'ouvertures
   // firstDayDate : une date qui correspond à la première date de la semaine
@@ -392,7 +402,6 @@ angular.module('tbApp')
 
   }
 
-
   function parseScheduleHours (string){
     var hour = String(string);
     hour = hour.substring(0, 2);
@@ -409,11 +418,12 @@ angular.module('tbApp')
   var d = date.getDate();
   var m = date.getMonth();
   var y = date.getFullYear();
-  var h = date.getHours() + ':00:00';
+  //var h = date.getHours() + ':00:00';
+  var h = '7:00:00';
 
   // Generate an event with the prestation duration and the default hour
   function generateMyRendezvous(){
-    var prestationDuration = getItem('step1')[0].duration;
+    var prestationDuration = getItem('rendezvous').prestation.duration;
     var defaultHour = 8;
     var finalHour = 8;
     var finalMinutes = '';
@@ -428,16 +438,15 @@ angular.module('tbApp')
     }
 
   // my rendez-vous
-    $scope.myRendezvous = [
-      {
+    var rendezvousToBook = {
+        id: 'your_rdv',
         title : 'Votre rendez-vous',
         start : new Date(y, m, d, defaultHour, 0),
         end    : new Date(y, m, d, finalHour, finalMinutes),
         color: 'green'
-      }
-    ];
+      };
 
-    return $scope.myRendezvous;
+    $scope.myRendezvous.push(rendezvousToBook);
   }
 
 

@@ -49,9 +49,6 @@
 
  --- Test auth.hasAccess ---
  * GET  	/businesses/:id/test 		->  test
-
- --- Business Applicative Services ---
- * POST		/businesses/:id/overview	->  overview
  */
 
 'use strict';
@@ -759,7 +756,6 @@ exports.getRendezvous = function(req, res, next){
 /**
 * POST 	/businesses/:id/rendezvous/search
 * Get a list of rendezvous for a staff member within a timeframe
-* restriction : 'staff'
 */
 exports.searchRendezvous = function(req, res, next){
 	var businessId = req.staff.businessId,
@@ -773,7 +769,6 @@ exports.searchRendezvous = function(req, res, next){
 		'startHour': {$gte: start, $lt: end}
 	}, '-__v -createdOn -updatedOn', function (err, rendezvousFound){
 		if(err) return res.send(500, err);
-		if (rendezvousFound.length <= 0) return res.status(404).json({ message : 'Il n\'y a pas de rendez-vous à afficher.' });
 
 		return res.status(200).json({ 
 			rendezvous: rendezvousFound
@@ -1148,17 +1143,3 @@ exports.test = function(req, res, next){
 		message : 'Access Granted.'
 	});
 }
-
-
-
-// --- Business Applicative Service ------------
-
-/**
-* Get a set of data for this business
-*/
-exports.overview = function(req, res, next){
-	// GET Business (+ Schedules) datas
-	// GET Staffs
-	// GET Prestations (+ Prices)
-	// GET Rendezvous futurs sur période T
-};
