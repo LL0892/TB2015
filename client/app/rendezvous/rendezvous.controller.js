@@ -439,7 +439,7 @@ angular.module('tbApp')
 
   // my rendez-vous
     var rendezvousToBook = {
-        id: 'your_rdv',
+        id: 'myRdv',
         title : 'Votre rendez-vous',
         start : new Date(y, m, d, defaultHour, 0),
         end    : new Date(y, m, d, finalHour, finalMinutes),
@@ -470,9 +470,12 @@ angular.module('tbApp')
       scrollTime : h,
       eventStartEditable: true,
       eventDurationEditable: false,
-      eventRender: $scope.eventRender,
-      eventOverlap : function(){
-
+      eventClick: function (calEvent, jsEvent, view) {
+          $log.debug('clicked');
+      },
+      eventDrop: function (event, delta, revertFunc, jsEvent, ui, view) {
+          $scope.myRendezvous[0].start = event._start._d
+          $scope.myRendezvous[0].end = event._end._d
       }
     }
   };
