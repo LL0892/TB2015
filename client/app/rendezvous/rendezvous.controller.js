@@ -187,7 +187,7 @@ angular.module('tbApp')
 	// quand on clique sur le staff, change la classe et charge ses rendez-vous
 	$scope.selected = function (index, staff) {
 	  $scope.selectedIndex = index;
-    //$scope.selectedStaff = staff._id;
+    $scope.selectedStaff = staff._id;
 
     $scope.formData.staff = staff;
 
@@ -230,7 +230,7 @@ angular.module('tbApp')
         //$log.debug($scope.events);
         
         createBusinessHoursCustomEvents($scope.currentWeek.firstDay);
-        generateMyRendezvous();
+        generateMyRendezvous(new Date());
 
         $log.debug($scope.myRendezvous);
       },
@@ -424,7 +424,18 @@ angular.module('tbApp')
   var h = '7:00:00';
 
   // Generate an event with the prestation duration and the default hour
-  function generateMyRendezvous(){
+  function generateMyRendezvous(date){
+
+    if ($scope.myRendezvous.length > 0) {
+      $scope.myRendezvous.splice(0, 1);
+      $log.debug('first element removed');
+    }
+
+    var date = date;
+    var d = date.getDate();
+    var m = date.getMonth();
+    var y = date.getFullYear();
+
     var prestationDuration = getItem('rendezvous').prestation.duration;
     var defaultHour = 8;
     var finalHour = 8;
@@ -473,14 +484,70 @@ angular.module('tbApp')
       eventStartEditable: true,
       eventDurationEditable: false,
       eventClick: function (calEvent, jsEvent, view) {
-          $log.debug('clicked');
+        $log.debug('clicked');
       },
       eventDrop: function (event, delta, revertFunc, jsEvent, ui, view) {
-          $scope.myRendezvous[0].start = event._start._d
-          $scope.myRendezvous[0].end = event._end._d
+        $scope.myRendezvous[0].start = event._start._d
+        $scope.myRendezvous[0].end = event._end._d
+      },
+      viewRender: function (view, element){
+
+        var startDay = view.start._d;
+        var endDay = view.end._d;
+
+        var request = {
+          staffId: $scope.selectedStaff,
+          startDay: startDay,
+          endDay: endDay
+        };
+
+        Business.searchRendezvous(
+          $scope.formData.businessId,
+          request,
+          function (res){
+            $log.debug(res);
+            var data = res;
+
+            var rendezvous = [];
+            var startHour = '';
+            var endHour = '';
+            for (var i = data.length - 1; i >= 0; i--) {
+              // Converstion pour des dates compatibles avec le calendrier
+              startHour = data[i].startHour;
+              startHour = parseDate(startHour);
+              endHour = data[i].endHour;
+              endHour = parseDate(endHour);
+
+              // Création de l'event background
+              rendezvous = {
+                id:    'blocked',
+                start: startHour,
+                end: endHour,
+                overlap: false,
+                rendering: 'background',
+                color: 'red'
+              }; 
+              $scope.events.push(rendezvous);
+            }
+
+            //$log.debug($scope.events);
+            
+            createBusinessHoursCustomEvents(startDay);
+            generateMyRendezvous(startDay);
+
+            $log.debug($scope.myRendezvous);
+            //$log.debug($scope.events);
+            //$log.debug($scope.businessHours);
+          },
+
+          function(error){
+            $scope.error = error;
+          });
       }
+
     }
   };
+
 
   // Change View
   $scope.renderCalender = function (calendar) {
