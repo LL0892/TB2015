@@ -286,6 +286,7 @@ angular.module('tbApp')
   // Genère les evènements de background pour les heures d'ouvertures
   // firstDayDate : une date qui correspond à la première date de la semaine
   function createBusinessHoursCustomEvents (firstDayDate){
+    $scope.businessHours.splice(0, $scope.businessHours.length);
     var day = firstDayDate;
     var businessHour = {};
     var startHour = '';
@@ -582,7 +583,27 @@ angular.module('tbApp')
 	// Submit page 4
 	$scope.bookRendezvous = function(form){
 		$log.debug(form);
-		// save le rendezvous
+
+    var data = {
+      clientId: form.user._id,
+      prestationId : form.prestation._id,
+      staffId : form.staff._id,
+      staffName: form.staff.name,
+      startHour : form.myRendezvous[0].start,
+      endHour : form.myRendezvous[0].end
+    }
+
+    Business.createRendezvous(
+      form.businessId,
+      data,
+      function(res){
+        $log.debug(res);
+      },
+      function(error){
+        $log.debug(error);
+      }
+    );
+
 		localStorageService.remove('step1', 'step2', 'rendezvous');
 		$state.go('main');
 	};

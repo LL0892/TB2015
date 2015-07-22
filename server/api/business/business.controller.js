@@ -782,9 +782,9 @@ exports.searchRendezvous = function(req, res, next){
 * restriction : 'staff'
 */
 exports.createRendezvous = function(req, res, next){
-	var businessId = req.staff.businessId,
-		staffId = req.staff._id,
-		staffName = req.staff.name,
+	var businessId = req.params.id,
+		staffId = req.body.staffId,
+		staffName = req.body.staffName,
 		prestationId = req.body.prestationId,
 		userId = req.body.clientId;
 

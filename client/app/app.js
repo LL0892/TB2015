@@ -17,6 +17,11 @@ angular.module('tbApp', [
     img: 'http://localhost:9000/server/img/'
   })
 
+  // Log config
+  .config(function($logProvider){
+    $logProvider.debugEnabled(true);
+  })
+
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider
       .otherwise('/');
