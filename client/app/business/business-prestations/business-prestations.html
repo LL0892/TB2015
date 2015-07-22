@@ -1,7 +1,8 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
 <div class=container>
-	<div class="row hidden-xs" ng-show="addForm === true">
+	<!-- Formulaire d'ajout de prestation -->
+	<div class="row hidden-xs" ng-show="addPrestationForm === true">
 		<div class="col-sm-12">
 			<h3>Ajout d'une prestation</h3>
 			<hr>
@@ -78,33 +79,55 @@
 	</div>
 
 	<div class="row hidden-xs">
-		<button class="btn btn-success" ng-click="addForm = true" ng-show="addForm === false"><i class="fa icon-tab fa-plus"></i> Ajouter une prestation</button>
+		<button class="btn btn-success" ng-click="addPrestationForm = true" ng-show="addPrestationForm === false"><i class="fa icon-tab fa-plus"></i> Ajouter une prestation</button>
 	</div>
 
 
 
 	<div class="row" ng-repeat="prestation in prestations">
 
+		<!-- Entête des prestations -->
 		<div class="row">
 			<div class="col-sm-12">
-				<h3>
+				<h3 ng-show="editPrestationForm === false">
 					{{prestation.name}} 
-					<button class="btn hidden-xs btn-primary btn-sm">Modifier</button> 
+					<button class="btn hidden-xs btn-primary btn-sm" ng-click="editPrestationCopy(prestation, $index); editPrestationForm = true">Modifier</button> 
 					<button class="btn hidden-xs btn-danger btn-sm" ng-click="deletePrestation(prestation, $index)">Supprimer</button>
 				</h3>
+
+				<div ng-show="editPrestationForm === true">
+					<input type="text" ng-model="formPrestation.name" required>
+					<button  class="btn hidden-xs btn-success btn-sm" ng-click="updatePrestation(formPrestation, initialDuration, $index)">Confirmer</button> 
+					<button class="btn hidden-xs btn-danger btn-sm" ng-click="editPrestationForm = false">Annuler</button>
+				</div>
 				
 				<hr>
 			</div>
 		</div>
 
 		<div class="row">
-			<div class="col-sm-5 hr-right">
+			
+			<!-- visu prestation -->
+			<div class="col-sm-5 hr-right" ng-show="editPrestationForm === false">
 				<h4>Description</h4>
 				<p>{{prestation.description}}</p>
 				<hr>
 				<h4>Durée</h4>
 				<p>{{prestation.duration}} minutes</p>
 			</div>
+
+			<!-- modif prestation -->
+			<div class="col-sm-5 hr-right" ng-show="editPrestationForm === true">
+				<h4>Description</h4>
+				<textarea class="form-control" ng-model="formPrestation.description"></textarea>
+				<hr>
+				<h4>Durée</h4>
+				<select class="form-control" id="duration" ng-model="initialDuration" ng-options="duration.label for duration in durations" required>
+					 <option value=""> --- Choisissez une durée --- </option>
+				</select>
+			</div>
+
+			<!-- table des prix -->
 			<div class="col-sm-7">
 				<table class="table">
 					<thead>
@@ -122,48 +145,48 @@
 						
 						<tr ng-repeat="price in prestation.prices">
 							<!-- liste affichage -->
-							<td ng-show="editPrice === false">{{price.categoryName}}</td>
-							<td ng-show="editPrice === false">{{price.gender}}</td>
-							<td ng-show="editPrice === false">{{price.ageLowLimit}}</td>
-							<td ng-show="editPrice === false">{{price.ageHighLimit}}</td>
-							<td ng-show="editPrice === false">{{price.price}}</td>
+							<td ng-show="editPriceForm === false">{{price.categoryName}}</td>
+							<td ng-show="editPriceForm === false">{{price.gender}}</td>
+							<td ng-show="editPriceForm === false">{{price.ageLowLimit}}</td>
+							<td ng-show="editPriceForm === false">{{price.ageHighLimit}}</td>
+							<td ng-show="editPriceForm === false">{{price.price}}</td>
 
 							<!-- formulaire modif -->
-							<td ng-show="editPrice === true">
+							<td ng-show="editPriceForm === true">
 								<input class="input-form-big" type="text" ng-model="form.categoryName" ng-maxlength="20" />
 							</td>
-							<td ng-show="editPrice === true">
+							<td ng-show="editPriceForm === true">
 								<select  class="input-form-select" ng-model="form.gender" required>
 									<option value="mixte" selected>mixte</option>
 								    <option value="homme">homme</option>
 								    <option value="femme">femme</option>
 								 </select>
 							</td>
-							<td ng-show="editPrice === true">
+							<td ng-show="editPriceForm === true">
 								<input class="input-form-small" type="number" ng-model="form.ageLowLimit" min="1" max="99" ngMaxlength="2" ngMinlength="1"/>
 							</td>
-							<td ng-show="editPrice === true">
+							<td ng-show="editPriceForm === true">
 								<input class="input-form-small" type="number" ng-model="form.ageHighLimit" min="1" max="99" ngMaxlength="2" ngMinlength="1" />
 							</td>
-							<td ng-show="editPrice === true">
+							<td ng-show="editPriceForm === true">
 								<input class="input-form-med" type="number" ng-model="form.price"  min="1" max="999" ngMaxlength="3" ngMinlength="1" />
 							</td>
 
 
 							<td class="hidden-xs">
 								<!-- bouton update -->
-								<div class="btn btn-success label" ng-click="editPrice = false; updatePrice(prestation._id, price._id, form)" ng-show="editPrice === true"><i class="fa icon-tab fa-check"></i></div>
-								<div class="btn btn-danger label" ng-click="editPrice = false" ng-show="editPrice === true"><i class="fa icon-tab fa-close"></i></div>
+								<div class="btn btn-success label" ng-click="editPriceForm = false; updatePrice(prestation._id, price._id, form)" ng-show="editPriceForm === true"><i class="fa icon-tab fa-check"></i></div>
+								<div class="btn btn-danger label" ng-click="editPriceForm = false" ng-show="editPriceForm === true"><i class="fa icon-tab fa-close"></i></div>
 
 								<!-- bouton visu -->
-								<div class="btn btn-primary label" ng-click="editPriceCopy(price); editPrice = true" ng-show="editPrice === false"><i class="fa icon-tab fa-pencil-square-o"></i></div>
-								<div class="btn btn-danger label" ng-click="deletePrice(prestation._id, price._id)" ng-show="editPrice === false"><i class="fa icon-tab fa-trash-o"></i></div>
+								<div class="btn btn-primary label" ng-click="editPriceCopy(price); editPriceForm = true" ng-show="editPriceForm === false"><i class="fa icon-tab fa-pencil-square-o"></i></div>
+								<div class="btn btn-danger label" ng-click="deletePrice(prestation._id, price._id, $parent.$index, $index)" ng-show="editPriceForm === false"><i class="fa icon-tab fa-trash-o"></i></div>
 							</td>
 						</tr>
 
 
 						<!-- Formulaire d'ajout -->
-						<tr ng-show="hiddenForm === false">
+						<tr ng-show="addPriceForm === true">
 							<td>
 								<input class="input-form-big" type="text" ng-model="form.categoryName" ng-maxlength="20" />
 							</td>
@@ -184,13 +207,13 @@
 								<input class="input-form-med" type="number" ng-model="form.price"  min="1" max="999" ngMaxlength="3" ngMinlength="1" />
 							</td>
 							<td class="hidden-xs">
-								<div class="btn btn-success label" ng-click="addPrice(prestation._id, form); hiddenForm=true"><i class="fa icon-tab fa-plus"></i></div>
-								<div class="btn btn-danger label" ng-click="hiddenForm=true"><i class="fa icon-tab fa-times"></i></div>
+								<div class="btn btn-success label" ng-click="addPrice(prestation._id, form); addPriceForm=false"><i class="fa icon-tab fa-plus"></i></div>
+								<div class="btn btn-danger label" ng-click="addPriceForm=false"><i class="fa icon-tab fa-times"></i></div>
 							</td>
 						</tr>
 					</tbody>
 				</table> 
-				<div class="btn btn-success btn-sm pull-right hidden-xs" ng-click="hiddenForm = false" ng-show="hiddenForm === true"><i class="fa icon-tab fa-plus"></i> Ajouter un nouveau prix</div>
+				<div class="btn btn-success btn-sm pull-right hidden-xs" ng-click="addPriceForm = true" ng-show="addPriceForm === false"><i class="fa icon-tab fa-plus"></i> Ajouter un nouveau prix</div>
 			</div>
 		</div>
 	</div>
