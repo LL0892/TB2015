@@ -530,7 +530,7 @@ exports.createPrestation = function(req, res, next){
 
  	newPrestation.prices.push({
 	  	categoryName: 'Prix par défaut',
-	  	ageLowLimit: 0,
+	  	ageLowLimit: 1,
 	  	ageHighLimit: 99,
 	  	price: 25,
 		gender: 'mixte'
@@ -687,7 +687,7 @@ exports.updatePrice = function(req, res, next){
 		if (!prestationFound) return res.status(404).json({ message : 'Prestation non existante.' });
 		if (!prestationFound.prices.id(priceId)) return res.status(404).json({ message : 'Prix demandé non existant.' });
 
-		prestationFound.prices.id(priceId).categoryName = req.body.name;
+		prestationFound.prices.id(priceId).categoryName = req.body.categoryName;
 		prestationFound.prices.id(priceId).ageLowLimit = req.body.ageLowLimit;
 		prestationFound.prices.id(priceId).ageHighLimit = req.body.ageHighLimit;
 		prestationFound.prices.id(priceId).price = req.body.price;

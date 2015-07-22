@@ -81,6 +81,12 @@ angular.module('tbApp')
         );
     };
 
+    // Copie le contenu du prix dans un scope pour l'édition
+    $scope.editPriceCopy = function(price){
+        angular.copy(price, $scope.form);
+        //$log.debug(price);
+        //$log.debug($scope.form);
+    };
 
     $scope.deletePrice= function(prestationId, priceId){
     	// loop sur $scope.prestations
@@ -96,7 +102,6 @@ angular.module('tbApp')
     		function(data){
     			$scope.message = data.message;
     			//var data = data.prestation;
-    			//$scope.updateUI(data);
     		},
     		function(data){
     			$scope.message = data;
@@ -110,7 +115,6 @@ angular.module('tbApp')
     		function(data){
     			$scope.message = data.message;
     			//var data = data.prestation;
-    			//$scope.updateUI(data);
     			$scope.hiddenForm = true;
     		},
     		function(data){
@@ -118,15 +122,31 @@ angular.module('tbApp')
     		});
     };
 
-/*    function updateUI (data){
-    	console.log('update :'+ data);
-    	var id = data._id;
-    	var res = $scope.prestations._id.indexOf(id);
+    $scope.updatePrice = function(prestationId, priceId, form){
+        var data = form;
+        //$log.debug(prestationId);
+        //$log.debug(priceId);
+        //$log.debug(form);
 
-    	if (res !== -1) {
-    		$scope.prestations[res] = data;
-    	}
-    	$scope.$apply();
-    }*/
+        Business.updatePrice(
+            $scope.user.businessId, 
+            prestationId, 
+            priceId, 
+            data, 
+            function(data){
+                // change la prestation modifiée dans l'ui
+                for (var i = $scope.prestations.length - 1; i >= 0; i--) {
+                    if ($scope.prestations[i]._id === data.prestation._id) {
+                        $scope.prestations[i] = data.prestation;
+                    }
+                };
+                
+                $log.debug($scope.prestations);
+            },
+            function(error){
+                $log.debug(error);
+            }
+         );
+    };
 
   });

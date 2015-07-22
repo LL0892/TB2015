@@ -209,7 +209,7 @@ angular.module('tbApp')
 					errorCallback(data);
 				});
 			},
-			updatePrice: function(businessId, prestationId, priceId, callback, data, errorCallback){
+			updatePrice: function(businessId, prestationId, priceId, data, callback, errorCallback){
 				$http({
 					method: 'PUT',
 					url: Urls.api + 'businesses/' + businessId + '/prestations/' + prestationId + '/prices/' + priceId, 
