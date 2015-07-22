@@ -109,7 +109,7 @@ angular.module('tbApp')
 					$scope.prestations = data.prestations;
           for (var i = $scope.prestations.length - 1; i >= 0; i--) {
             $scope.prestations[i].open = false;
-          };
+          }
 
 					setItem('step1', $scope.prestations);
 					return $scope.prestations;
@@ -488,8 +488,8 @@ angular.module('tbApp')
         $log.debug('clicked');
       },
       eventDrop: function (event, delta, revertFunc, jsEvent, ui, view) {
-        $scope.myRendezvous[0].start = event._start._d
-        $scope.myRendezvous[0].end = event._end._d
+        $scope.myRendezvous[0].start = event._start._d;
+        $scope.myRendezvous[0].end = event._end._d;
       },
       viewRender: function (view, element){
 
@@ -591,7 +591,7 @@ angular.module('tbApp')
       staffName: form.staff.name,
       startHour : form.myRendezvous[0].start,
       endHour : form.myRendezvous[0].end
-    }
+    };
 
     Business.createRendezvous(
       form.businessId,

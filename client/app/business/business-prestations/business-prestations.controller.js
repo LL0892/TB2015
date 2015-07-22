@@ -120,14 +120,14 @@ angular.module('tbApp')
         );
     };
 
-    $scope.editPrestationCopy = function(prestation, index){
+    $scope.editPrestationCopy = function(prestation){
         angular.copy(prestation, $scope.formPrestation);
 
         for (var i = $scope.durations.length - 1; i >= 0; i--) {
             if ($scope.durations[i].label === $scope.formPrestation.duration) {
                 $scope.initialDuration = $scope.durations[i];
             }
-        };
+        }
     };
 
 
@@ -150,7 +150,7 @@ angular.module('tbApp')
             function(error){
                 $log.debug(error);
             }
-        )
+        );
     };
 
     // Annuler l'action d'ajout de prestation
@@ -180,7 +180,7 @@ angular.module('tbApp')
                     if ($scope.prestations[i]._id === prestationId) {
                         $scope.prestations[i] = data.prestation;
                     }
-                };
+                }
                 $scope.form = {};
     			$scope.addPriceForm = true;
     		},
@@ -222,7 +222,7 @@ angular.module('tbApp')
                     if ($scope.prestations[i]._id === data.prestation._id) {
                         $scope.prestations[i] = data.prestation;
                     }
-                };
+                }
                 
                 $log.debug($scope.prestations);
             },

@@ -10,5 +10,5 @@ angular.module('tbApp')
 		}).error(function(){
 
 		});
-	}
+	};
 });

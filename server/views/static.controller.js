@@ -1,4 +1,4 @@
-'use strict';
+/*'use strict';
 
 angular.module('tbApp')
 .controller('StaticCtrl', function($scope) {
@@ -6,3 +6,4 @@ angular.module('tbApp')
 		console.log('click');
 	};
 });
+*/

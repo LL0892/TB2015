@@ -108,9 +108,8 @@ angular.module('tbApp')
     $scope.publishLink = function(pageId){
       var data = {
         message: 'test message',
-        link: 'https://directhaircut.ch/'+$scope.business._id,
-
-      }
+        link: 'https://directhaircut.ch/'+$scope.business._id
+      };
 
       ezfb.api('/' + pageId + '/feed',
         'POST',
