@@ -16,6 +16,12 @@ angular.module('tbApp')
     // état du formulaire d'ajout de prestation
     $scope.addForm = false;
 
+
+
+    /***********************
+     * Appel initial
+     ***********************/
+
     function getPrestations(data){
       Business.getPrestations(
         data.businessId,
@@ -31,7 +37,12 @@ angular.module('tbApp')
     	$scope.user = data;
       return data;
     }).then(getPrestations);
-    
+
+
+
+    /***********************
+     * Manipulation des prestations
+     ***********************/
 
     $scope.addPrestation = function(form) {
       $scope.submitted = true;
