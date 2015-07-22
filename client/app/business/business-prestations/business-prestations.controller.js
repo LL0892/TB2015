@@ -9,11 +9,11 @@ angular.module('tbApp')
   	$scope.prestations = {};
     // utilisateur actuel
   	$scope.user = {};
-    // fomulaire d'ajout de prix
+    // état du fomulaire d'ajout de prix
   	$scope.hiddenForm = true;
-    // formulaire d'edition de prix
+    // état du formulaire d'edition de prix
     $scope.editPrice = false;
-    // formulaire d'ajout de prestation
+    // état du formulaire d'ajout de prestation
     $scope.addForm = false;
 
     function getPrestations(data){
@@ -63,10 +63,6 @@ angular.module('tbApp')
       }
     };
 
-    $scope.cancelAddForm = function (){
-        $scope.addForm = false;
-    };
-
     $scope.deletePrestation = function(prestation, index){
         Business.deletePrestation(
             $scope.user.businessId,
@@ -81,32 +77,22 @@ angular.module('tbApp')
         );
     };
 
+    // Annuler l'action d'ajout de prestation
+    $scope.cancelAddForm = function (){
+        $scope.addForm = false;
+    };
+
+
+
+    /***********************
+     * Manipulation des prix
+     ***********************/
+
     // Copie le contenu du prix dans un scope pour l'édition
     $scope.editPriceCopy = function(price){
         angular.copy(price, $scope.form);
         //$log.debug(price);
         //$log.debug($scope.form);
-    };
-
-    $scope.deletePrice= function(prestationId, priceId){
-    	// loop sur $scope.prestations
-    	// trouver la prestation de prestationId
-    	// loop sur les prix
-    	// trouver le prix
-    	// remove le prix de l'ui
-
-    	Business.deletePrice(
-    		$scope.user.businessId,
-    		prestationId,
-    		priceId,
-    		function(data){
-    			$scope.message = data.message;
-    			//var data = data.prestation;
-    		},
-    		function(data){
-    			$scope.message = data;
-    		}
-    	);
     };
 
     $scope.addPrice = function(prestationId, data){
@@ -120,6 +106,27 @@ angular.module('tbApp')
     		function(data){
     			$scope.message = data;
     		});
+    };
+
+    $scope.deletePrice = function(prestationId, priceId){
+        // loop sur $scope.prestations
+        // trouver la prestation de prestationId
+        // loop sur les prix
+        // trouver le prix
+        // remove le prix de l'ui
+
+        Business.deletePrice(
+            $scope.user.businessId,
+            prestationId,
+            priceId,
+            function(data){
+                $scope.message = data.message;
+                //var data = data.prestation;
+            },
+            function(data){
+                $scope.message = data;
+            }
+        );
     };
 
     $scope.updatePrice = function(prestationId, priceId, form){
