@@ -40,13 +40,11 @@ module.exports = function(app) {
       });
 
       var options = {
-        root: app.get('appPath'),
-        headers: {
-            //'x-timestamp': Date.now(),
-            //'x-sent': true,
-            'x-page-id': pageId
-        }
+        root: app.get('appPath')
       };
+
+      // Créé un cookie avec l'identifiant de la page
+      res.cookie('page-id', pageId);
 
       return res.sendfile('/index.html', options);
     });
