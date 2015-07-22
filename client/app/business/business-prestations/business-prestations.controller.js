@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('tbApp')
-  .controller('BusinessPrestationsCtrl', function ($scope, Auth, Business) {
+  .controller('BusinessPrestationsCtrl', function ($scope, $log, Auth, Business) {
 
     // nouvelle prestation
     $scope.prestation = {};
@@ -47,21 +47,19 @@ angular.module('tbApp')
 
         Business.createPrestation(
         $scope.user.businessId,
-        prestationToAdd
-        )
-        .then( function() {
-          $scope.prestation = {};
-        })
-        .catch( function(err) {
-          err = err.data;
-          $scope.errors = {};
+        prestationToAdd,
+        function (data){
+            //$log.debug(data);
 
-          //Update validity of form fields that match the mongoose errors
-          angular.forEach(err.errors, function(error, field) {
-            form[field].$setValidity('mongoose', false);
-            $scope.errors[field] = error.message;
-          });
+            // Ajoute la nouvelle entrée dans l'ui
+            $scope.prestations.push(data.prestation);
+        },
+        function (error){
+            $log.debug(error);
         });
+
+        // Ferme le formulaire d'ajout
+        $scope.addForm = false;
       }
     };
 
