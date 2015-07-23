@@ -202,8 +202,26 @@ angular.module('tbApp')
         $scope.formData.businessId,
         request,
       function (res){
-        $log.debug(res);
-        var data = res;
+        //$log.debug(res);
+
+        createRendezvousTakenEvents(res);
+        //$log.debug($scope.events);
+        
+        createBusinessHoursEvents($scope.currentWeek.firstDay);
+        createMyRendezvousEvent(new Date());
+
+        //$log.debug($scope.myRendezvous);
+      },
+
+      function(error){
+        $scope.error = error;
+      });
+	};
+
+  // Créer les évènements sur les rendez-vous déjà prit pour ce staff
+  function createRendezvousTakenEvents (array){
+        $scope.events.splice(0, $scope.events.length);
+        var data = array.rendezvous;
 
         var rendezvous = [];
         var startHour = '';
@@ -226,22 +244,7 @@ angular.module('tbApp')
           }; 
           $scope.events.push(rendezvous);
         }
-
-        //$log.debug($scope.events);
-        
-        createBusinessHoursCustomEvents($scope.currentWeek.firstDay);
-        generateMyRendezvous(new Date());
-
-        $log.debug($scope.myRendezvous);
-      },
-
-      function(error){
-        $scope.error = error;
-      });
-	};
-
-
-
+  }
 
 
   // Reformate la date pour rendre compatible par FullCalendar
@@ -285,7 +288,7 @@ angular.module('tbApp')
 
   // Genère les evènements de background pour les heures d'ouvertures
   // firstDayDate : une date qui correspond à la première date de la semaine
-  function createBusinessHoursCustomEvents (firstDayDate){
+  function createBusinessHoursEvents (firstDayDate){
     $scope.businessHours.splice(0, $scope.businessHours.length);
     var day = firstDayDate;
     var businessHour = {};
@@ -425,11 +428,11 @@ angular.module('tbApp')
   var h = '7:00:00';
 
   // Generate an event with the prestation duration and the default hour
-  function generateMyRendezvous(date){
+  function createMyRendezvousEvent(date){
 
     if ($scope.myRendezvous.length > 0) {
       $scope.myRendezvous.splice(0, 1);
-      $log.debug('first element removed');
+      //$log.debug('first element removed');
     }
 
     var date = date;
@@ -506,37 +509,15 @@ angular.module('tbApp')
           $scope.formData.businessId,
           request,
           function (res){
-            $log.debug(res);
-            var data = res;
+            //$log.debug(res);
 
-            var rendezvous = [];
-            var startHour = '';
-            var endHour = '';
-            for (var i = data.length - 1; i >= 0; i--) {
-              // Converstion pour des dates compatibles avec le calendrier
-              startHour = data[i].startHour;
-              startHour = parseDate(startHour);
-              endHour = data[i].endHour;
-              endHour = parseDate(endHour);
-
-              // Création de l'event background
-              rendezvous = {
-                id:    'blocked',
-                start: startHour,
-                end: endHour,
-                overlap: false,
-                rendering: 'background',
-                color: 'red'
-              }; 
-              $scope.events.push(rendezvous);
-            }
-
+            createRendezvousTakenEvents(res);
             //$log.debug($scope.events);
             
-            createBusinessHoursCustomEvents(startDay);
-            generateMyRendezvous(startDay);
+            createBusinessHoursEvents(startDay);
+            createMyRendezvousEvent(startDay);
 
-            $log.debug($scope.myRendezvous);
+            //$log.debug($scope.myRendezvous);
             //$log.debug($scope.events);
             //$log.debug($scope.businessHours);
           },

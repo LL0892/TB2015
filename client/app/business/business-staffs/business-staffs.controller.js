@@ -88,15 +88,15 @@ angular.module('tbApp')
 
 
     $scope.createNotification = function(userId){
-    	console.log(userId);
+    	$log.debug(userId);
     	Business.createNotification(
     	$scope.businessId,
     	{receptorId: userId}, 
     	function(data){
-    		console.log(data.notification);
+    		$log.debug(data.notification);
     		var notif = $scope.notifs;
     		$scope.notifs.push(notif);
-    		console.log($scope.notifs);
+    		$log.debug($scope.notifs);
     	}, 
     	function(error){
         $scope.error = error;

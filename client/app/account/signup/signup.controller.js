@@ -1,7 +1,7 @@
 'use strict';
 
 var App = angular.module('tbApp');
-  App.controller('SignupCtrl', function ($scope, Auth, $state, $window, $http, Urls) {
+  App.controller('SignupCtrl', function ($scope, $log, $state, $window, $http, Urls, Auth) {
     $scope.user = {};
     $scope.errors = {};
 
@@ -19,9 +19,9 @@ var App = angular.module('tbApp');
 
     $scope.register = function(form) {
       $scope.submitted = true;
-      console.log($scope.user);
+      $log.debug($scope.user);
       if(form.$valid) {
-        console.log(form.$valid);
+        $log.debug(form.$valid);
 
         if ($scope.user.manager) {
           // Créer un compte manager

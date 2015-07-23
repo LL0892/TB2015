@@ -48,7 +48,7 @@ angular.module('tbApp')
   
     // Change la selection de l'animation de click
     $scope.itemClicked = function ($index) {
-      //console.log($index);
+      //$log.debug($index);
       $scope.selectedIndex = $index;
     };
 

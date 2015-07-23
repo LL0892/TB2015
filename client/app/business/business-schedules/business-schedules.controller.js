@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('tbApp')
-  .controller('BusinessSchedulesCtrl', function ($scope, Auth, Business) {
+  .controller('BusinessSchedulesCtrl', function ($scope, $log, Auth, Business) {
     $scope.schedules = {};
   	$scope.form = {};
   	$scope.user = {};
@@ -46,7 +46,7 @@ angular.module('tbApp')
    	}
 
    	$scope.selection = ids;
-   	console.log($scope.selection);
+   	$log.debug($scope.selection);
     return $scope.selection;
    };
 
@@ -66,7 +66,7 @@ angular.module('tbApp')
       $scope.selection.push(id);
     }
 
-    console.log($scope.selection);
+    $log.debug($scope.selection);
 
   };
 
@@ -94,7 +94,7 @@ angular.module('tbApp')
 
   // Add a schedule
   $scope.addSchedule = function(data){
-    console.log(data);
+    $log.debug(data);
 /*      Business.addSchedule(
       $scope.user.businessId,
       data,
@@ -122,7 +122,7 @@ angular.module('tbApp')
   };
 
   $scope.updateSchedule = function(schedule){
-    console.log(schedule);
+    $log.debug(schedule);
   };
 
 });

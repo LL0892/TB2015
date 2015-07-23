@@ -1,7 +1,7 @@
 'use strict';
 
 var App = angular.module('tbApp');
-  App.controller('BusinessCtrl', function ($scope, $http, $state, Urls, Business) {
+  App.controller('BusinessCtrl', function ($scope, $http, $state, $log, Urls, Business) {
 
     $scope.business = {};
     $scope.geodatas = {};
@@ -16,7 +16,7 @@ var App = angular.module('tbApp');
       });
 
   	$scope.register = function(form){
-  		console.log($scope.business);
+  		$log.debug($scope.business);
 
   		if (form.$valid) {
   			Business.createBusiness({

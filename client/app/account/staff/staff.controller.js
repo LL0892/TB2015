@@ -1,11 +1,11 @@
 'use strict';
 
 var App = angular.module('tbApp');
-  App.controller('StaffCtrl', function ($scope, $state, Staff) {
+  App.controller('StaffCtrl', function ($scope, $state, $log, Staff) {
   	$scope.staff={};
 
   	$scope.register = function(form){
-  		console.log($scope.staff);
+  		$log.debug($scope.staff);
 
   		if (form.$valid) {
   			Staff.createStaff({
