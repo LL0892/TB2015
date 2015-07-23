@@ -30,5 +30,4 @@ var app = angular.module('tbApp');
     /*
     * Navbar app
     */
-
   });

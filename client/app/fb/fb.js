@@ -3,18 +3,20 @@
 angular.module('tbApp')
   .config(function ($stateProvider) {
     $stateProvider
+      .state('fb-login', {
+        url: '/fb/login',
+        templateUrl: 'app/fb/account/login.html',
+        controller: 'FbLoginCtrl'
+      })
+      .state('fb-signup', {
+        url: '/fb/signup',
+        templateUrl: 'app/fb/account/signup.html',
+        controller: 'FbSignupCtrl'
+      })
       .state('fb', {
         url: '/pagetab',
         templateUrl: 'app/fb/fb.html',
         controller: 'FbCtrl'
-      })
-      .state('fb.login', {
-        url: '/login',
-        templateUrl: 'app/account/login/login.html'
-      })
-      .state('fb.signup', {
-        url: '/signup',
-        templateUrl: 'app/account/signup/signup.html'
       })
       .state('fb.step1', {
         url: '/step1',
