@@ -202,9 +202,10 @@ angular.module('tbApp')
         $scope.formData.businessId,
         request,
       function (res){
+        var array = res.rendezvous;
         //$log.debug(res);
 
-        createRendezvousTakenEvents(res);
+        createRendezvousTakenEvents(array);
         //$log.debug($scope.events);
         
         createBusinessHoursEvents($scope.currentWeek.firstDay);
@@ -221,7 +222,7 @@ angular.module('tbApp')
   // Créer les évènements sur les rendez-vous déjà prit pour ce staff
   function createRendezvousTakenEvents (array){
         $scope.events.splice(0, $scope.events.length);
-        var data = array.rendezvous;
+        var data = array;
 
         var rendezvous = [];
         var startHour = '';
@@ -509,9 +510,10 @@ angular.module('tbApp')
           $scope.formData.businessId,
           request,
           function (res){
+            var array = res.rendezvous;
             //$log.debug(res);
 
-            createRendezvousTakenEvents(res);
+            createRendezvousTakenEvents(array);
             //$log.debug($scope.events);
             
             createBusinessHoursEvents(startDay);
