@@ -37,7 +37,7 @@ var App = angular.module('tbApp');
           })
           .then( function() {
             // Account created, redirect to home
-            $state.go('main');
+            $state.go('fb.step1');
           })
           .catch( function(err) {
             err = err.data;

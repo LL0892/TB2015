@@ -3,6 +3,13 @@
 angular.module('tbApp')
   .controller('MainCtrl', function ($scope, $http, $log, $state, $cookies, Urls, Auth, Business) {
 
+    // initialiser $scopes
+    $scope.businesses = [];
+    $scope.isLoggedIn = Auth.isLoggedIn;
+    //$scope.currentUser = Auth.getCurrentUser;
+
+
+
     /*
     * Appel à l'initialisation du controller
     * Si le cookie 'page-id' existe, cela signifie que l'app facebook a été appelée coté serveur
@@ -10,26 +17,24 @@ angular.module('tbApp')
     */
     function init (){
       if ($cookies.get('page-id')) {
-        $state.go('fb');
+        $state.go('fb.step1');
+      } else{
+
+        $http.get('/api/businesses').success(function(businesses){
+          $scope.businesses = businesses;
+        });
+
+        Auth.getCurrentUser(function (data){
+          return data;
+        }).then(getFavorite);
+
       }
     }
 
+    // Initialisation du controller
     init();
 
-    // initialiser $scopes
-    $scope.businesses = [];
-    $scope.isLoggedIn = Auth.isLoggedIn;
-    //$scope.currentUser = Auth.getCurrentUser;
-
-    $http.get('/api/businesses').success(function(businesses){
-      $scope.businesses = businesses;
-    });
-
-
-    Auth.getCurrentUser(function (data){
-      return data;
-    }).then(getFavorite);
-
+    // Charge le salon favori
     function getFavorite(user){
       $scope.currentUser = user;
 
@@ -43,6 +48,7 @@ angular.module('tbApp')
             $scope.error = error;
           });
       }
+      
     }
 
     // Selection par defaut sur l'animation de click sur un salon

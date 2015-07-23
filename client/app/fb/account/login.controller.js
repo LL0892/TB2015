@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('tbApp')
-  .controller('FbLoginCtrl', function ($scope, Auth, $state) {
+  .controller('FbLoginCtrl', function ($scope, $state, Auth) {
     $scope.user = {};
     $scope.errors = {};
 
@@ -15,7 +15,7 @@ angular.module('tbApp')
         })
         .then( function() {
           // Logged in, redirect to fb app index
-          state.go('fb');
+          $state.go('fb.step1');
         })
         .catch( function(err) {
           $scope.errors.other = err.message;

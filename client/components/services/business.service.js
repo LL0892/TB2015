@@ -57,6 +57,17 @@ angular.module('tbApp')
 					errorCallback(data);
 				});
 			},
+			searchByPageId: function(pageId, callback, errorCallback){
+				$http({
+					method: 'POST',
+					url: Urls.api + 'businesses/searchByPageId',
+					data: pageId
+				}).success(function (data){
+					callback(data);
+				}).error(function (data){
+					errorCallback(data);
+				});
+			},
 
 			// schedules functions
 			getSchedules: function(businessId, callback, errorCallback){

@@ -7,6 +7,7 @@
  * GET     /businesses/:id          				->  showBusiness
  * PUT     /businesses/:id          				->  updateBusiness
  * PUT     /businesses/:id/pageId      				->  addPageId
+ * POST    /businesses/searchByPageId				->  searchByPageId
  --- Schedules subdocument routes ---
  * GET  	/businesses/:id/schedules 				->  getSchedules
  * POST     /businesses/:id/Schedules  				->  addSchedule
@@ -289,6 +290,23 @@ var Business = require('./business.model'),
  		})
  	});
  };
+
+ /**
+ * POST /businesses/searchByPageId
+ * Search an existing business with a specific facebook page id
+ */
+exports.searchByPageId = function(req, res, next){
+	var pageId = req.body.fbPageId;
+	
+	Business.findOne({'fbPageId': pageId}, function(err, businessFound){
+		if(!businessFound) return res.status(404).json({ message: 'Salon non existant.' });
+	 	if(err) return res.send(500, err);
+
+	 	businessFound.save(function(err, businessSaved){
+	 		res.status(200).json(businessSaved);
+	 	})
+ 	});
+};
 
 // --- Schedules subdocument routes ------------
 

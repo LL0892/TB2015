@@ -25,7 +25,6 @@ module.exports = function(app) {
 
   app.use('/auth', require('./auth'));
   
-  //app.use('/fb/rendezvous', require('./api/fb'));
   app.route('/api/fb/rendezvous')
     .post(function(req, res) {
       var pageId = '';
@@ -48,7 +47,6 @@ module.exports = function(app) {
 
       return res.sendfile('/index.html', options);
     });
-
 
   // All undefined asset or api routes should return a 404
   app.route('/:url(api|auth|components|app|bower_components|assets|img)/*')

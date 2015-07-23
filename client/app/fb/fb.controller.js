@@ -1,16 +1,36 @@
 'use strict';
 
 angular.module('tbApp')
-.controller('FbCtrl', function($scope, $log, $http, $cookies, Auth, Urls, Business) {
+.controller('FbCtrl', function($scope, $log, $http, $cookies, Auth, Urls, Business, AppStorage) {
 	
 	/*********
 	* Init
 	**********/
 	$scope.isLoggedIn = Auth.isLoggedIn();
 
-	$scope.pageId = $cookies.get('page-id');
-	$log.debug('fb call from page id '+ $scope.pageId);
-	//$cookies.remove('page-id');
+	if ($cookies.get('page-id')) {
+		AppStorage.set($cookies.get('page-id'));
+		//$cookies.remove('page-id');
+	}
+	
+	$log.debug('fb call from page id '+ AppStorage.get());
+	
+	if (AppStorage.get()) {
+
+		var request = {
+			fbPageId : AppStorage.get()
+		}
+
+		Business.searchByPageId(
+			request,
+			function(data){
+				$log.debug(data);
+			},
+			function(error){
+				$log.debug(error);
+			}
+		);
+	}
 
 
 	// test btn -> simulate page tab fb post request
@@ -35,4 +55,21 @@ angular.module('tbApp')
 	/********************
 	* Page 3 (confirmation)
 	*********************/
+})
+
+.factory('AppStorage', function(){
+	var pageId = '';
+	var business = {};
+
+	return{
+		get : function(){
+			return pageId;
+		},
+		set : function(id){
+			pageId = id;
+		},
+		delete : function(){
+			pageId = undefined;
+		}
+	}
 });
