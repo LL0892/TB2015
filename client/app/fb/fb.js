@@ -12,6 +12,10 @@ angular.module('tbApp')
         url: '/login',
         templateUrl: 'app/account/login/login.html'
       })
+      .state('fb.signup', {
+        url: '/signup',
+        templateUrl: 'app/account/signup/signup.html'
+      })
       .state('fb.step1', {
         url: '/step1',
         templateUrl: 'app/rendezvous/rendezvous-step2.html'

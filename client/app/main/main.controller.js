@@ -33,14 +33,16 @@ angular.module('tbApp')
     function getFavorite(user){
       $scope.currentUser = user;
 
-      Business.showBusiness(
-        $scope.currentUser.preferences.favorite,
-        function (res){
-          $scope.favoriteBusiness = res;
-        },
-        function (error){
-          $scope.error = error;
-        });
+      if ($scope.currentUser.preferences !== undefined) {
+        Business.showBusiness(
+          $scope.currentUser.preferences.favorite,
+          function (res){
+            $scope.favoriteBusiness = res;
+          },
+          function (error){
+            $scope.error = error;
+          });
+      }
     }
 
     // Selection par defaut sur l'animation de click sur un salon
