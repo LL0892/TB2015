@@ -13,6 +13,7 @@ angular.module('tbApp', [
 ])
   .constant('Urls', {
     client: '/assets/images/',
+    //api: 'https://directhaircut.ch/api/',
     api: 'http://localhost:9000/api/',
     img: 'http://localhost:9000/server/img/'
   })

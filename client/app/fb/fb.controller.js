@@ -12,7 +12,7 @@ angular.module('tbApp')
 		});
 	};
 
-	$scope.pageId = $cookies.get('page-id')
+	$scope.pageId = $cookies.get('page-id');
 	$cookies.remove('page-id');
 
 	$log.debug('fb call from page id '+ $scope.pageId);
