@@ -316,20 +316,6 @@ angular.module('tbApp')
     }
   };
 
-
-  // Change View
-  $scope.renderCalender = function (calendar) {
-      if (uiCalendarConfig.calendars[calendar]) {
-          $log.debug('.', uiCalendarConfig.calendars[calendar]);
-          uiCalendarConfig.calendars[calendar].fullCalendar('render');
-      }
-  };
-
-  $timeout(function () {
-      $scope.renderCalender('calendar');
-  }, 1000);
-
-
   /* event sources array*/
   $scope.eventSources = [$scope.events, $scope.myRendezvous, $scope.businessHours];
 

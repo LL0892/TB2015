@@ -7,6 +7,11 @@ angular.module('tbApp')
     * Private functions
     *******************/
 
+
+     /* 
+     * Rend une date lisible de fullcalendar
+     * @param : date -> une date
+     */
     function parseDate(date){
       var parsedDate = moment(date).format('YYYY[-]MM[-]DD[T]HH[:]mm[:]ss');
       return parsedDate;
@@ -36,7 +41,12 @@ angular.module('tbApp')
 
       },
 
-      // Créé des évènements aux rendez-vous déjà prit
+     /* 
+     * Créé des évènements aux rendez-vous déjà prit
+     * @param : scope -> une liste d'évènements existant
+     *          array -> un tableau de rendez-vous déjà prit
+     * @return: scopeEvents -> une liste d'évènement déjà prit
+     */
       createRendezvousTakenEvents: function(scope, array){
         var scopeEvents = scope;
         scopeEvents.splice(0, scopeEvents.length);
@@ -66,10 +76,13 @@ angular.module('tbApp')
         return scopeEvents;
       },
 
-      // Genère les evènements de background pour les heures d'ouvertures
-      // firstDayDate : une date qui correspond à la première date de la semaine
-      // scopeEvents : le scope qui va afficher les events dans le calendrier
-      // schedules : les horaires d'un salon
+     /* 
+     * Genère les evènements de background pour les heures d'ouvertures
+     * @param : schedules -> les horaires d'un salon
+     *          scopeEvents -> le scope qui va afficher les events dans le calendrier
+     *          firstDayDate -> une date qui correspond à la première date de la semaine
+     * @return: scopeBusinessHours -> une liste d'évènements qui bloque les plage hors-horaire
+     */
       createBusinessHoursEvents: function(scopeEvents, schedules, firstDayDate){
         var scopeBusinessHours = scopeEvents;
         var scopeSchedules = schedules;
@@ -193,7 +206,12 @@ angular.module('tbApp')
         return scopeBusinessHours;
       },
 
-      // Generate an event with the prestation duration and the default hour
+     /* 
+     * Genère l'évènement correspondant à son rendez-vous
+     * @param : scope -> le scope contenant son rendez-vous
+     *          date -> la date d'initialisation du rendez-vous
+     * @return: scopeMyRendezvous -> son rendez-vous
+     */
       createMyRendezvousEvent: function(scope, date){
         var scopeMyRendezvous = scope;
         if (scopeMyRendezvous.length > 0) {
