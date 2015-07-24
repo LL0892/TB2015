@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('tbApp')
-  .service('Staff', function ($resource, $http, Urls) {
+  .service('Staff', function ($http, Urls) {
   	return {
 		createStaff : function(data, callback, errorCallback){
 			$http({

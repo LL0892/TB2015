@@ -13,6 +13,11 @@ angular.module('tbApp')
         templateUrl: 'app/fb/account/signup.html',
         controller: 'FbSignupCtrl'
       })
+      .state('fb-rendezvous', {
+        url: '/fb/rendezvous',
+        templateUrl: 'app/fb/account/rdv.html',
+        controller: 'MyRendezvousCtrl'
+      })
       .state('fb', {
         url: '/pagetab',
         templateUrl: 'app/fb/fb.html',

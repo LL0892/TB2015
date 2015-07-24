@@ -20,7 +20,7 @@
         <li ng-show="isLoggedIn()"><a href="#">Bienvenu {{getCurrentUser.name}}</a></li>
         <li ng-hide="isLoggedIn()" ng-class="{active: isActive('/signup')}"><a href="/fb/signup">Créer un compte</a></li>
         <li ng-hide="isLoggedIn()" ng-class="{active: isActive('/login')}"><a href="/fb/login">Se connecter</a></li>
-        <li ng-show="isLoggedIn()" ng-class="{active: isActive('/myRendezvous')}"><a href="/myRendezvous">Mes rendez-vous</a></li>
+        <li ng-show="isLoggedIn()" ng-class="{active: isActive('/rendezvous')}"><a href="/fb/rendezvous">Mes rendez-vous</a></li>
         <!-- <li ng-show="isLoggedIn()" ng-class="{active: isActive('/settings')}"><a href="/settings"><span class="glyphicon glyphicon-cog"></span></a></li> -->
         <!-- <li ng-show="isLoggedIn()" ng-class="{active: isActive('/logout')}"><a href="" ng-click="logout()">Se déconnecter</a></li> -->
       </ul>

@@ -4,9 +4,6 @@
   <div class="row">
     <div class="col-sm-6 col-sm-offset-3 col-xs-6 col-xs-offset-3">
       <h1>Connexion</h1>
-<!--       <p>Default account is <code>test@test.com</code> / <code>test</code></p>
-      <p>Admin account is <code>admin@admin.com</code> / <code>admin</code></p>
-      <p>Staff account is <code>staff@staff.com</code> / <code>staff</code></p> -->
     </div>
     <div class="col-sm-6 col-sm-offset-3 col-xs-6 col-xs-offset-3">
       <form class="form" name="form" ng-submit="login(form)" novalidate>
@@ -25,10 +22,10 @@
 
         <div class="form-group has-error">
           <p class="help-block" ng-show="form.email.$error.required && form.password.$error.required && submitted">
-             Please enter your email and password.
+             Veillez entrer votre mot de passe et email.
           </p>
           <p class="help-block" ng-show="form.email.$error.email && submitted">
-             Please enter a valid email.
+              Veillez entrer un email valide.
           </p>
 
           <p class="help-block">{{ errors.other }}</p>

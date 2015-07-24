@@ -23,13 +23,11 @@ var Rendezvous = require('./rendezvous.model'),
 	var clientId = req.user._id;
 
 	Rendezvous.find({'client.clientId': clientId}, 
-		'-recurance -__v -createdOn -updatedOn', function (err, rendezvousFound){
+		'-__v -createdOn -updatedOn', function (err, rendezvousFound){
 		if(err) return res.send(500, err);
 		if (rendezvousFound.length <= 0) return res.status(404).json({ message : 'Il n\'y a pas de rendez-vous à afficher.' });
 
-		return res.status(200).json({ 
-			rendezvous: rendezvousFound
-		}).end();
+		return res.status(200).json(rendezvousFound).end();
 	});
  };
 
@@ -155,7 +153,7 @@ var Rendezvous = require('./rendezvous.model'),
 		rendezvousId = req.params.id;
 
 	Rendezvous.findOne({_id: rendezvousId, 'client.clientId': clientId}, 
-		'-recurance -__v -createdOn -updatedOn',  function (err, rendezvousFound){
+		'-__v -createdOn -updatedOn',  function (err, rendezvousFound){
 		if(err) return res.send(500, err);
 		if (!rendezvousFound) return res.status(404).json({ message : 'Il n\'y a pas de rendez-vous à afficher.' });
 

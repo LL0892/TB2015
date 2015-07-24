@@ -36,5 +36,11 @@ angular.module('tbApp')
         templateUrl: 'app/account/staff/staff.html',
         controller: 'StaffCtrl',
         authenticate: true
+      })
+      .state('myRendezvous', {
+        url: '/myRendezvous',
+        templateUrl: 'app/account/rdv/rdv.html',
+        controller: 'MyRendezvousCtrl',
+        authenticate: true
       });
   });

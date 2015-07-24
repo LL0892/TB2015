@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('tbApp')
-  .service('Notification', function ($resource, $http, Urls) {
+  .service('Notification', function ($http, Urls) {
   	return {
 		getNotificiations : function(callback, errorCallback){
 			$http({
