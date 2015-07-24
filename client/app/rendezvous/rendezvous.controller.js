@@ -1,12 +1,11 @@
 'use strict';
 
 angular.module('tbApp')
-.controller('RendezvousCtrl', function($scope, $timeout, $http, $state, $log, $compile, Auth, User, Business, Staff, localStorageService, uiCalendarConfig, CalendarService) {
+.controller('RendezvousCtrl', function($scope, $timeout, $http, $state, $log, Auth, User, Business, localStorageService, uiCalendarConfig, CalendarService) {
 
   $scope.isStaff = Auth.isStaff;
-  $scope.is = false;
   $scope.selectedIndex = -1;
-  $scope.minDate = Date.now();
+  $scope.staffWasSelected = false;
 
   // Données de formulaires
   $scope.formData = {};
@@ -176,6 +175,7 @@ angular.module('tbApp')
 
 	// quand on clique sur le staff, change la classe et charge ses rendez-vous
 	$scope.selected = function (index, staff) {
+    $scope.staffWasSelected = true;
 	  $scope.selectedIndex = index;
     $scope.selectedStaff = staff._id;
 
@@ -277,34 +277,40 @@ angular.module('tbApp')
       },
       viewRender: function (view, element){
 
-        var startDay = view.start._d;
-        var endDay = view.end._d;
+        if ($scope.staffWasSelected) {
 
-        var request = {
-          staffId: $scope.selectedStaff,
-          startDay: startDay,
-          endDay: endDay
-        };
+          var startDay = view.start._d;
+          var endDay = view.end._d;
 
-        Business.searchRendezvous(
-          $scope.formData.businessId,
-          request,
-          function (res){
-            //$log.debug(res);
-            var array = res.rendezvous;
+          var request = {
+            staffId: $scope.selectedStaff,
+            startDay: startDay,
+            endDay: endDay
+          };
 
-            $scope.events = CalendarService.createRendezvousTakenEvents($scope.events, array);            
-            $scope.businessHours = CalendarService.createBusinessHoursEvents($scope.businessHours, $scope.schedules, startDay);
-            $scope.myRendezvous = CalendarService.createMyRendezvousEvent($scope.myRendezvous, startDay);
+          Business.searchRendezvous(
+            $scope.formData.businessId,
+            request,
+            function (res){
+              //$log.debug(res);
+              var array = res.rendezvous;
 
-            $log.debug($scope.events);
-            $log.debug($scope.businessHours);
-            $log.debug($scope.myRendezvous);
-          },
+              $scope.events = CalendarService.createRendezvousTakenEvents($scope.events, array);            
+              $scope.businessHours = CalendarService.createBusinessHoursEvents($scope.businessHours, $scope.schedules, startDay);
+              $scope.myRendezvous = CalendarService.createMyRendezvousEvent($scope.myRendezvous, startDay);
 
-          function(error){
-            $scope.error = error;
-          });
+              $log.debug($scope.events);
+              $log.debug($scope.businessHours);
+              $log.debug($scope.myRendezvous);
+            },
+
+            function(error){
+              $scope.error = error;
+            });
+
+        } else {
+          $log.debug('rien à afficher.');
+        }
       }
 
     }
