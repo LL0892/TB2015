@@ -515,10 +515,9 @@ exports.deleteStaff = function(req, res, next){
 /**
 * GET 	/businesses/:id/prestations
 * Get a list of prestations for this business
-* restriction : 'staff'
 */
 exports.getPrestations = function(req, res, next){
-	var businessId = req.staff.businessId;
+	var businessId = req.params.id;
 
 	Prestation.find({businessId : businessId}, function (err, prestationsFound){
 		if(err) return res.send(500, err);

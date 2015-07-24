@@ -1,17 +1,17 @@
 <div ng-include="'components/navbar/navbar-fb.html'"></div>
 
 <div class="container">
-	<h1>Bienvenu sur l'app Facebook</h1>
+	<h1>Module de réservation de "{{formData.business.name}}"</h1>
 	<hr>
 
 	<button ng-click="fb()">test fb</button>
 
 	<div class="row">
-		<div class="col-sm-12" ng-hide="isLoggedIn">
-			Veillez vous connecter afin de prendre rendez-vous chez
+		<div class="col-sm-12" ng-hide="isLoggedIn()">
+			Veillez vous connecter afin de prendre rendez-vous chez "{{formData.business.name}}".
 		</div>
 
-		<div class="col-sm-12" ng-show="isLoggedIn">
+		<div class="col-sm-12" ng-show="isLoggedIn()">
 
 
 			<div id="form-container">
