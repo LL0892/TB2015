@@ -278,9 +278,9 @@ angular.module('tbApp')
       viewRender: function (view, element){
 
         if ($scope.staffWasSelected) {
-
-          var startDay = view.start._d;
-          var endDay = view.end._d;
+          //$log.info(view);
+          var startDay = moment(view.start._d).subtract(2, 'hours')._d;
+          var endDay = moment(view.end._d).subtract(2, 'hours')._d;
 
           var request = {
             staffId: $scope.selectedStaff,

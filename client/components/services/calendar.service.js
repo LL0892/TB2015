@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('tbApp')
-  .factory('CalendarService', function(uiCalendarConfig, localStorageService){
+  .factory('CalendarService', function(uiCalendarConfig, localStorageService, $log){
 
     /******************
     * Private functions
@@ -84,6 +84,7 @@ angular.module('tbApp')
      * @return: scopeBusinessHours -> une liste d'évènements qui bloque les plage hors-horaire
      */
       createBusinessHoursEvents: function(scopeEvents, schedules, firstDayDate){
+        //$log.info(firstDayDate);
         var scopeBusinessHours = scopeEvents;
         var scopeSchedules = schedules;
 
