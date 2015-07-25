@@ -62,13 +62,7 @@ angular.module('tbApp')
   // Stocker les infos du salon
   Auth.getCurrentUser(function(user){
 		$http.get('/api/businesses/'+user.businessId).then(function(data){
-			$scope.formData.businessId = data.data._id;
-			$scope.formData.businessName = data.data.name;
-			$scope.formData.city = data.data.city;
-			$scope.formData.canton = data.data.canton;
-			$scope.formData.street = data.data.street;
-			$scope.formData.zip = data.data.zip;
-			//$scope.formData.staffs = data.data.schedules;
+      $scope.formData.business = data;
       $scope.schedules = data.data.schedules;
 			return $scope.formData;
 		});
@@ -149,7 +143,7 @@ angular.module('tbApp')
 			// sauvegarde le formulaire dans le local storage
 			setItem('rendezvous', form);
 
-			Business.getStaffs($scope.formData.businessId,
+			Business.getStaffs($scope.formData.business._id,
 				function(datas){
 					$scope.staffs = datas.staffs;
 					setItem('step2', $scope.staffs);
@@ -189,7 +183,7 @@ angular.module('tbApp')
     };
 
     Business.searchRendezvous(
-        $scope.formData.businessId,
+        $scope.formData.business._id,
         request,
       function (res){
         //$log.debug(res);
@@ -289,7 +283,7 @@ angular.module('tbApp')
           };
 
           Business.searchRendezvous(
-            $scope.formData.businessId,
+            $scope.formData.business._id,
             request,
             function (res){
               //$log.debug(res);
@@ -320,12 +314,11 @@ angular.module('tbApp')
   $scope.eventSources = [$scope.events, $scope.myRendezvous, $scope.businessHours];
 
   // Submit page 3
-  $scope.getConfirm = function(form, rendezvous){
-    form.myRendezvous = rendezvous;
-    $scope.formData = form;
-    setItem('rendezvous', form);
+  $scope.getConfirm = function(rendezvous){
+    $scope.formData.myRendezvous = rendezvous;
+    setItem('rendezvous', $scope.formData);
 
-    $log.debug(form);
+    $log.debug($scope.formData);
     $state.go('rendezvous.step4');
   };
 

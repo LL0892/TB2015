@@ -28,11 +28,6 @@ angular.module('tbApp')
       return hour;
     }
 
-    // Accès au local storage
-    function getItem(key) {
-      return localStorageService.get(key);
-    }
-
     /*****************
     * Public functions
     ******************/
@@ -211,9 +206,10 @@ angular.module('tbApp')
      * Genère l'évènement correspondant à son rendez-vous
      * @param : scope -> le scope contenant son rendez-vous
      *          date -> la date d'initialisation du rendez-vous
+     *          prestation -> la prestation du rendez-vous
      * @return: scopeMyRendezvous -> son rendez-vous
      */
-      createMyRendezvousEvent: function(scope, date){
+      createMyRendezvousEvent: function(scope, date, prestation){
         var scopeMyRendezvous = scope;
         if (scopeMyRendezvous.length > 0) {
           scopeMyRendezvous.splice(0, 1);
@@ -225,7 +221,7 @@ angular.module('tbApp')
         var m = date.getMonth();
         var y = date.getFullYear();
 
-        var prestationDuration = getItem('rendezvous').prestation.duration;
+        var prestationDuration = prestation.duration;
         var defaultHour = 8;
         var finalHour = 8;
         var finalMinutes = '';

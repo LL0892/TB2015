@@ -467,10 +467,9 @@ exports.deleteSchedule = function(req, res, next){
 /**
 * GET	/businesses/:id/staffs
 * Get a list of staffs for this business
-* restriction : 'staff'
 */
 exports.getStaffs = function(req, res, next){
-	var businessId = req.staff.businessId;
+	var businessId = req.params.id;
 
 	Staff.find({businessId : businessId}, function (err, staffsFound){
 		if(err) return res.send(500, err);
@@ -775,7 +774,7 @@ exports.getRendezvous = function(req, res, next){
 * Get a list of rendezvous for a staff member within a timeframe
 */
 exports.searchRendezvous = function(req, res, next){
-	var businessId = req.staff.businessId,
+	var businessId = req.params.id,
 		staffId = req.body.staffId,
 		start = req.body.startDay,
 		end = req.body.endDay;
