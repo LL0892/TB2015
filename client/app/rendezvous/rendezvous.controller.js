@@ -235,10 +235,10 @@ angular.module('tbApp')
   }
 
   // Current date variables
-  var date = new Date();
-  var d = date.getDate();
-  var m = date.getMonth();
-  var y = date.getFullYear();
+  //var date = new Date();
+  //var d = date.getDate();
+  //var m = date.getMonth();
+  //var y = date.getFullYear();
   //var h = date.getHours() + ':00:00';
   var h = '7:00:00';
 

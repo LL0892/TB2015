@@ -52,13 +52,11 @@ angular.module('tbApp')
 	* Page 1 (prestation)
 	*********************/
 
-
-
 	if (AppStorage.get()) {
 
 		var request = {
 			fbPageId : AppStorage.get()
-		}
+		};
 
 		// Va chercher le salon
 		Business.searchByPageId(
@@ -137,6 +135,7 @@ angular.module('tbApp')
 	};
 
 
+
 	/********************
 	* Page 2 (calendar/staff)
 	*********************/
@@ -208,13 +207,11 @@ angular.module('tbApp')
 	    return $scope.currentWeek;
 	}
 
-
-
 	// Current date variables
-	var date = new Date();
-	var d = date.getDate();
-	var m = date.getMonth();
-	var y = date.getFullYear();
+	//var date = new Date();
+	//var d = date.getDate();
+	//var m = date.getMonth();
+	//var y = date.getFullYear();
 	//var h = date.getHours() + ':00:00';
 	var h = '7:00:00';
 
@@ -290,10 +287,9 @@ angular.module('tbApp')
 	$scope.eventSources = [$scope.events, $scope.myRendezvous, $scope.businessHours];
 
 	// Submit page 2
-	$scope.getConfirm = function(form, rendezvous){
-	  //form.myRendezvous = rendezvous;
+	$scope.getConfirm = function(rendezvous){
 	  $scope.formData.myRendezvous = rendezvous;
-	  //setItem('rendezvous', form);	  
+	  //setItem('rendezvous', $scope.formData);	  
 	  $log.debug($scope.formData);	  
 	  $state.go('fb.step3');
 	};
@@ -305,32 +301,30 @@ angular.module('tbApp')
 	$scope.bookRendezvous = function(form){
 		$log.debug(form);
 
-    var data = {
-      clientId: form.user._id,
-      prestationId : form.prestation._id,
-      staffId : form.staff._id,
-      staffName: form.staff.name,
-      startHour : form.myRendezvous[0].start,
-      endHour : form.myRendezvous[0].end
-    };
+	    var data = {
+	      clientId: form.user._id,
+	      prestationId : form.prestation._id,
+	      staffId : form.staff._id,
+	      staffName: form.staff.name,
+	      startHour : form.myRendezvous[0].start,
+	      endHour : form.myRendezvous[0].end
+	    };
 
-    Business.createRendezvous(
-      form.business._id,
-      data,
-      function(res){
-        $log.debug(res);
-      },
-      function(error){
-        $log.debug(error);
-      }
-    );
+	    Business.createRendezvous(
+	      form.business._id,
+	      data,
+	      function(res){
+	        $log.debug(res);
+	      },
+	      function(error){
+	        $log.debug(error);
+	      }
+	    );
 
-	//localStorageService.remove('step1', 'step2', 'rendezvous');
-	$state.go('fb-rendezvous');
+		$state.go('fb-rendezvous');
 	};
 
 	$scope.cancelRendezvous = function(){
-		//localStorageService.remove('step1', 'step2', 'rendezvous');
 		$state.go('fb-rendezvous');
 	};
 
@@ -353,5 +347,5 @@ angular.module('tbApp')
 		delete : function(){
 			pageId = undefined;
 		}
-	}
+	};
 });

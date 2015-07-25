@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('tbApp')
-  .factory('CalendarService', function(uiCalendarConfig, localStorageService, $log){
+  .factory('CalendarService', function(localStorageService, $log){
 
     /******************
     * Private functions
