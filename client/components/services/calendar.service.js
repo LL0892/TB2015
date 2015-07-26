@@ -1,13 +1,11 @@
 'use strict';
 
 angular.module('tbApp')
-  .factory('CalendarService', function(localStorageService, $log){
+  .factory('CalendarService', function($log){
 
     /******************
     * Private functions
     *******************/
-
-
      /* 
      * Rend une date lisible de fullcalendar
      * @param : date -> une date
@@ -32,9 +30,6 @@ angular.module('tbApp')
     * Public functions
     ******************/
     return {
-      initCalendar: function(){
-
-      },
 
      /* 
      * Créé des évènements aux rendez-vous déjà prit
