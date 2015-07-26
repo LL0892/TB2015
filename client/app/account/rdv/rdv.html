@@ -18,8 +18,8 @@
 						<th>Prestation</th>
 					</tr>
 				</thead>
-				<tbody ng-repeat="rdv in rendezvous">
-					<tr>
+				<tbody>
+					<tr ng-repeat="rdv in rendezvous">
 						<td>{{rdv.business.businessName}}</td>
 						<td>{{rdv.staff.staffName}}</td>
 						<td>{{rdv.client.clientName}}</td>
