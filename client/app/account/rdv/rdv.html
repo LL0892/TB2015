@@ -5,36 +5,30 @@
 		<div class="col-sm-8 col-sm-offset-2">
 			<h1>Mes rendez-vous</h1>
 		</div>
-
-
-
+		
 		<div class="col-sm-8 col-sm-offset-2">
-
-			<div ng-repeat="rdv in rendezvous">
-				<table class="table">
-					<thead>
-						<tr>
-							<th>Salon</th>
-							<th>Staff</th>
-							<th>Client</th>
-							<th>Débute</th>
-							<th>Fini</th>
-							<th>Prestation</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>{{rdv.business.businessName}}</td>
-							<td>{{rdv.staff.staffName}}</td>
-							<td>{{rdv.client.clientName}}</td>
-							<td>{{rdv.startHour}}</td>
-							<td>{{rdv.endHour}}</td>
-							<td>{{rdv.prestation.prestationRdvName}}</td>
-						</tr>
-					</tbody>
-
-				</table>
-			</div>
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Salon</th>
+						<th>Staff</th>
+						<th>Client</th>
+						<th>Débute</th>
+						<th>Fini</th>
+						<th>Prestation</th>
+					</tr>
+				</thead>
+				<tbody ng-repeat="rdv in rendezvous">
+					<tr>
+						<td>{{rdv.business.businessName}}</td>
+						<td>{{rdv.staff.staffName}}</td>
+						<td>{{rdv.client.clientName}}</td>
+						<td>{{rdv.startHour}}</td>
+						<td>{{rdv.endHour}}</td>
+						<td>{{rdv.prestation.prestationRdvName}}</td>
+					</tr>
+				</tbody>
+			</table>
 		</div>
 	</div>
 </div>

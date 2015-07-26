@@ -73,17 +73,12 @@ angular.module('tbApp')
 			        	for (var i = $scope.prestations.length - 1; i >= 0; i--) {
 			        	  $scope.prestations[i].open = false;
 			        	}
-
-			        	//$log.debug($scope.prestations);
 			        	return $scope.prestations;
 					},
 					function(error){
 						$log.debug(error);
 					}
 				);
-
-
-
 			},
 			function(error){
 				$log.debug(error);
@@ -243,7 +238,6 @@ angular.module('tbApp')
 		   $scope.myRendezvous[0].end = event._end._d;
 		 },
 		 viewRender: function (view, element){
-
 		  if ($scope.staffWasSelected) {
 		     //$log.info(view);
 		     var startDay = moment(view.start._d).subtract(2, 'hours')._d;
@@ -264,7 +258,7 @@ angular.module('tbApp')
 
 		        $scope.events = CalendarService.createRendezvousTakenEvents($scope.events, array);            
 		         $scope.businessHours = CalendarService.createBusinessHoursEvents($scope.businessHours, $scope.schedules, startDay);
-		         $scope.myRendezvous = CalendarService.createMyRendezvousEvent($scope.myRendezvous, startDay);
+		         $scope.myRendezvous = CalendarService.createMyRendezvousEvent($scope.myRendezvous, startDay, $scope.formData.prestation);
 
 		        $log.debug($scope.events);
 		         $log.debug($scope.businessHours);
@@ -279,7 +273,6 @@ angular.module('tbApp')
 		     $log.debug('rien à afficher.');
 		   }
 		 }
-
 		}
 	};
 

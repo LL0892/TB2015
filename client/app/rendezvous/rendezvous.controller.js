@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('tbApp')
-.controller('RendezvousCtrl', function($scope, $timeout, $http, $state, $log, Auth, User, Business, localStorageService, uiCalendarConfig, CalendarService) {
+.controller('RendezvousCtrl', function($scope, $http, $state, $log, Auth, User, Business, localStorageService, uiCalendarConfig, CalendarService) {
 
   $scope.isStaff = Auth.isStaff;
   $scope.selectedIndex = -1;
@@ -62,7 +62,7 @@ angular.module('tbApp')
   // Stocker les infos du salon
   Auth.getCurrentUser(function(user){
 		$http.get('/api/businesses/'+user.businessId).then(function(data){
-      $scope.formData.business = data;
+      $scope.formData.business = data.data;
       $scope.schedules = data.data.schedules;
 			return $scope.formData;
 		});
@@ -87,7 +87,7 @@ angular.module('tbApp')
 		// If user is chosen
 		if (form.user !== undefined) {
 			Business.getPrestations(
-				form.businessId,
+				form.business._id,
 				function(data){
 					$scope.prestations = data.prestations;
           for (var i = $scope.prestations.length - 1; i >= 0; i--) {
@@ -191,7 +191,7 @@ angular.module('tbApp')
 
         $scope.events = CalendarService.createRendezvousTakenEvents($scope.events, array);            
         $scope.businessHours = CalendarService.createBusinessHoursEvents($scope.businessHours, $scope.schedules, $scope.currentWeek.firstDay);
-        $scope.myRendezvous = CalendarService.createMyRendezvousEvent($scope.myRendezvous, new Date());
+        $scope.myRendezvous = CalendarService.createMyRendezvousEvent($scope.myRendezvous, new Date(), $scope.formData.prestation);
 
         $log.debug($scope.events);
         $log.debug($scope.businessHours);
@@ -218,16 +218,16 @@ angular.module('tbApp')
     }
 
     // On avance d'une semaine
-    if (weekProgression > 0) {
-      currentWeekFirstDay = moment().add(weekProgression, 'weeks').startOf('isoWeek')._d;
-      currentWeekLastDay = moment().add(weekProgression, 'weeks').endOf('isoWeek')._d;
-    }
+    //if (weekProgression > 0) {
+    //  currentWeekFirstDay = moment().add(weekProgression, 'weeks').startOf('isoWeek')._d;
+    //  currentWeekLastDay = moment().add(weekProgression, 'weeks').endOf('isoWeek')._d;
+    //}
 
     // On recule d'une semaine
-    if (weekProgression < 0) {
-      currentWeekFirstDay = moment().subtract(1, 'weeks').startOf('isoWeek')._d;
-      currentWeekLastDay = moment().subtract(1, 'weeks').endOf('isoWeek')._d;
-    }
+    //if (weekProgression < 0) {
+    //  currentWeekFirstDay = moment().subtract(1, 'weeks').startOf('isoWeek')._d;
+    //  currentWeekLastDay = moment().subtract(1, 'weeks').endOf('isoWeek')._d;
+    //}
 
     $scope.currentWeek.firstDay = currentWeekFirstDay;
     $scope.currentWeek.lastDay = currentWeekLastDay;
@@ -291,7 +291,7 @@ angular.module('tbApp')
 
               $scope.events = CalendarService.createRendezvousTakenEvents($scope.events, array);            
               $scope.businessHours = CalendarService.createBusinessHoursEvents($scope.businessHours, $scope.schedules, startDay);
-              $scope.myRendezvous = CalendarService.createMyRendezvousEvent($scope.myRendezvous, startDay);
+              $scope.myRendezvous = CalendarService.createMyRendezvousEvent($scope.myRendezvous, startDay, $scope.formData.prestation);
 
               $log.debug($scope.events);
               $log.debug($scope.businessHours);
