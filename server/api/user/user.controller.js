@@ -1,15 +1,15 @@
 /**
  * Using Rails-like standard naming convention for endpoints.
  * GET     /users                   ->  index
- * GET     /users/me                ->  me
- * PUT     /users/me                ->  update
  * POST    /users                   ->  create
  * POST    /users/manager           ->  createManager
+ * GET     /users/me                ->  me
+ * PUT     /users/me                ->  update
  * GET     /users/:id               ->  show
  * DELETE  /users/:id               ->  destroy
  * PUT     /users/:id/password      ->  changePassword
  * PUT     /users/:id/email         ->  changeEmail
- * PUT     /users/:id/prefDisplay   ->  preferenceDisplay
+ * PUT     /users/:id/prefDisplay   ->  preferenceDisplay (unused)
  * PUT     /users/:id/prefFavorite  ->  preferenceFavorite
  */
 
@@ -26,6 +26,7 @@ var validationError = function(res, err) {
 };
 
 /**
+ * GET     /users       ->  index
  * Get list of users
  * restriction: 'staff'
  */
@@ -44,6 +45,73 @@ exports.index = function(req, res) {
 };
 
 /**
+* POST    /users          ->  create
+* Creates a new user
+*/
+exports.create = function (req, res, next) {
+  var newUser = new User({
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    email: req.body.email,
+    dateOfBirth: req.body.dateOfBirth,
+    gender: req.body.gender,
+    password: req.body.password,
+    phone: req.body.phone,
+    mobile: req.body.mobile,
+    imageProfileURL: req.body.imageProfileURL,
+    zip: req.body.zip,
+    city: req.body.city,
+    canton: req.body.canton,
+    street: req.body.street,
+    preferences: {
+      homeDisplay: 'list'
+    },
+    provider: 'local',
+    roles : 'user'
+  });
+  //newUser.provider = 'local';
+  //newUser.roles = 'user';
+  newUser.save(function(err, user) {
+    if (err) return validationError(res, err);
+    var token = jwt.sign({_id: user._id }, config.secrets.session, { expiresInMinutes: 60*15 });
+    return res.status(201).json({ token: token }).end();
+  });
+};
+
+/**
+* POST    /users/manager           ->  createManager
+* Create a new user with manager roles
+*/
+exports.createManager = function (req, res, next){
+  var newUser = new User({
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    email: req.body.email,
+    dateOfBirth: req.body.dateOfBirth,
+    gender: req.body.gender,
+    password: req.body.password,
+    phone: req.body.phone,
+    mobile: req.body.mobile,
+    imageProfileURL: req.body.imageProfileURL,
+    zip: req.body.zip,
+    city: req.body.city,
+    canton: req.body.canton,
+    street: req.body.street,
+    preferences: {
+      homeDisplay: 'list'
+    },
+    provider: 'local',
+    roles: ['user', 'staff', 'manager']
+  });
+  newUser.save(function(err, user) {
+    if (err) return validationError(res, err);
+    var token = jwt.sign({_id: user._id }, config.secrets.session, { expiresInMinutes: 60*15 });
+    return res.status(201).json({ token: token }).end();
+  });
+};
+
+/**
+* GET     /users/me                ->  me
 * Get my profile (and staff profile when existant)
 */
 exports.me = function(req, res, next) {
@@ -62,6 +130,7 @@ exports.me = function(req, res, next) {
 };
 
 /**
+ * PUT     /users/me                ->  update
  * Update my user profile
  */
 exports.update = function(req, res, next) {
@@ -96,70 +165,7 @@ exports.update = function(req, res, next) {
 };
 
 /**
-* Creates a new user
-*/
-exports.create = function (req, res, next) {
-  var newUser = new User({
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    email: req.body.email,
-    dateOfBirth: req.body.dateOfBirth,
-    gender: req.body.gender,
-    password: req.body.password,
-    phone: req.body.phone,
-    mobile: req.body.mobile,
-    imageProfileURL: req.body.imageProfileURL,
-    zip: req.body.zip,
-    city: req.body.city,
-    canton: req.body.canton,
-    street: req.body.street,
-    preferences: {
-      homeDisplay: 'list'
-    },
-    provider: 'local',
-    roles : 'user'
-  });
-  //newUser.provider = 'local';
-  //newUser.roles = 'user';
-  newUser.save(function(err, user) {
-    if (err) return validationError(res, err);
-    var token = jwt.sign({_id: user._id }, config.secrets.session, { expiresInMinutes: 60*15 });
-    return res.status(201).json({ token: token }).end();
-  });
-};
-
-/**
-* Create a new user with manager roles
-*/
-exports.createManager = function (req, res, next){
-  var newUser = new User({
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    email: req.body.email,
-    dateOfBirth: req.body.dateOfBirth,
-    gender: req.body.gender,
-    password: req.body.password,
-    phone: req.body.phone,
-    mobile: req.body.mobile,
-    imageProfileURL: req.body.imageProfileURL,
-    zip: req.body.zip,
-    city: req.body.city,
-    canton: req.body.canton,
-    street: req.body.street,
-    preferences: {
-      homeDisplay: 'list'
-    },
-    provider: 'local',
-    roles: ['user', 'staff', 'manager']
-  });
-  newUser.save(function(err, user) {
-    if (err) return validationError(res, err);
-    var token = jwt.sign({_id: user._id }, config.secrets.session, { expiresInMinutes: 60*15 });
-    return res.status(201).json({ token: token }).end();
-  });
-};
-
-/**
+ * GET     /users/:id               ->  show
  * Get a single user
  */
 exports.show = function (req, res, next) {
@@ -175,6 +181,7 @@ exports.show = function (req, res, next) {
 };
 
 /**
+ * DELETE  /users/:id               ->  destroy
  * Deletes a user
  * restriction: 'admin'
  */
@@ -186,6 +193,7 @@ exports.destroy = function(req, res, next) {
 };
 
 /**
+ * PUT     /users/:id/password      ->  changePassword
  * Change a users password
  */
 exports.changePassword = function(req, res, next) {
@@ -209,6 +217,7 @@ exports.changePassword = function(req, res, next) {
 };
 
 /**
+ * PUT     /users/:id/email  ->  changeEmail
  * Change a user email
  */
 exports.changeEmail = function(req, res, next) {
@@ -229,8 +238,8 @@ exports.changeEmail = function(req, res, next) {
 };
 
 /**
-* Update my home display preferences
 * PUT     /users/:id/prefDisplay   ->  preferenceDisplay
+* Update my home display preferences
 * UNUSED IN UI
 */
 exports.preferenceDisplay = function(req, res, next) {
@@ -250,8 +259,8 @@ exports.preferenceDisplay = function(req, res, next) {
 };
 
 /**
-* Update my home favorite business preferences
 * PUT     /users/:id/prefFavorite  ->  preferenceFavorite
+* Update my home favorite business preferences
 */
 exports.preferenceFavorite = function(req, res, next){
   var userId = req.user._id;
