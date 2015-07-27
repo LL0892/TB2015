@@ -18,12 +18,12 @@ var ScheduleSchema = new Schema({
   endHour: { type: String },
   description: { type: String },
   workingDay: { type: Boolean, default: true },
-  staffs: [
+/*  staffs: [
     { 
       staffId : { type: Schema.Types.ObjectId, ref: 'staff' },
       staffName : { type: String }
     }
-  ]
+  ]*/
 });
 
 /**

@@ -59,26 +59,28 @@
 		<button class="btn btn-success" ng-click="addPrestationForm = true" ng-show="addPrestationForm === false"><i class="fa icon-tab fa-plus"></i> Ajouter une prestation</button>
 	</div>
 
-
+	<hr class="hidden-xs">
 
 	<div class="row" ng-repeat="prestation in prestations">
 
 		<!-- Entête des prestations -->
 		<div class="row">
 			<div class="col-sm-12">
+				<!-- visu -->
 				<h3 ng-show="editPrestationForm === false">
 					{{prestation.name}} 
 					<button class="btn hidden-xs btn-primary btn-sm" ng-click="editPrestationCopy(prestation); editPrestationForm = true">Modifier</button> 
 					<button class="btn hidden-xs btn-danger btn-sm" ng-click="deletePrestation(prestation, $index)">Supprimer</button>
 				</h3>
 
-				<div ng-show="editPrestationForm === true">
-					<input type="text" ng-model="formPrestation.name" required>
-					<button  class="btn hidden-xs btn-success btn-sm" ng-click="updatePrestation(formPrestation, initialDuration, $index)">Confirmer</button> 
+				<!-- modif -->
+				<div ng-show="editPrestationForm === true" class="col-sm-5">
+					<button  class="btn hidden-xs btn-success btn-sm" ng-click="updatePrestation(formPrestation, initialDuration)">Confirmer</button> 
 					<button class="btn hidden-xs btn-danger btn-sm" ng-click="editPrestationForm = false">Annuler</button>
+					<input type="text" class="form-control" ng-model="formPrestation.name" required>
 				</div>
 				
-				<hr>
+				<hr class="hidden-xs col-sm-12">
 			</div>
 		</div>
 
@@ -88,7 +90,7 @@
 			<div class="col-sm-5 hr-right" ng-show="editPrestationForm === false">
 				<h4>Description</h4>
 				<p>{{prestation.description}}</p>
-				<hr>
+				<hr class="hidden-xs">
 				<h4>Durée</h4>
 				<p>{{prestation.duration}} minutes</p>
 			</div>
@@ -193,5 +195,6 @@
 				<div class="btn btn-success btn-sm pull-right hidden-xs" ng-click="addPriceForm = true" ng-show="addPriceForm === false"><i class="fa icon-tab fa-plus"></i> Ajouter un nouveau prix</div>
 			</div>
 		</div>
+		<hr class="show-xs">
 	</div>
 </div>

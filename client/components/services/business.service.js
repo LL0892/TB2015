@@ -80,7 +80,7 @@ angular.module('tbApp')
 					errorCallback(data);
 				});
 			},
-			addSchedules: function(businessId, data, callback, errorCallback){
+			addSchedule: function(businessId, data, callback, errorCallback){
 				$http({
 					method: 'POST',
 					url: Urls.api + 'businesses/' + businessId + '/schedules',
@@ -91,7 +91,7 @@ angular.module('tbApp')
 					errorCallback(data);
 				});
 			},
-			showSchedules: function(businessId, scheduleId, callback, errorCallback){
+			showSchedule: function(businessId, scheduleId, callback, errorCallback){
 				$http({
 					method: 'GET',
 					url: Urls.api + 'businesses/' + businessId + '/schedules/' + scheduleId

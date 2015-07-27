@@ -5,50 +5,58 @@
 	<div class="row hidden-xs">
 		<!-- Formulaire d'ajout -->
 		<button class="btn btn-success pull-left" ng-click="add = true" ng-show="add === false">Ajouter une prestation</button>
-		<div class="col-sm-5" ng-show="add === true">
-			<div class="row">
-				<div class="col-sm-6">
-					<label> Jour </label>
-					<input class="form-control" type="text" ng-model="form.dayName" placeholder="jour" required>
+		<p class="col-sm-6 col-sm-offset-3">{{invalidForm}}</p>
+		<form>
+			<div class="col-sm-6 col-sm-offset-3" ng-show="add === true">
+				<div class="row">
+					<div class="col-sm-6">
+						<label> Jour </label>
+						<select class="form-control" ng-options="optionsDay as optionsDay for optionsDay in optionsDay" ng-model="form.dayName" required>
+							<option value="">-- selectionnez un jour --</option>
+						</select>
+					</div>
+					<div class="col-sm-6">
+						<label> Description </label>
+						<input class="form-control" type="text" ng-model="form.description" placeholder="horaire de <jour>" required>
+					</div>
 				</div>
-				<div class="col-sm-6">
-					<label> Description </label>
-					<input class="form-control" type="text" ng-model="form.description" placeholder="description" required>
+				<div class="row">
+					<div class="col-sm-6">
+						<label> Débute à </label>
+						<select class="form-control" ng-model="form.startHour" ng-options="options as options for options in options" required>
+							<option value="" selected>-- selectionnez une heure --</option>
+						</select>
+					</div>
+					<div class="col-sm-6">
+						<label> Fini à </label>
+						<select class="form-control" ng-model="form.endHour" ng-options="options as options for options in options" required>
+							<option value="" selected>-- selectionnez une heure --</option>
+						</select>
+					</div>
+				</div>
+				<div class="row" ng-show="add === true">
+					<div class="col-sm-6">
+						<label> Jour ouvrable </label>
+						<select class="form-control" ng-model="form.workingDay" ng-options="option.value as option.label for option in optionsWorkingDay" required>
+							<option value="" selected>-- selectionnez une valeur --</option>
+						</select>
+						
+					</div>
 				</div>
 			</div>
-			<div class="row">
-				<div class="col-sm-6">
-					<label> Débute à </label>
-					<select class="form-control" ng-model="form.startHour" ng-options="options as options for options in options" required></select>
-				</div>
-				<div class="col-sm-6">
-					<label> Fini à </label>
-					<select class="form-control" ng-model="form.endHour" ng-options="options as options for options in options" required></select>
-				</div>
-			</div>
-			<div class="row" ng-show="add === true">
-				<div class="col-sm-6">
-					<label> Jour ouvrable </label>
-					<select class="form-control" ng-model="form.workingDay" required>
-						<option value="true">Oui</option>
-						<option value="false">Non</option>
-					</select>
-					
-				</div>
-			</div>
-		</div>
-		<div class="col-sm-5" ng-show="add === true">
+		</form>
+<!-- 		<div class="col-sm-5" ng-show="add === true">
 			<h4>staffs affiliés</h4>
 			<div class="checkbox" ng-repeat="staff in staffs">
 				<label>
 				  <input type="checkbox" ng-model="form.staffs[$index]" name="addStaffs[]" value="{{staff._id}}"> {{staff.name}}
 				</label>
 			</div>
+		</div> -->
 
-		</div>
 		<div class="row">
 			<div class="col-sm-12">
-			<button class="hidden-xs btn btn-sm btn-success" ng-click="add = false; addSchedule(form); form = null" ng-show="add === true">Envoyer</button>
+			<button class="hidden-xs btn btn-sm btn-success" ng-click="addSchedule(form);" ng-show="add === true">Envoyer</button>
 			<button class="hidden-xs btn btn-sm btn-danger" ng-click="add = false; form = null" ng-show="add === true">Annuler</button>
 			</div>
 		</div>
@@ -57,55 +65,64 @@
 	<hr>
 	
 	<!-- Liste des horaires -->
-	<div class="row" ng-repeat="schedule in schedules">
+	<div class="row" ng-repeat="schedule in schedules | orderBy : ['dayId', 'startHour', 'endHour']">
 		<div class="row">
-			<div class="col-sm-4 col-sm-offset-3">
+
+			<div class="col-sm-6 col-sm-offset-3">
+
 				<!-- visualisation mode -->
 				<div ng-show="modif===false">
 					<h4>{{schedule.dayName}}</h4>
-					<!--<p>Description : {{schedule.description}}</p>-->
+					<p>Description : {{schedule.description}}</p>
 					<p ng-show="schedule.workingDay === true">Heures : {{schedule.startHour}} - {{schedule.endHour}}</p>
 					<p ng-show="schedule.workingDay === true">Jour ouvrable : Oui</p>
 					<p ng-show="schedule.workingDay === false">Jour ouvrable : Non</p>
 				</div>
+
 				<!-- edit mode -->
 				<div ng-show="modif===true">
 					<div class="row">
-						<div class="col-sm-4">
-							<input class="form-control" type="text" ng-bind="schedule.dayName" ng-model="schedule.dayName">
+						<div class="col-sm-6">
+							<select class="form-control" ng-model="edit.dayName" ng-options="optionsDay as optionsDay for optionsDay in optionsDay" required>
+								<option value="">-- selectionnez un jour --</option>
+							</select>
 						</div>
-						<div class="col-sm-4">
-							<input class="form-control" type="text" ng-bind="schedule.description" ng-model="schedule.description">
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-sm-4">
-							<select class="form-control" ng-model="schedule.startHour" ng-options="options as options for options in options"></select>
-						</div>
-						<div class="col-sm-4">
-							<select class="form-control" ng-model="schedule.endHour" ng-options="options as options for options in options"></select>
+						<div class="col-sm-6">
+							<input class="form-control" type="text" ng-bind="edit.description" ng-model="schedule.description">
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-sm-4">
-							<select class="form-control" ng-model="schedule.workingDay">
-								<option value="true">Oui</option>
-								<option value="false">Non</option>
+						<div class="col-sm-6">
+							<select class="form-control" ng-model="edit.startHour" ng-options="options as options for options in options">
+								<option value="" selected>-- selectionnez une heure --</option>
+							</select>
+						</div>
+						<div class="col-sm-6">
+							<select class="form-control" ng-model="edit.endHour" ng-options="options as options for options in options">
+								<option value="" selected>-- selectionnez une heure --</option>
+							</select>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-6">
+							<select class="form-control" ng-model="edit.workingDay" ng-options="option.value as option.label for option in optionsWorkingDay" required>
+								<option value="" selected>-- selectionnez une valeur --</option>
 							</select>
 						</div>
 					</div>
 					
 				</div>
 			</div>
-			<div class="col-sm-5 hidden-xs">
+
+<!-- 			<div class="col-sm-5 hidden-xs">
 				<h4>staffs affiliés</h4>
-				<!-- visualisation mode -->
+				
 				<ul ng-show="modif===false">
 					<li ng-repeat="staff in schedule.staffs">
 						{{staff.name}}
 					</li>
 				</ul>
-				<!-- edit mode -->
+				
 				<div ng-repeat="staff in staffs" ng-show="modif===true">
 					<label>
 					  <input
@@ -119,16 +136,16 @@
 					</label>
 				</div>
 			</div>
-			<hr class="show-xs">
+			<hr class="show-xs"> -->
 		</div>
 		<div class="row">
 			<div class="hidden-xs col-sm-6 col-sm-offset-3">
 				<!-- bouton liste -->
-				<button class="btn btn-xs btn-primary" ng-click="modif=true; index($index)" ng-show="modif===false">Modifier</button>
-				<button class="btn btn-xs btn-danger" ng-click="deleteSchedule(schedule._id)" ng-show="modif===false">Supprimer</button>
+				<button class="btn btn-primary" ng-click="modif=true; editSchedule(schedule)" ng-show="modif===false">Modifier</button>
+				<button class="btn btn-danger" ng-click="deleteSchedule(schedule._id, $index)" ng-show="modif===false">Supprimer</button>
 				<!-- bouton modif -->
-				<button class="btn btn-xs  btn-primary" ng-click="modif=false; updateSchedule(schedule)" ng-show="modif===true">Confirmer</button>
-				<button class="btn btn-xs  btn-danger" ng-click="modif=false" ng-show="modif===true">Annuler</button>
+				<button class="btn  btn-success" ng-click="modif=false; updateSchedule(edit, $index)" ng-show="modif===true">Confirmer</button>
+				<button class="btn  btn-danger" ng-click="modif=false" ng-show="modif===true">Annuler</button>
 				<hr>
 			</div>
 		</div>

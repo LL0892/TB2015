@@ -344,21 +344,32 @@ exports.addSchedule = function(req, res, next){
 		var days = ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi', 'dimanche'];
 		var dayId = days.indexOf(req.body.dayName);
 
-		businessFound.schedules.push({
-			dayName: req.body.dayName,
-			dayId : dayId,
-			startHour: req.body.startHour,
-			endHour: req.body.endHour,
-			description: req.body.description,
-			workingDay: req.body.workingDay
-		});
+
+		if (req.body.workingDay) {
+			businessFound.schedules.push({
+				dayName: req.body.dayName,
+				dayId : dayId,
+				startHour: req.body.startHour,
+				endHour: req.body.endHour,
+				description: req.body.description,
+				workingDay: req.body.workingDay
+			});
+		} else {
+			businessFound.schedules.push({
+				dayName: req.body.dayName,
+				dayId : dayId,
+				description: req.body.description,
+				workingDay: req.body.workingDay
+			});
+		}
+
 		//console.log(businessFound.schedules);
 
 		businessFound.save(function (err, businessUpdated){
 			if(err) return res.send(500, err);
 			res.status(200).json({
 				message : 'L\'horaire a été ajouté avec succès.',
-				horaire : businessFound.schedules
+				horaires : businessFound.schedules
 			}).end();
 		});
 	})
@@ -408,18 +419,6 @@ exports.updateSchedule = function(req, res, next){
 		schedule.description = req.body.description;
 		schedule.workingDay = req.body.workingDay;
 
-		schedule.staffs.remove();
-
-		for (var i = req.body.staffs.length - 1; i >= 0; i--) {
-			schedule.staffs[i] = req.body.staffs[i];
-		}
-
-		// TODO affiliate staffs to schedule
-		//schedule.staffs.push({
-		//	staffId: req.staff._id,
-		//	staffName: req.staff.name
-		//});
-
 		// Remove hours if this isn't a working day
 		if(schedule.workingDay === false){
 			schedule.startHour = undefined;
@@ -429,7 +428,8 @@ exports.updateSchedule = function(req, res, next){
 		businessFound.save(function (err, businessUpdated){
 			if(err) return res.send(500, err);
 			res.status(200).json({
-				message : 'L\'horaire a été modifié avec succès.'
+				message : 'L\'horaire a été modifié avec succès.',
+				horaire : businessUpdated.schedules.id(scheduleId)
 			}).end();
 		})
 	});
