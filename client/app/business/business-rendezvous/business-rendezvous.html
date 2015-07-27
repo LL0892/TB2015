@@ -30,24 +30,24 @@
 
 	<div class="row">
 		<div class="col-sm-6 col-sm-offset-3  col-xs-10 col-xs-offset-1 col-md-6 col-md-offset-3">
-			<p ng-if="rendezvous === undefined">Pas de rendez-vous à afficher.</p>
-			<div ng-repeat="rdv in rendezvous">
+			<div>
 				<table class="table">
 					<thead>
 						<tr>
 							<th>Client</th>
-							<th>Débute</th>
-							<th>Fini</th>
 							<th>Prestation</th>
+							<th>Date</th>
+							<th>Début</th>
+							<th>Fin</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
+						<tr ng-repeat="rdv in rendezvous">
 							<td>{{rdv.client.clientName}}</td>
+							<td>{{rdv.prestation.prestationRdvName}}</td>
+							<td>{{rdv.date}}</td>
 							<td>{{rdv.startHour}}</td>
 							<td>{{rdv.endHour}}</td>
-							<td>{{rdv.prestation.prestationRdvName}}</td>
-							<td><img ng-scr="{{staff.photoStaffURL}}"></img></td>
 						</tr>
 					</tbody>
 				</table>

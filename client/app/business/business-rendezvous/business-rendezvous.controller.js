@@ -101,16 +101,24 @@ angular.module('tbApp')
     // parse un tableau de rendez-vous
     function parseResponse(array){
       for (var i = array.length - 1; i >= 0; i--) {
-        array[i].startHour = parseDate(array[i].startHour);
-        array[i].endHour = parseDate(array[i].endHour);
+        array[i].date = parseDate(array[i].startHour);
+        array[i].startHour = parseHours(array[i].startHour);
+        array[i].endHour = parseHours(array[i].endHour);
       } 
     }
 
     // parse les dates dans un format lisible
     function parseDate(date){
       var dateParsed = new Date(date);
-      dateParsed  = dateParsed.getDate()+'/'+(dateParsed.getMonth()+1)+'/'+dateParsed.getFullYear()+' @ '+dateParsed.getHours()+'h'+(dateParsed.getMinutes()<10?'0':'')+dateParsed.getMinutes();
+      var dayName = moment(dateParsed).format('dddd');
+      dateParsed  = dayName+', '+dateParsed.getDate()+'/'+(dateParsed.getMonth()+1)+'/'+dateParsed.getFullYear();
       return dateParsed;
+    }
+
+    function parseHours(date){
+      var hourParsed = new Date (date);
+      hourParsed = hourParsed.getHours()+'h'+(hourParsed.getMinutes()<10?'0':'')+hourParsed.getMinutes();
+      return hourParsed;
     }
 
   });
