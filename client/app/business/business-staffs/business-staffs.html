@@ -64,10 +64,10 @@
 			    <div class="form-group col-xs-10 col-sm-8 col-md-6 col-lg-4 
 			                col-xs-offset-1 col-sm-offset-2 col-md-offset-3 col-lg-offset-4">
 			        <h4>Sélectionner un utilisateur existant</h4>
-			        <input type="text" ng-model="form" typeahead-min-length="2" typeahead="user as user.name for user in users | filter:$viewValue | limitTo:8" class="form-control" required>
+			        <input type="text" ng-model="form" typeahead-min-length="2" typeahead="user as user.name for user in users | filter:$viewValue | limitTo:8" class="form-control">
 			        <span ng-show="errorUser">Veillez sélectionner un client existant.</span>
 			        <hr>
-			        <button ng-click="edit = false; createNotification(form._id)" ng-show="edit === true" class="btn btn-success">Envoyer</button>
+			        <button ng-click="edit = false; createNotification(form._id)" ng-show="edit === true" class="btn btn-success" ng-disabled="form === undefined">Envoyer</button>
 			    </div>
 			</form>
 		</div>

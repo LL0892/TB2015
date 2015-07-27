@@ -1116,7 +1116,7 @@ exports.createNotification = function(req, res, next){
 	 		if(err) return res.send(500, err);
 	 		return res.status(201).json({
 	 			message: 'La notification fut envoyée avec succès pour le salon : '+ notificationSaved.business.businessName,
-	 			notification: notificationSaved
+	 			notification: notificationSaved.profileStaff
 	 		}).end();
 	 	});
  		});

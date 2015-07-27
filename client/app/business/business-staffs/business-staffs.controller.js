@@ -23,6 +23,7 @@ angular.module('tbApp')
   				array[i].status = 'acceptée';
   			}
 		  } 
+      return array;
   	}
 
   	// parse les dates dans un format lisible
@@ -88,19 +89,25 @@ angular.module('tbApp')
 
 
     $scope.createNotification = function(userId){
-    	$log.debug(userId);
+    	//$log.debug(userId);
     	Business.createNotification(
-    	$scope.businessId,
-    	{receptorId: userId}, 
-    	function(data){
-    		$log.debug(data.notification);
-    		var notif = $scope.notifs;
-    		$scope.notifs.push(notif);
-    		$log.debug($scope.notifs);
-    	}, 
-    	function(error){
-        $scope.error = error;
-    	});
+      	$scope.businessId,
+      	{receptorId: userId}, 
+      	function(data){
+          
+          var notif = [];
+          notif.push(data.notification);
+          notif = parseResponse(notif);
+
+          $scope.form = null;
+
+          // Ajoute à l'interface
+          $scope.notifs.push(notif[0]);
+      	}, 
+      	function(error){
+          $scope.error = error;
+      	}
+      );
     };
 
   });
