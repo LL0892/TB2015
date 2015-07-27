@@ -158,7 +158,7 @@ exports.show = function(req, res, next){
 /*
 * GET     /staffs/:id/rendezvous
 * Get a list of rendezvous for this staff
-* route publique
+* route publique -> remplacée par businesses/:id/rendezvous/search avec la recherche par date
 */
 exports.rendezvous = function(req, res, next){
 	var staffId = req.params.id;
