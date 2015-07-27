@@ -141,7 +141,7 @@
 		<div class="row">
 			<div class="hidden-xs col-sm-6 col-sm-offset-3">
 				<!-- bouton liste -->
-				<button class="btn btn-primary" ng-click="modif=true; editSchedule(schedule)" ng-show="modif===false">Modifier</button>
+				<button class="btn btn-primary" ng-click="modif=true; editSchedule(schedule, $index)" ng-show="modif===false">Modifier</button>
 				<button class="btn btn-danger" ng-click="deleteSchedule(schedule._id, $index)" ng-show="modif===false">Supprimer</button>
 				<!-- bouton modif -->
 				<button class="btn  btn-success" ng-click="modif=false; updateSchedule(edit, $index)" ng-show="modif===true">Confirmer</button>
