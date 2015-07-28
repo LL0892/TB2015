@@ -23,6 +23,37 @@ angular.module('tbApp')
   $scope.currentWeek.firstDay = '';
   $scope.currentWeek.lastDay = '';
 
+
+// hammer.js script -> not working, no debug
+/* var hammer = Hammer($("div #fc-event-container"), {
+  transform_always_block: true,
+  tap_always: false,
+  drag_min_distance: 0
+ });
+
+ hammer.on("touch drag", function(event){
+  action(event);
+ });
+
+ var positionX = positionY = lastPositionX = lastPositionY = 0;
+
+ function action(event){
+  switch(event.type) {
+    case "touch" :
+      lastPositionY = positionY;
+      lastPositionX = positionX;
+      $log.debug('touch');
+    break;
+
+    case "drag" :
+      positionX = lastPositionX + event.gesture.deltaX;
+      positionY = lastPositionY + event.gesture.deltaY;
+      $log.debug('drag');
+    break;
+  }
+ }*/
+
+
   // Actions local storage
   function setItem(key, val) {
     return localStorageService.set(key, val);
