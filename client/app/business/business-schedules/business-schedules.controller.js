@@ -94,8 +94,8 @@ angular.module('tbApp')
 
   // Initialisation des options de liste déroulantes
   $scope.options = createHourString();
-  $scope.optionsDay = ["lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi", "dimanche"];
-  $scope.optionsWorkingDay = [{"value": true, "label": "Oui"}, {"value": false, "label": "non"}];
+  $scope.optionsDay = ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi', 'dimanche'];
+  $scope.optionsWorkingDay = [{'value': true, 'label': 'Oui'}, {'value': false, 'label': 'non'}];
 
   // Ajout d'une tranche horaire
   $scope.addSchedule = function(data){
@@ -158,7 +158,7 @@ angular.module('tbApp')
       if ($scope.options[i] === string) {
         index = i;
       }
-    };
+    }
     return index;
   }
 
@@ -170,7 +170,7 @@ angular.module('tbApp')
       if ($scope.schedules[i]._id === scheduleId) {
         $scope.schedules.splice(i, 1);
       }
-    };
+    }
     
     // Suppression de la base de données
     Business.deleteSchedule(
@@ -196,11 +196,11 @@ angular.module('tbApp')
 
     // Données à envoyer
     var data = {
-      "dayName": schedule.dayName,
-      "description": schedule.description,
-      "startHour": schedule.startHour,
-      "endHour": schedule.endHour,
-      "workingDay": schedule.workingDay
+      'dayName': schedule.dayName,
+      'description': schedule.description,
+      'startHour': schedule.startHour,
+      'endHour': schedule.endHour,
+      'workingDay': schedule.workingDay
     };
 
     // Ajout à la base de données et ui

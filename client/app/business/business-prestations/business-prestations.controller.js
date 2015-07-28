@@ -131,7 +131,7 @@ angular.module('tbApp')
     };
 
 
-    $scope.updatePrestation = function(prestation, duration){
+    $scope.updatePrestation = function(prestation, duration, index){
         $log.debug(prestation);
 
         var update = {

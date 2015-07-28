@@ -75,7 +75,7 @@
 
 				<!-- modif -->
 				<div ng-show="editPrestationForm === true" class="col-sm-5">
-					<button  class="btn hidden-xs btn-success btn-sm" ng-click="updatePrestation(formPrestation, initialDuration)">Confirmer</button> 
+					<button  class="btn hidden-xs btn-success btn-sm" ng-click="updatePrestation(formPrestation, initialDuration, $index)">Confirmer</button> 
 					<button class="btn hidden-xs btn-danger btn-sm" ng-click="editPrestationForm = false">Annuler</button>
 					<input type="text" class="form-control" ng-model="formPrestation.name" required>
 				</div>
