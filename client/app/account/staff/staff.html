@@ -7,7 +7,7 @@
       		<h1>Creation du profil staff</h1>
     	</div>
 
-    	<form class="form" name="form" ng-submit="register(form)" novalidate>
+    	<form class="form" name="form" ng-submit="register(form)">
 
 		  	<!-- name -->
 		    <div class="row">
@@ -36,7 +36,6 @@
 		          <label>Email</label>
 
 		          <input type="email" name="email" class="form-control" ng-model="staff.email"
-		                 required
 		                 mongoose-error/>
 		          <p class="help-block" ng-show="form.email.$error.email && submitted">
 		            Ce n'est pas une adresse mail valide.
@@ -60,7 +59,7 @@
 		          
 		          <label>Mobile</label>
 		          <input type="tel" name="mobile" class="form-control" 
-		          ng-model="staff.mobile" ng-minlength="3" required mongoose-error/>
+		          ng-model="staff.mobile" ng-minlength="3" mongoose-error/>
 
 		          <p class="help-block" ng-show="(form.mobile.$error.minlength || form.mobile.$error.required) && submitted">
 		            Le numéro de téléphone mobile est incomplet.
@@ -78,7 +77,7 @@
 
 		          <label>Téléphone</label>
 		          <input type="tel" name="phone" class="form-control" 
-		          ng-model="staff.phone" ng-minlength="3" required mongoose-error/>
+		          ng-model="staff.phone" ng-minlength="3" mongoose-error/>
 		          
 		          <p class="help-block" ng-show="(form.phone.$error.minlength || form.phone.$error.required) && submitted">
 		            Le numéro de téléphone fixe est incomplet.
@@ -95,7 +94,7 @@
 		    <!-- buttons -->
 		    <div class="row">
 		      <div class="col-sm-4 col-sm-offset-3 col-xs-6 col-xs-offset-3">
-		        <button class="btn btn-success" type="submit" ng-click="test()">
+		        <button class="btn btn-success" type="submit">
 		          Créer le profil
 		        </button>
 		        <a class="btn btn-danger" href="/">

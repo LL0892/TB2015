@@ -38,7 +38,8 @@ angular.module('tbApp')
     function getFavorite(user){
       $scope.currentUser = user;
 
-      if ($scope.currentUser.preferences !== undefined) {
+      if ($scope.currentUser.preferences.favorite !== undefined) {
+        $log.debug($scope.currentUser.preferences.favorite)
         Business.showBusiness(
           $scope.currentUser.preferences.favorite,
           function (res){

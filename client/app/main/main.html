@@ -8,7 +8,7 @@
     <p ng-show="currentUser.preferences.favorite === undefined">Il n'y a pas de salon favori trouvé.</p>
     <div ng-show="currentUser.preferences.favorite !== undefined">
       <p>{{favoriteBusiness.name}}</p>
-      <p>{{favoriteBusiness.zip}} {{favoriteBusiness.city}}</p>
+      <p>{{favoriteBusiness.zip}} {{favoriteBusiness.city}} ({{favoriteBusiness.canton}})</p>
       <a ng-href="/business/{{favoriteBusiness._id}}" class="btn btn-default btn-sm"><i class="fa fa-info"> Infos</i></a>
       <a ng-href="/business/{{favoriteBusiness._id}}/rendezvous/step1" class="btn btn-default btn-sm"><i class="fa fa-book"> Rendez-vous</i></a>
     </div>
@@ -41,7 +41,7 @@
           </div>
         </div>
         <h4 class="text-center">{{business.name}}</h4>
-        <p class="text-center">{{business.zip}} {{business.city}}</p>
+        <p class="text-center">{{business.zip}} {{business.city}} ({{business.canton}})</p>
       </div>
 
       <!-- Mobile display -->
@@ -65,7 +65,6 @@
 
 <footer class="footer">
   <div class="container">
-      <p>TB2015 | Direct Haircut |
-        <a href="https://github.com/LL0892/TB2015">Git projet</a></p>
+      <p>Direct Haircut | réalisé par Laurent Lienher, Travail de Bachelor | HEIG-VD, Ingénierie des Médias</p>
   </div>
 </footer>

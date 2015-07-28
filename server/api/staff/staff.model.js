@@ -57,7 +57,7 @@ StaffSchema
 */
 
 // Validate existing business
-StaffSchema
+/*StaffSchema
   .path('businessId')
   .validate(function(value, respond) {
     var self = this;
@@ -68,7 +68,7 @@ StaffSchema
       }
       respond(true);
     });
-  }, 'Salon non existant.');
+  }, 'Salon non existant.');*/
 
 /*
 * Pre-save hook

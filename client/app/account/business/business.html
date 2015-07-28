@@ -31,13 +31,21 @@
 	    <hr>
 	    <h4>Localisation</h4>
 
+        <!-- localite custom template -->
+        <script type="text/ng-template" id="localiteTemplate.html">
+          <a>
+            <span bind-html-unsafe="match.model.Commune | typeaheadHighlight:query"></span>
+            (<span bind-html-unsafe="match.model.NPA | typeaheadHighlight:query"></span>)
+          </a>
+        </script>
+
 	    <!-- localité, npa, canton -->
 	    <div class="row">
 	      <div class="col-sm-4 col-sm-offset-3"><label>Localité <i class="fa fa-asterisk"></i></label>
-	        <input type="text" ng-model="business.loc" ng-bind="business.loc.Commune" typeahead-min-length="3" typehead-on-select(model) typeahead-editable="false" typeahead="geodata as geodata.Commune for geodata in geodatas | filter:$viewValue" class="form-control">
+	        <input type="text" ng-model="business.loc" ng-bind="business.loc.Commune" typeahead-min-length="3" typehead-on-select(model) typeahead-editable="false" typeahead="geodata as geodata.Commune for geodata in geodatas | filter:$viewValue" class="form-control" typeahead-template-url="localiteTemplate.html">
 	      </div>
 	      <div class="col-sm-2"><label>NPA <i class="fa fa-asterisk"></i></label>
-	        <input type="text" ng-model="business.loc" ng-bind="business.loc.NPA" typeahead-min-length="2" typehead-on-select(model) typeahead-editable="false" typeahead="geodata as geodata.NPA for geodata in geodatas | filter:$viewValue | limitTo:8" class="form-control">
+	        <input type="text" ng-model="business.loc" ng-bind="business.loc.NPA" typeahead-min-length="2" typehead-on-select(model) typeahead-editable="false" typeahead="geodata as geodata.NPA for geodata in geodatas | filter:$viewValue | limitTo:8" class="form-control" disabled>
 	      </div>
 	      <div class="col-sm-2"><label>Canton <i class="fa fa-asterisk"></i></label>
 	        <input type="text" ng-model="business.loc" ng-bind="business.loc.Canton" typehead-on-select(model) typeahead-editable="false" typeahead="geodata as geodata.Canton for geodata in geodatas | filter:$viewValue | limitTo:8" class="form-control" disabled>
@@ -72,13 +80,9 @@
 	          <label>Email</label>
 
 	          <input type="email" name="email" class="form-control" ng-model="business.email"
-	                 required
 	                 mongoose-error/>
 	          <p class="help-block" ng-show="form.email.$error.email && submitted">
 	            Ce n'est pas une adresse mail valide.
-	          </p>
-	          <p class="help-block" ng-show="form.email.$error.required && submitted">
-	            Entrez une adresse mail.
 	          </p>
 	          <p class="help-block" ng-show="form.email.$error.mongoose">
 	            {{ errors.email }}
@@ -92,7 +96,7 @@
 	                                            'has-error': form.mobile.$invalid && submitted }">
 	          
 	          <label>Mobile</label>
-	          <input type="tel" name="mobile" class="form-control" ng-model="business.mobile" ng-minlength="3" required mongoose-error/>
+	          <input type="tel" name="mobile" class="form-control" ng-model="business.mobile" ng-minlength="3" mongoose-error/>
 
 	          <p class="help-block" ng-show="(form.mobile.$error.minlength || form.mobile.$error.required) && submitted">
 	            Le numéro de téléphone mobile est incomplet.
@@ -109,11 +113,8 @@
 	                                            'has-error': form.phone.$invalid && submitted }">
 
 	          <label>Téléphone</label>
-	          <input type="tel" name="phone" class="form-control" ng-model="business.phone" ng-minlength="3" required mongoose-error/>
+	          <input type="tel" name="phone" class="form-control" ng-model="business.phone" ng-minlength="3" mongoose-error/>
 	          
-	          <p class="help-block" ng-show="(form.phone.$error.minlength || form.phone.$error.required) && submitted">
-	            Le numéro de téléphone fixe est incomplet.
-	          </p>
 	          <p class="help-block" ng-show="form.phone.$error.mongoose">
 	            {{ errors.phone }}
 	          </p>

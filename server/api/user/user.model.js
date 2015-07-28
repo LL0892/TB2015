@@ -45,7 +45,7 @@ var UserSchema = new Schema({
   },*/
 
   preferences: {
-    homeDisplay: { type: String, enum: ['list', 'fav', 'dual'], default: 'list' },
+    //homeDisplay: { type: String, enum: ['list', 'fav', 'dual'], default: 'list' },
     favorite : { type: Schema.Types.ObjectId, ref: 'business' }
   }
 });
@@ -192,7 +192,7 @@ UserSchema
   }, 'Staff non existant.');
 
 // Validate business exist
-UserSchema
+/*UserSchema
   .path('businessId')
   .validate(function(value, respond) {
     var self = this;
@@ -203,7 +203,7 @@ UserSchema
       }
       respond(true);
     });
-  }, 'Salon non existant.');
+  }, 'Salon non existant.');*/
 
 /**
  * Pre-save hook

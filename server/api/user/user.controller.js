@@ -63,9 +63,6 @@ exports.create = function (req, res, next) {
     city: req.body.city,
     canton: req.body.canton,
     street: req.body.street,
-    preferences: {
-      homeDisplay: 'list'
-    },
     provider: 'local',
     roles : 'user'
   });
@@ -97,9 +94,6 @@ exports.createManager = function (req, res, next){
     city: req.body.city,
     canton: req.body.canton,
     street: req.body.street,
-    preferences: {
-      homeDisplay: 'list'
-    },
     provider: 'local',
     roles: ['user', 'staff', 'manager']
   });

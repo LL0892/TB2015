@@ -9,11 +9,9 @@ angular.module('tbApp')
 				url: Urls.api + 'staffs/',
 				data: data
 			}).success(function (data){
-				callback = data;
-				return callback;
+				callback(data);
 			}).error(function (data){
-				errorCallback = data;
-				return errorCallback;
+				errorCallback(data);
 			});
 		},
 		getRendezvous : function(staffId, callback, errorCallback){

@@ -34,28 +34,25 @@ angular.module('tbApp')
     });
 
     $scope.login = function () {
-      /**
-       * Calling FB.login with required permissions specified
-       * https://developers.facebook.com/docs/reference/javascript/FB.login/v2.0
-       */
-      //ezfb.login(null, {scope: 'email,user_likes'});
-
-      /**
-       In the case you need to use the callback
-      */
        ezfb.login(function () {
        }, {scope: 'email,user_likes,manage_pages,publish_pages'})
        .then(function (res) {
-         $log.debug(res);
-         $scope.isConnected = true;
+        
+        //$log.debug(res);
+
+        if (res.status !== 'connected') {
+          $log.debug('pas connecté');
+          $scope.isConnected = false;
+        } else {
+          $log.debug('connecté');
+          $scope.isConnected = true;
+        }
+
        });
     };
 
     $scope.logout = function () {
-      /**
-       * Calling FB.logout
-       * https://developers.facebook.com/docs/reference/javascript/FB.logout
-       */
+
       ezfb.logout();
 
       /**
@@ -105,7 +102,6 @@ angular.module('tbApp')
 
     /**
      * Publish a link to my business page for mobile users
-     * 
      */
     $scope.publishLink = function(pageId){
       var data = {
@@ -137,13 +133,9 @@ angular.module('tbApp')
     function updateMe () {
       ezfb.getLoginStatus()
       .then(function () {
-        // res: FB.getLoginStatus response
-        // https://developers.facebook.com/docs/reference/javascript/FB.getLoginStatus
         return ezfb.api('/me');
       })
       .then(function (me) {
-        // me: FB.api('/me') response
-        // https://developers.facebook.com/docs/javascript/reference/FB.api
         $scope.me = me;
         $log.debug($scope.me);
       });
@@ -155,9 +147,16 @@ angular.module('tbApp')
     function updateLoginStatus () {
       return ezfb.getLoginStatus()
         .then(function (res) {
-          $scope.isConnected = true;
-          // res: FB.getLoginStatus response
-          // https://developers.facebook.com/docs/reference/javascript/FB.getLoginStatus
+            //$log.debug(res);
+
+            if (res.status !== 'connected') {
+              $log.debug('pas connecté');
+              $scope.isConnected = false;
+            } else {
+              $log.debug('connecté');
+              $scope.isConnected = true;
+            }
+
           $scope.loginStatus = res;
         });
     }
@@ -171,9 +170,6 @@ angular.module('tbApp')
           ezfb.api('/me/likes')
         ])
         .then(function (resList) {
-          // Runs after both api calls are done
-          // resList[0]: FB.api('/me') response
-          // resList[1]: FB.api('/me/likes') response
           $scope.apiRes = resList;
         });
 

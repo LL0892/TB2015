@@ -65,8 +65,8 @@ var BusinessSchema = new Schema({
   },
 
   city: { type: String, required: true },
-  street: { type: String, default: '' },
-  canton: { type: String, default: '' },
+  street: { type: String, required: true },
+  canton: { type: String, required: true },
   zip: { type: Number, required: true },
   //isActive: { type: Boolean, default: false },
 
