@@ -7,7 +7,8 @@
 			<hr>
 
 			<h3>Se connecter à votre compte Facebook</h3>
-			<button class="btn btn-info" ng-click="login(form)">Se connecter à Facebook</button>
+			<button ng-hide="isConnected === true" class="btn btn-info" ng-click="login(form)">Se connecter à Facebook</button>
+			<p ng-show="isConnected === true"><i class="fa fa-check-circle"></i>Vous êtes connecté à Facebook.</p>
 			<hr>
 			
 			<!-- Infos et référencement de l'ID de page -->

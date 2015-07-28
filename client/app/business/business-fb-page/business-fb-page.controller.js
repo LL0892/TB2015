@@ -5,6 +5,7 @@ angular.module('tbApp')
     $scope.business = {};
     $scope.message = {};
     $scope.error = {};
+    $scope.isConnected = false;
 
     function getMyBusiness(data){
       Business.showBusiness(
@@ -46,6 +47,7 @@ angular.module('tbApp')
        }, {scope: 'email,user_likes,manage_pages,publish_pages'})
        .then(function (res) {
          $log.debug(res);
+         $scope.isConnected = true;
        });
     };
 
@@ -153,6 +155,7 @@ angular.module('tbApp')
     function updateLoginStatus () {
       return ezfb.getLoginStatus()
         .then(function (res) {
+          $scope.isConnected = true;
           // res: FB.getLoginStatus response
           // https://developers.facebook.com/docs/reference/javascript/FB.getLoginStatus
           $scope.loginStatus = res;
