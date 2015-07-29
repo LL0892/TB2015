@@ -12,7 +12,7 @@
 					<div class="col-sm-6">
 						<label> Jour </label>
 						<select class="form-control" ng-options="optionsDay as optionsDay for optionsDay in optionsDay" ng-model="form.dayName" required>
-							<option value="">-- selectionnez un jour --</option>
+							<option value="">-- sélectionnez un jour --</option>
 						</select>
 					</div>
 					<div class="col-sm-6">
@@ -24,13 +24,13 @@
 					<div class="col-sm-6">
 						<label> Débute à </label>
 						<select class="form-control" ng-model="form.startHour" ng-options="options as options for options in options" required>
-							<option value="" selected>-- selectionnez une heure --</option>
+							<option value="" selected>-- sélectionnez une heure --</option>
 						</select>
 					</div>
 					<div class="col-sm-6">
 						<label> Fini à </label>
 						<select class="form-control" ng-model="form.endHour" ng-options="options as options for options in options" required>
-							<option value="" selected>-- selectionnez une heure --</option>
+							<option value="" selected>-- sélectionnez une heure --</option>
 						</select>
 					</div>
 				</div>
@@ -38,7 +38,7 @@
 					<div class="col-sm-6">
 						<label> Jour ouvrable </label>
 						<select class="form-control" ng-model="form.workingDay" ng-options="option.value as option.label for option in optionsWorkingDay" required>
-							<option value="" selected>-- selectionnez une valeur --</option>
+							<option value="" selected>-- sélectionnez une valeur --</option>
 						</select>
 						
 					</div>
@@ -83,30 +83,35 @@
 				<div ng-show="modif===true">
 					<div class="row">
 						<div class="col-sm-6">
+							<label> Jour </label>
 							<select class="form-control" ng-model="edit.dayName" ng-options="optionsDay as optionsDay for optionsDay in optionsDay" required>
-								<option value="">-- selectionnez un jour --</option>
+								<option value="">-- sélectionnez un jour --</option>
 							</select>
 						</div>
 						<div class="col-sm-6">
+							<label> Description </label>
 							<input class="form-control" type="text" ng-bind="edit.description" ng-model="schedule.description">
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-sm-6">
+							<label> Débute à </label>
 							<select class="form-control" ng-model="edit.startHour" ng-options="options as options for options in options">
-								<option value="" selected>-- selectionnez une heure --</option>
+								<option value="" selected>-- sélectionnez une heure --</option>
 							</select>
 						</div>
 						<div class="col-sm-6">
+							<label> Fini à </label>
 							<select class="form-control" ng-model="edit.endHour" ng-options="options as options for options in options">
-								<option value="" selected>-- selectionnez une heure --</option>
+								<option value="" selected>-- sélectionnez une heure --</option>
 							</select>
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-sm-6">
+							<label> Jour ouvrable </label>
 							<select class="form-control" ng-model="edit.workingDay" ng-options="option.value as option.label for option in optionsWorkingDay" required>
-								<option value="" selected>-- selectionnez une valeur --</option>
+								<option value="" selected>-- sélectionnez une valeur --</option>
 							</select>
 						</div>
 					</div>
