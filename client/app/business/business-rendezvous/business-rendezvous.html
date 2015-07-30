@@ -45,9 +45,9 @@
 						<tr ng-repeat="rdv in rendezvous">
 							<td>{{rdv.client.clientName}}</td>
 							<td>{{rdv.prestation.prestationRdvName}}</td>
-							<td>{{rdv.date}}</td>
-							<td>{{rdv.startHour}}</td>
-							<td>{{rdv.endHour}}</td>
+							<td>{{rdv.startHour | date:'fullDate'}}</td>
+							<td>{{rdv.startHour | date:'shortTime'}}</td>
+							<td>{{rdv.endHour | date:'shortTime'}}</td>
 						</tr>
 					</tbody>
 				</table>
