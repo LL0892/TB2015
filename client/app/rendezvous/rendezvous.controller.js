@@ -371,7 +371,7 @@ angular.module('tbApp')
     };
 
     Business.createRendezvous(
-      form.businessId,
+      form.business._id,
       data,
       function(res){
         $log.debug(res);

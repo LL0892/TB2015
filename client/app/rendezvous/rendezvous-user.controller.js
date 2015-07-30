@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('tbApp')
-.controller('RendezvousUserCtrl', function($scope, $http, $state, $stateParams, $log, Auth, User, Business, localStorageService, uiCalendarConfig, CalendarService) {
+.controller('RendezvousUserCtrl', function($scope, $http, $state, $stateParams, $log, Auth, User, Business, Rendezvous, localStorageService, uiCalendarConfig, CalendarService) {
 
 	$scope.isStaff = Auth.isStaff;
 	$scope.selectedIndex = -1;
@@ -293,7 +293,8 @@ angular.module('tbApp')
 		$log.debug(form);
 
 	    var data = {
-	      clientId: form.user._id,
+	      //clientId: form.user._id,
+	      businessId : form.business._id,
 	      prestationId : form.prestation._id,
 	      staffId : form.staff._id,
 	      staffName: form.staff.name,
@@ -301,8 +302,7 @@ angular.module('tbApp')
 	      endHour : form.myRendezvous[0].end
 	    };
 
-	    Business.createRendezvous(
-	      form.businessId,
+	    Rendezvous.createRendezvous(
 	      data,
 	      function(res){
 	        $log.debug(res);

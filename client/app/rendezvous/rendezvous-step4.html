@@ -8,13 +8,16 @@
     	<p>{{formData.business.zip}} {{formData.business.city}} ({{formData.business.canton}})</p>
     	<p>{{formData.street}}</p>
         <hr>
+        <p>Le {{formData.myRendezvous[0].start | date:'d MMMM yyyy'}}</p>
+        <p>Débute à {{formData.myRendezvous[0].start | date:'hh:mm'}}</p>
+        <p>Fini dès {{formData.myRendezvous[0].end | date:'hh:mm'}}</p>
+        <hr>
     	<p>Client : {{formData.user.name}}</p>
     	<p>Prit en charge par : {{formData.staff.name}}</p>
     	<p>Prestation : {{formData.prestation.name}}</p>
     	<p>Prix : {{formData.prestation.prices.price}}.–</p>
     	<p>Durée : {{formData.prestation.duration}} minutes</p>
-    	<p>{{formData.myRendezvous[0].start}}</p>
-    	<p>{{formData.myRendezvous[0].end}}</p>
+
     </div>
 
     <button type="submit" class="btn btn-success" ng-click="bookRendezvous(formData)">Réserver</button>

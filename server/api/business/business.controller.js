@@ -798,7 +798,7 @@ exports.searchRendezvous = function(req, res, next){
 * restriction : 'staff'
 */
 exports.createRendezvous = function(req, res, next){
-	var businessId = req.params.id,
+	var businessId = req.staff.businessId;
 		staffId = req.body.staffId,
 		staffName = req.body.staffName,
 		prestationId = req.body.prestationId,
@@ -806,7 +806,7 @@ exports.createRendezvous = function(req, res, next){
 
 	Prestation.findOne({ _id: prestationId, businessId: businessId }, function (err, prestationFound){
 		if(err) return res.send(500, err);
-		if (!prestationFound) return res.status(404).json({ message : 'Prestation non trouvé.' });
+		if (!prestationFound) return res.status(404).json({ message : 'Prestation non trouvée.' });
 
 		User.findOne({_id: userId}, function (err, userFound){
 			if(err) return res.send(500, err);

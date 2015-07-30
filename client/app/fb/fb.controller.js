@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('tbApp')
-.controller('FbCtrl', function($scope, $log, $http, $cookies, $state, $timeout, Auth, Urls, Business, AppStorage, CalendarService) {
+.controller('FbCtrl', function($scope, $log, $http, $cookies, $state, $timeout, Auth, Urls, Business, Rendezvous, AppStorage, CalendarService) {
 	
 	/*********
 	* Init
@@ -29,7 +29,7 @@ angular.module('tbApp')
 
 	if ($cookies.get('page-id')) {
 		AppStorage.set($cookies.get('page-id'));
-		//$cookies.remove('page-id');
+		$cookies.remove('page-id');
 	}
 	
 
@@ -296,7 +296,8 @@ angular.module('tbApp')
 		$log.debug(form);
 
 	    var data = {
-	      clientId: form.user._id,
+	      //clientId: form.user._id,
+	      businessId : form.businessId,
 	      prestationId : form.prestation._id,
 	      staffId : form.staff._id,
 	      staffName: form.staff.name,
@@ -304,8 +305,7 @@ angular.module('tbApp')
 	      endHour : form.myRendezvous[0].end
 	    };
 
-	    Business.createRendezvous(
-	      form.business._id,
+	    Rendezvous.createRendezvous(
 	      data,
 	      function(res){
 	        $log.debug(res);

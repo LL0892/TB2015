@@ -3,16 +3,11 @@
 <div class="row">
 
 	<!-- Selection staff -->
-	<div id="staffs" class="col-sm-2 col-sm-offset-3" >
+	<div id="staffs" class="col-sm-4 col-sm-offset-3" >
 		<h4>Sélectionner un staff</h4>
 		<div ng-repeat="staff in staffs">
 			<span ng-click="selected($index, staff)" class="cursor" ng-class="{'selected-staff': $index == selectedIndex}">{{staff.name}}</span>
 		</div>
-
-	<!-- Selection date -->
-	</div>
-	<div class="col-sm-3 col-sm-offset-3">
-		
 	</div>
 </div>
 

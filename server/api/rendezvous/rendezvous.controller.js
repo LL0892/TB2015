@@ -40,11 +40,12 @@ var Rendezvous = require('./rendezvous.model'),
 		clientAge = req.user.age,
 		prestationId = req.body.prestationId,
 		businessId = req.body.businessId,
-		staffId = req.body.staffId;
+		staffId = req.body.staffId,
+		staffName = req.body.staffName;
 
 	Prestation.findOne({ _id: prestationId, businessId: businessId }, function (err, prestationFound){
 		if(err) return res.send(500, err);
-		if (!prestationFound) return res.status(404).json({ message : 'Prestation non trouvé.' });
+		if (!prestationFound) return res.status(404).json({ message : 'Prestation non trouvée.' });
 
 		Staff.findOne({_id: staffId}, function (err, staffFound){
 			if(err) return res.send(500, err);
@@ -116,7 +117,7 @@ var Rendezvous = require('./rendezvous.model'),
 						},
 						staff: {
 							staffId: staffId,
-							staffName: staffFound.name
+							staffName: staffName
 						},
 						prestation: {
 							prestationRdvId: newPrestationRdv._id,
