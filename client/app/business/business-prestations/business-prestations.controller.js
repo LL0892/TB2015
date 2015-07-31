@@ -12,6 +12,9 @@ angular.module('tbApp')
     // utilisateur actuel
   	$scope.user = {};
 
+    $scope.form = {};
+    $scope.formAdd = {};
+
     // état du fomulaire d'ajout de prix
   	$scope.addPriceForm = false;
     // état du formulaire d'édition de prix
@@ -158,6 +161,8 @@ angular.module('tbApp')
         $scope.addPrestationForm = false;
     };    
 
+
+
     /***********************
      * Manipulation des prix
      ***********************/
@@ -169,47 +174,35 @@ angular.module('tbApp')
         //$log.debug($scope.form);
     };
 
-    $scope.addPrice = function(prestationId, data){
+    $scope.addPrice = function(prestationId, form){
+        var data = checkPriceInputs(form);
 
-    	Business.createPrice($scope.user.businessId, prestationId, data,
+    	Business.createPrice(
+            $scope.user.businessId, 
+            prestationId, 
+            data,
     		function(data){
     			$scope.message = data.message;
                 
+                // Ajout à l'interface
                 var prestationId = data.prestation._id;
                 for (var i = $scope.prestations.length - 1; i >= 0; i--) {
                     if ($scope.prestations[i]._id === prestationId) {
                         $scope.prestations[i] = data.prestation;
                     }
                 }
-                $scope.form = {};
-    			$scope.addPriceForm = true;
+
+                // Réinitialise les états
+                $scope.formAdd = {};
+    			$scope.addPriceForm = false;
     		},
     		function(data){
     			$scope.message = data;
     		});
     };
 
-    $scope.deletePrice = function(prestationId, priceId, indexParent, index){
-
-        Business.deletePrice(
-            $scope.user.businessId,
-            prestationId,
-            priceId,
-            function(data){
-                $scope.message = data.message;
-                $scope.prestations[indexParent].prices.splice(index, 1);
-            },
-            function(data){
-                $scope.message = data;
-            }
-        );
-    };
-
     $scope.updatePrice = function(prestationId, priceId, form){
-        var data = form;
-        //$log.debug(prestationId);
-        //$log.debug(priceId);
-        //$log.debug(form);
+        var data = checkPriceInputs(form);
 
         Business.updatePrice(
             $scope.user.businessId, 
@@ -230,6 +223,86 @@ angular.module('tbApp')
                 $log.debug(error);
             }
          );
+    };
+
+    $scope.deletePrice = function(prestationId, priceId, indexParent, index){
+
+        Business.deletePrice(
+            $scope.user.businessId,
+            prestationId,
+            priceId,
+            function(data){
+                $scope.message = data.message;
+                $scope.prestations[indexParent].prices.splice(index, 1);
+            },
+            function(error){
+                $log.debug(error);
+            }
+        );
+    };
+
+
+
+    /***********************
+     * Alertes de formulaire
+     ***********************/
+
+    /* 
+    * Corrige les erreur afin de renvoyer au serveur un objet valide
+    * Note : Comme l'ui n'est pas un formulaire valide traditionnel, les champs n'ont pas de restrictions et
+    *        lorsqu'ils sont invalide, ils sont 'undefined' dans le controller et dans la base de données.
+    */
+    function checkPriceInputs (form){
+        var form = form;
+        $scope.alerts = [];
+
+        if (form.categoryName === undefined || form.categoryName === '') {
+            form.categoryName = 'Prix sans nom'
+            $scope.alerts.push({
+                'field': 'Categorie',
+                'text': 'Remplacé par une valeur par defaut : '+form.categoryName
+            });
+        }
+
+        if (form.gender === undefined) {
+            form.gender = 'mixte';
+            $scope.alerts.push({
+                'field': 'Sexe',
+                'text': 'Remplacé par une valeur par defaut : '+form.gender
+            });
+        }
+
+        if (form.ageLowLimit === undefined || form.ageLowLimit <= 0) {
+            form.ageLowLimit = 1;
+            $scope.alerts.push({
+                'field': 'Age min',
+                'text': 'Age minimum non valide, remplacé par : '+form.ageLowLimit
+            });
+        }
+
+        if (form.ageHighLimit === undefined || form.ageHighLimit > 99) {
+            form.ageHighLimit = 99;
+            $scope.alerts.push({
+                'field': 'Age max',
+                'text': 'Age maximum non valide, remplacé par : '+form.ageHighLimit
+            });
+        }
+
+        if (form.price <= 0  || form.price > 999 || form.price === undefined) {
+            form.price = 25;
+            $scope.alerts.push({
+                'field': 'Prix',
+                'text': 'Remplacé par une valeur par defaut : '+form.price
+            });
+        }
+
+        //$log.debug($scope.messages);
+        return form;
+    }
+
+    // Fermer les message d'alerte
+    $scope.closeAlert = function(index){
+        $scope.alerts.splice(index, 1);
     };
 
   });

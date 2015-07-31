@@ -1,3 +1,4 @@
+// Classes des formulaires
 .icon-tab{
 	display: inline-block;
 	width: 15px; 
@@ -22,4 +23,32 @@
 
 .input-form-med{
 	width: 50px;
+}
+
+
+// Variables des alertes
+@topAlert: 80px;
+@ecartAlert: 65px;
+
+// Placement des alertes
+.helpblock{
+	left: 3%;
+  	position: absolute;
+  	z-index: 1;
+  	width: 500px;
+}
+.helpblock:nth-child(1){
+	top: @topAlert;
+}
+.helpblock:nth-child(2){
+	top: @topAlert + @ecartAlert;
+}
+.helpblock:nth-child(3){
+	top: @topAlert + (2 * @ecartAlert);
+}
+.helpblock:nth-child(4){
+	top: @topAlert + (3 * @ecartAlert);
+}
+.helpblock:nth-child(5){
+	top: @topAlert + (4 * @ecartAlert);
 }
