@@ -25,7 +25,7 @@ angular.module('tbApp')
 	$scope.currentWeek.lastDay = '';
 
 
-	// Actions local storage
+/*	// Actions local storage
 	function setItem(key, val) {
 	return localStorageService.set(key, val);
 	}
@@ -55,7 +55,7 @@ angular.module('tbApp')
 				$scope.formData = getItem('rendezvous');
 			}
 		}
-	}
+	}*/
 
 	/* ----------------------
 	* Page étape 1 (prestation)
@@ -74,7 +74,7 @@ angular.module('tbApp')
 				for (var i = $scope.prestations.length - 1; i >= 0; i--) {
 				  $scope.prestations[i].open = false;
 				}
-				setItem('step1', $scope.prestations);
+				//setItem('step1', $scope.prestations);
 				return $scope.prestations;
 			},
 			function(error){
@@ -108,12 +108,12 @@ angular.module('tbApp')
 		if (form.prestation !== undefined) {
 
 			// sauvegarde le formulaire dans le local storage
-			setItem('rendezvous', form);
+			//setItem('rendezvous', form);
 
 			Business.getStaffs($scope.formData.business._id,
 				function(datas){
 					$scope.staffs = datas.staffs;
-					setItem('step2', $scope.staffs);
+					//setItem('step2', $scope.staffs);
 					return $scope.staffs;
 				},
 				function(error){
@@ -278,7 +278,7 @@ angular.module('tbApp')
 	// Submit page 2
 	$scope.getConfirm = function(rendezvous){
 	  $scope.formData.myRendezvous = rendezvous;
-	  setItem('rendezvous', $scope.formData);
+	  //setItem('rendezvous', $scope.formData);
 
 	  $log.debug($scope.formData);	  
 	  $state.go('rendezvousUser.step3');
@@ -312,12 +312,12 @@ angular.module('tbApp')
 	      }
 	    );
 
-		localStorageService.remove('step1', 'step2', 'rendezvous');
+		//localStorageService.remove('step1', 'step2', 'rendezvous');
 		$state.go('main');
 	};
 
 	$scope.cancelRendezvous = function(){
-		localStorageService.remove('step1', 'step2', 'rendezvous');
+		//localStorageService.remove('step1', 'step2', 'rendezvous');
 		$state.go('main');
 	};
 

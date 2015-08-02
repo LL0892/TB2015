@@ -88,8 +88,9 @@ angular.module('tbApp')
           name: $scope.prestation.name,
           shortDescription: $scope.prestation.shortDescription,
           description: $scope.prestation.description,
-          duration: $scope.prestation.duration
+          duration: $scope.prestation.duration.label
         };
+        $log.debug(prestationToAdd);
 
         Business.createPrestation(
         $scope.user.businessId,

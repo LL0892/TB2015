@@ -47,7 +47,7 @@
       <!-- Mobile display -->
       <div class="hidden-lg hidden-md col-sm-4 col-xs-12" ng-repeat="business in businesses">
         <h4 class="text-center">{{business.name}}</h4>
-        <p class="text-center">{{business.zip}} {{business.city}}</p>
+        <p class="text-center">{{business.zip}} {{business.city}} ({{business.canton}})</p>
         <div class="text-center">
           <a ng-href="/business/{{business._id}}" class="btn btn-primary btn-sm btn-mgn-bottom"><i class="fa fa-info"> Infos</i></a>
           <a href="/business/{{business._id}}/rendezvous/step1" class="btn btn-primary btn-sm btn-mgn-bottom" ng-show="isLoggedIn()"><i class="fa fa-book"> Rendez-vous</i></a>

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('tbApp')
-.controller('FbCtrl', function($scope, $log, $http, $cookies, $state, $timeout, Auth, Urls, Business, Rendezvous, AppStorage, CalendarService) {
+.controller('FbCtrl', function($scope, $log, $http, $cookies, $state, Auth, Urls, Business, Rendezvous, AppStorage, CalendarService) {
 	
 	/*********
 	* Init
@@ -28,13 +28,13 @@ angular.module('tbApp')
 
 
 	if ($cookies.get('page-id')) {
-		AppStorage.set($cookies.get('page-id'));
+		AppStorage.setPageId($cookies.get('page-id'));
 		$cookies.remove('page-id');
 	}
 	
 
 
-	$log.debug('fb call from page id '+ AppStorage.get());
+	$log.debug('fb call from page id '+ AppStorage.getPageId());
 
 	// Créer le cookie en 'developement'
 	$scope.fb = function(){
@@ -53,10 +53,10 @@ angular.module('tbApp')
 	* Page 1 (prestation)
 	*********************/
 
-	if (AppStorage.get()) {
+	if (AppStorage.getPageId()) {
 
 		var request = {
-			fbPageId : AppStorage.get()
+			fbPageId : AppStorage.getPageId()
 		};
 
 		// Va chercher le salon
@@ -322,24 +322,4 @@ angular.module('tbApp')
 		$state.go('fb-rendezvous');
 	};
 
-})
-
-
-
-// stockage interne de l'app
-.factory('AppStorage', function(){
-	var pageId = '';
-	var business = {};
-
-	return{
-		get : function(){
-			return pageId;
-		},
-		set : function(id){
-			pageId = id;
-		},
-		delete : function(){
-			pageId = undefined;
-		}
-	};
 });
