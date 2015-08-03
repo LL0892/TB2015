@@ -302,9 +302,7 @@ exports.searchByPageId = function(req, res, next){
 		if(!businessFound) return res.status(404).json({ message: 'Salon non existant.' });
 	 	if(err) return res.send(500, err);
 
-	 	businessFound.save(function(err, businessSaved){
-	 		res.status(200).json(businessSaved);
-	 	})
+	 	res.status(200).json(businessFound).end();
  	});
 };
 
@@ -454,7 +452,7 @@ exports.deleteSchedule = function(req, res, next){
 		businessFound.save(function (err, businessUpdated){
 	 		if(err) return res.send(500, err);
 	 		res.status(204).json({
-	 			message : 'L\'hoaire a été correctement supprimé du salon.'
+	 			message : 'L\'horaire a été correctement supprimé du salon.'
 	 		}).end();
 		});
 	});
