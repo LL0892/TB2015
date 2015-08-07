@@ -4,35 +4,9 @@
 //
 
 'use strict';
-/*
-var Thing = require('../api/thing/thing.model');
-var User = require('../api/user/user.model');
-*/
 
 var Geodata = require('../api/geodata/geodata.model');
 
-/*
-Thing.find({}).remove(function() {
-  Thing.create({
-    name : 'Development Tools',
-    info : 'Integration with popular tools such as Bower, Grunt, Karma, Mocha, JSHint, Node Inspector, Livereload, Protractor, Jade, Stylus, Sass, CoffeeScript, and Less.'
-  }, {
-    name : 'Server and Client integration',
-    info : 'Built with a powerful and fun stack: MongoDB, Express, AngularJS, and Node.'
-  }, {
-    name : 'Smart Build System',
-    info : 'Build system ignores `spec` files, allowing you to keep tests alongside code. Automatic injection of scripts and styles into your index.html'
-  },  {
-    name : 'Modular Structure',
-    info : 'Best practice client and server structures allow for more code reusability and maximum scalability'
-  },  {
-    name : 'Optimized Build',
-    info : 'Build process packs up your templates as a single JavaScript payload, minifies your scripts/css/images, and rewrites asset names for caching.'
-  },  {
-    name : 'Deployment Ready',
-    info : 'Easily deploy your app to Heroku or Openshift with the heroku and openshift subgenerators'
-  });
-});*/
 Geodata.find({}).remove(function(){
 
     Geodata.create({
@@ -20516,50 +20490,6 @@ Geodata.find({}).remove(function(){
         "Canton" : "ZH"
     });
 
+}, function(){
+  console.log('finished populating geodatas');
 });
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-User.find({}).remove(function() {
-  User.create({
-    provider: 'local',
-    firstName: 'Test',
-    lastName: 'User',
-    email: 'test@test.com',
-    password: 'test',
-    phone: '+41 000 00 00',
-    mobile: '+41 000 00 00',
-    city: 'Neuchâtel',
-    canton: 'NE',
-    street: 'Avenue du Premier Mars 1',
-    zip: '2000',
-    photoProfileURL : 'profile.jpg'
-  }, {
-    provider: 'local',
-    roles: 'admin',
-    firstName: 'Admin',
-    lastName: 'User',
-    email: 'admin@admin.com',
-    password: 'admin',
-    phone: '+41 000 00 00',
-    mobile: '+41 000 00 00',
-    city: 'Neuchâtel',
-    canton: 'NE',
-    street: 'Avenue du Premier Mars 1',
-    zip: '2000',
-    photoProfileURL : 'profile.jpg'
-  }, function() {
-      console.log('finished populating users');
-    }
-  );
-});*/

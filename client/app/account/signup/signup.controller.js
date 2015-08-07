@@ -23,19 +23,28 @@ var App = angular.module('tbApp');
       if(form.$valid) {
         $log.debug(form.$valid);
 
-        if ($scope.user.manager) {
-          // Créer un compte manager
-          Auth.createManager({
+        var data = {
             firstName: $scope.user.firstName,
             lastName: $scope.user.lastName,
             email: $scope.user.email,
             password: $scope.user.password,
             dateOfBirth: $scope.user.dateOfBirth,
-            gender: $scope.user.gender,
+            gender: $scope.user.gender
+        }
+
+        if ($scope.user.loc) {
+          data = {
             city: $scope.user.loc.Commune,
             zip: $scope.user.loc.NPA,
             canton: $scope.user.loc.Canton
-          })
+          }
+        }
+
+        if ($scope.user.manager) {
+          // Créer un compte manager
+          Auth.createManager(
+            data
+          )
           .then( function() {
             // Account created, redirect to home
             $state.go('main');
@@ -54,15 +63,7 @@ var App = angular.module('tbApp');
         } else{
           // Créer un compte utilisateur
           Auth.createUser({
-            firstName: $scope.user.firstName,
-            lastName: $scope.user.lastName,
-            email: $scope.user.email,
-            password: $scope.user.password,
-            dateOfBirth: $scope.user.dateOfBirth,
-            gender: $scope.user.gender,
-            city: $scope.user.loc.Commune,
-            zip: $scope.user.loc.NPA,
-            canton: $scope.user.loc.Canton
+            data
           })
           .then( function() {
             // Account created, redirect to home
