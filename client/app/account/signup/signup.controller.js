@@ -30,14 +30,14 @@ var App = angular.module('tbApp');
             password: $scope.user.password,
             dateOfBirth: $scope.user.dateOfBirth,
             gender: $scope.user.gender
-        }
+        };
 
         if ($scope.user.loc) {
           data = {
             city: $scope.user.loc.Commune,
             zip: $scope.user.loc.NPA,
             canton: $scope.user.loc.Canton
-          }
+          };
         }
 
         if ($scope.user.manager) {
@@ -62,9 +62,9 @@ var App = angular.module('tbApp');
 
         } else{
           // Créer un compte utilisateur
-          Auth.createUser({
+          Auth.createUser(
             data
-          })
+          )
           .then( function() {
             // Account created, redirect to home
             $state.go('main');
